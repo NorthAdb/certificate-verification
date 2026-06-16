@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>speed</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>speed - test library performance</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>gmssl speed</b> [<b>-help</b>] [<b>-engine id</b>] [<b>-elapsed</b>] [<b>-evp algo</b>] [<b>-decrypt</b>] [<b>algorithm...</b>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This command is used to test the performance of cryptographic algorithms. To see the list of supported algorithms, use the <i>list --digest-commands</i> or <i>list --cipher-commands</i> command.</p>
+
+<p>&#x6B64;&#x547D;&#x4EE4;&#x7528;&#x4E8E;&#x6D4B;&#x8BD5;&#x52A0;&#x5BC6;&#x7B97;&#x6CD5;&#x7684;&#x6027;&#x80FD;&#x3002; &#x8981;&#x67E5;&#x770B;&#x652F;&#x6301;&#x7684;&#x7B97;&#x6CD5;&#x5217;&#x8868;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;list --digest-commands&#x6216;list --cipher-commands&#x547D;&#x4EE4;&#x3002;</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Print out a usage message.</p>
+
+<p>&#x6253;&#x5370;&#x4F7F;&#x7528;&#x4FE1;&#x606F;</p>
+
+</dd>
+<dt id="engine-id"><b>-engine id</b></dt>
+<dd>
+
+<p>specifying an engine (by its unique <b>id</b> string) will cause <b>speed</b> to attempt to obtain a functional reference to the specified engine, thus initialising it if needed. The engine will then be set as the default for all available algorithms.</p>
+
+<p>&#x6307;&#x5B9A;&#x5F15;&#x64CE;&#xFF08;&#x901A;&#x8FC7;&#x5176;&#x552F;&#x4E00;&#x7684;id&#x5B57;&#x7B26;&#x4E32;&#xFF09;&#x5C06;&#x5BFC;&#x81F4;speed&#x5C1D;&#x8BD5;&#x83B7;&#x5F97;&#x5BF9;&#x6307;&#x5B9A;&#x5F15;&#x64CE;&#x7684;&#x529F;&#x80FD;&#x5F15;&#x7528;&#xFF0C;&#x4ECE;&#x800C;&#x5728;&#x9700;&#x8981;&#x65F6;&#x521D;&#x59CB;&#x5316;&#x5B83;&#x3002; &#x7136;&#x540E;&#xFF0C;&#x5F15;&#x64CE;&#x5C06;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;&#x6240;&#x6709;&#x53EF;&#x7528;&#x7B97;&#x6CD5;&#x7684;&#x9ED8;&#x8BA4;&#x503C;&#x3002;</p>
+
+</dd>
+<dt id="elapsed"><b>-elapsed</b></dt>
+<dd>
+
+<p>Measure time in real time instead of CPU time. It can be useful when testing speed of hardware engines.</p>
+
+<p>&#x5B9E;&#x65F6;&#x6D4B;&#x91CF;&#x65F6;&#x95F4;&#xFF0C;&#x800C;&#x4E0D;&#x662F;CPU&#x65F6;&#x95F4;&#x3002; &#x5728;&#x6D4B;&#x8BD5;&#x786C;&#x4EF6;&#x5F15;&#x64CE;&#x7684;&#x901F;&#x5EA6;&#x65F6;&#x53EF;&#x80FD;&#x4F1A;&#x5F88;&#x6709;&#x7528;&#x3002;</p>
+
+</dd>
+<dt id="evp-algo"><b>-evp algo</b></dt>
+<dd>
+
+<p>Use the specified cipher or message digest algorithm via the EVP interface.</p>
+
+<p>&#x901A;&#x8FC7;EVP&#x63A5;&#x53E3;&#x4F7F;&#x7528;&#x6307;&#x5B9A;&#x7684;&#x5BC6;&#x7801;&#x6216;&#x6D88;&#x606F;&#x6458;&#x8981;&#x7B97;&#x6CD5;&#x3002;</p>
+
+</dd>
+<dt id="decrypt"><b>-decrypt</b></dt>
+<dd>
+
+<p>Time the decryption instead of encryption. Affects only the EVP testing.</p>
+
+<p>&#x65F6;&#x95F4;&#x89E3;&#x5BC6;&#x800C;&#x4E0D;&#x662F;&#x52A0;&#x5BC6;&#x3002; &#x4EC5;&#x5F71;&#x54CD;EVP&#x6D4B;&#x8BD5;&#x3002;</p>
+
+</dd>
+<dt id="zero-or-more-test-algorithms"><b>[zero or more test algorithms]</b></dt>
+<dd>
+
+<p>If any options are given, <b>speed</b> tests those algorithms, otherwise all of the above are tested.</p>
+
+<p>&#x5982;&#x679C;&#x6709;&#x4EFB;&#x4F55;&#x9009;&#x9879;&#xFF0C;speed&#x6D4B;&#x8BD5;&#x8FD9;&#x4E9B;&#x7B97;&#x6CD5;&#xFF0C;&#x5426;&#x5219;&#x6240;&#x6709;&#x4E0A;&#x8FF0;&#x90FD;&#x88AB;&#x6D4B;&#x8BD5;&#x3002;</p>
+
+</dd>
+</dl>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2000-2016 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,202 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>crl</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>crl - CRL utility</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>gmssl</b> <b>crl</b> [<b>-help</b>] [<b>-inform PEM|DER</b>] [<b>-outform PEM|DER</b>] [<b>-text</b>] [<b>-in filename</b>] [<b>-out filename</b>] [<b>-nameopt option</b>] [<b>-noout</b>] [<b>-hash</b>] [<b>-issuer</b>] [<b>-lastupdate</b>] [<b>-nextupdate</b>] [<b>-CAfile file</b>] [<b>-CApath dir</b>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The <b>crl</b> command processes CRL files in DER or PEM format.</p>
+
+<p>crl&#x547D;&#x4EE4;&#x4EE5;DER&#x6216;PEM&#x683C;&#x5F0F;&#x5904;&#x7406;CRL&#x6587;&#x4EF6;&#x3002;</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Print out a usage message.</p>
+
+<p>&#x8F93;&#x51FA;&#x4F7F;&#x7528;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="inform-DER-PEM"><b>-inform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the input format. <b>DER</b> format is DER encoded CRL structure. <b>PEM</b> (the default) is a base64 encoded version of the DER form with header and footer lines.</p>
+
+<p>&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x683C;&#x5F0F;&#x3002;DER&#x662F;DER&#x7F16;&#x7801;&#x7684;CRL&#x5BF9;&#x8C61;&#x3002;PEM&#xFF08;&#x9ED8;&#x8BA4;&#x7684;&#x683C;&#x5F0F;&#xFF09;&#x662F;base64&#x7F16;&#x7801;&#x7684;CRL&#x5BF9;&#x8C61;&#x3002;</p>
+
+</dd>
+<dt id="outform-DER-PEM"><b>-outform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the output format, the options have the same meaning as the <b>-inform</b> option.</p>
+
+<p>&#x6307;&#x5B9A;&#x6587;&#x4EF6;&#x7684;&#x8F93;&#x51FA;&#x683C;&#x5F0F;&#x3002;&#x8DDF;-inform&#x7684;&#x610F;&#x601D;&#x4E00;&#x6837;&#x3002;</p>
+
+</dd>
+<dt id="in-filename"><b>-in filename</b></dt>
+<dd>
+
+<p>This specifies the input filename to read from or standard input if this option is not specified.</p>
+
+<p>&#x6307;&#x5B9A;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x4E00;&#x822C;&#x4E3A;&#x6807;&#x6CE8;&#x8F93;&#x5165;</p>
+
+</dd>
+<dt id="out-filename"><b>-out filename</b></dt>
+<dd>
+
+<p>specifies the output filename to write to or standard output by default.</p>
+
+<p>&#x6307;&#x5B9A;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x4E00;&#x822C;&#x4E3A;&#x6807;&#x51C6;&#x8F93;&#x51FA;</p>
+
+</dd>
+<dt id="text"><b>-text</b></dt>
+<dd>
+
+<p>print out the CRL in text form.</p>
+
+<p>&#x4EE5;&#x6587;&#x672C;&#x7684;&#x683C;&#x5F0F;&#x6765;&#x6253;&#x5370;&#x51FA;CRL</p>
+
+</dd>
+<dt id="nameopt-option"><b>-nameopt option</b></dt>
+<dd>
+
+<p>option which determines how the subject or issuer names are displayed. See the description of <b>-nameopt</b> in <a href="../man1/x509.html>x509(1)</a>.</p>
+
+<p>&#x51B3;&#x5B9A;&#x4E86;&#x540D;&#x79F0;&#x7684;&#x663E;&#x793A;&#x65B9;&#x5F0F;&#x3002;</p>
+
+</dd>
+<dt id="noout"><b>-noout</b></dt>
+<dd>
+
+<p>don&#39;t output the encoded version of the CRL.</p>
+
+<p>&#x4E0D;&#x8F93;&#x51FA;CRL&#x6587;&#x4EF6;&#x5185;&#x5BB9;</p>
+
+</dd>
+<dt id="hash"><b>-hash</b></dt>
+<dd>
+
+<p>output a hash of the issuer name. This can be use to lookup CRLs in a directory by issuer name.</p>
+
+<p>&#x8F93;&#x51FA;&#x9881;&#x53D1;&#x8005;&#x4FE1;&#x606F;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#x3002;&#x8FD9;&#x4E00;&#x9879;&#x53EF;&#x7528;&#x4E8E;&#x5728;&#x6587;&#x4EF6;&#x4E2D;&#x6839;&#x636E;&#x9881;&#x53D1;&#x8005;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#x6765;&#x67E5;&#x8BE2;CRL&#x3002;</p>
+
+</dd>
+<dt id="hash_old"><b>-hash_old</b></dt>
+<dd>
+
+<p>outputs the &quot;hash&quot; of the CRL issuer name using the older algorithm as used by GmSSL versions before 1.0.0.</p>
+
+<p>&#x8F93;&#x51FA;CRL&#x9881;&#x53D1;&#x8005;&#x4FE1;&#x606F;&#x7684;&#x54C8;&#x5E0C;&#x503C;&#x7528;GmSSL1.0.0&#x7248;&#x672C;&#x4EE5;&#x524D;&#x66F4;&#x52A0;&#x53E4;&#x8001;&#x7684;&#x7B97;&#x6CD5;&#x3002;</p>
+
+</dd>
+<dt id="issuer"><b>-issuer</b></dt>
+<dd>
+
+<p>output the issuer name.</p>
+
+<p>&#x8F93;&#x51FA;&#x53D1;&#x884C;&#x8005;&#x7684;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="lastupdate"><b>-lastupdate</b></dt>
+<dd>
+
+<p>output the lastUpdate field.</p>
+
+<p>&#x8F93;&#x51FA;&#x4E0A;&#x4E00;&#x6B21;&#x66F4;&#x65B0;&#x7684;&#x65F6;&#x95F4;&#x3002;</p>
+
+</dd>
+<dt id="nextupdate"><b>-nextupdate</b></dt>
+<dd>
+
+<p>output the nextUpdate field.</p>
+
+<p>&#x8F93;&#x51FA;&#x4E0B;&#x4E00;&#x6B21;&#x66F4;&#x65B0;&#x7684;&#x65F6;&#x95F4;&#x3002;</p>
+
+</dd>
+<dt id="CAfile-file"><b>-CAfile file</b></dt>
+<dd>
+
+<p>verify the signature on a CRL by looking up the issuing certificate in <b>file</b></p>
+
+<p>&#x6307;&#x5B9A;&#x6587;&#x4EF6;&#x6765;&#x9A8C;&#x8BC1;&#x8BE5;CRL&#x5BF9;&#x8C61;&#x662F;&#x5426;&#x5408;&#x6CD5;&#x3002;</p>
+
+</dd>
+<dt id="CApath-dir"><b>-CApath dir</b></dt>
+<dd>
+
+<p>verify the signature on a CRL by looking up the issuing certificate in <b>dir</b>. This directory must be a standard certificate directory: that is a hash of each subject name (using <b>x509 -hash</b>) should be linked to each certificate.</p>
+
+<p>&#x901A;&#x8FC7;&#x67E5;&#x627E;dir&#x4E2D;&#x7684;&#x9881;&#x53D1;&#x8BC1;&#x4E66;&#x6765;&#x9A8C;&#x8BC1;CRL&#x4E0A;&#x7684;&#x7B7E;&#x540D;&#x3002; &#x6B64;&#x76EE;&#x5F55;&#x5FC5;&#x987B;&#x662F;&#x6807;&#x51C6;&#x8BC1;&#x4E66;&#x76EE;&#x5F55;&#xFF1A;&#x8FD9;&#x662F;&#x6BCF;&#x4E2A;&#x4E3B;&#x9898;&#x540D;&#x79F0;&#x7684;&#x54C8;&#x5E0C;&#xFF08;&#x4F7F;&#x7528;x509 -hash&#xFF09;&#x5E94;&#x94FE;&#x63A5;&#x5230;&#x6BCF;&#x4E2A;&#x8BC1;&#x4E66;&#x3002;</p>
+
+</dd>
+</dl>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>The PEM CRL format uses the header and footer lines:</p>
+
+<pre><code> -----BEGIN X509 CRL-----
+ -----END X509 CRL-----</code></pre>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>Convert a CRL file from PEM to DER:</p>
+
+<pre><code> gmssl crl -in crl.pem -outform DER -out crl.der</code></pre>
+
+<p>Output the text form of a DER encoded certificate:</p>
+
+<pre><code> gmssl crl -in crl.der -text -noout</code></pre>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Ideally it should be possible to create a CRL using appropriate options and files too.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man1/crl2pkcs7.html>crl2pkcs7(1)</a>, <a href="../man1/ca.html>ca(1)</a>, <a href="../man1/x509.html>x509(1)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2000-2016 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

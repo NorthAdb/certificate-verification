@@ -1,0 +1,621 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>s_client</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+  <li><a href="#CONNECTED-COMMANDS">CONNECTED COMMANDS</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>s_client - SSL/TLS client program</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>gmssl</b> <b>s_client</b> [<b>-help</b>] [<b>-connect host:port</b>] [<b>-proxy host:port</b>] [<b>-unix path</b>] [<b>-4</b>] [<b>-6</b>] [<b>-servername name</b>] [<b>-verify depth</b>] [<b>-verify_return_error</b>] [<b>-cert filename</b>] [<b>-certform DER|PEM</b>] [<b>-key filename</b>] [<b>-keyform DER|PEM</b>] [<b>-pass arg</b>] [<b>-CApath directory</b>] [<b>-CAfile filename</b>] [<b>-no-CAfile</b>] [<b>-no-CApath</b>] [<b>-dane_tlsa_domain domain</b>] [<b>-dane_tlsa_rrdata rrdata</b>] [<b>-dane_ee_no_namechecks</b>] [<b>-attime timestamp</b>] [<b>-check_ss_sig</b>] [<b>-crl_check</b>] [<b>-crl_check_all</b>] [<b>-explicit_policy</b>] [<b>-extended_crl</b>] [<b>-ignore_critical</b>] [<b>-inhibit_any</b>] [<b>-inhibit_map</b>] [<b>-no_check_time</b>] [<b>-partial_chain</b>] [<b>-policy arg</b>] [<b>-policy_check</b>] [<b>-policy_print</b>] [<b>-purpose purpose</b>] [<b>-suiteB_128</b>] [<b>-suiteB_128_only</b>] [<b>-suiteB_192</b>] [<b>-trusted_first</b>] [<b>-no_alt_chains</b>] [<b>-use_deltas</b>] [<b>-auth_level num</b>] [<b>-verify_depth num</b>] [<b>-verify_email email</b>] [<b>-verify_hostname hostname</b>] [<b>-verify_ip ip</b>] [<b>-verify_name name</b>] [<b>-x509_strict</b>] [<b>-reconnect</b>] [<b>-showcerts</b>] [<b>-debug</b>] [<b>-msg</b>] [<b>-nbio_test</b>] [<b>-state</b>] [<b>-nbio</b>] [<b>-crlf</b>] [<b>-ign_eof</b>] [<b>-no_ign_eof</b>] [<b>-quiet</b>] [<b>-ssl3</b>] [<b>-tls1</b>] [<b>-tls1_1</b>] [<b>-tls1_2</b>] [<b>-tls1_3</b>] [<b>-no_ssl3</b>] [<b>-no_tls1</b>] [<b>-no_tls1_1</b>] [<b>-no_tls1_2</b>] [<b>-no_tls1_3</b>] [<b>-dtls</b>] [<b>-dtls1</b>] [<b>-dtls1_2</b>] [<b>-fallback_scsv</b>] [<b>-async</b>] [<b>-split_send_frag</b>] [<b>-max_pipelines</b>] [<b>-read_buf</b>] [<b>-bugs</b>] [<b>-comp</b>] [<b>-no_comp</b>] [<b>-cipher cipherlist</b>] [<b>-serverpref</b>] [<b>-starttls protocol</b>] [<b>-xmpphost hostname</b>] [<b>-engine id</b>] [<b>-tlsextdebug</b>] [<b>-no_ticket</b>] [<b>-sess_out filename</b>] [<b>-sess_in filename</b>] [<b>-rand file(s)</b>] [<b>-serverinfo types</b>] [<b>-status</b>] [<b>-alpn protocols</b>] [<b>-nextprotoneg protocols</b>] [<b>-ct|noct</b>] [<b>-ctlogfile</b>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The <b>s_client</b> command implements a generic SSL/TLS client which connects to a remote host using SSL/TLS. It is a <i>very</i> useful diagnostic tool for SSL servers.</p>
+
+<p>s_client&#x547D;&#x4EE4;&#x5B9E;&#x73B0;&#x4F7F;&#x7528;SSL / TLS&#x8FDE;&#x63A5;&#x5230;&#x8FDC;&#x7A0B;&#x4E3B;&#x673A;&#x7684;&#x901A;&#x7528;SSL / TLS&#x5BA2;&#x6237;&#x7AEF;&#x3002; &#x5B83;&#x662F;SSL&#x670D;&#x52A1;&#x5668;&#x975E;&#x5E38;&#x6709;&#x7528;&#x7684;&#x8BCA;&#x65AD;&#x5DE5;&#x5177;&#x3002;</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<p>In addition to the options below the <b>s_client</b> utility also supports the common and client only options documented in the in the &quot;Supported Command Line Commands&quot; section of the <a href="../man3/SSL_CONF_cmd.html>SSL_CONF_cmd(3)</a> manual page.</p>
+
+<p>&#x9664;&#x4E86;&#x4EE5;&#x4E0B;&#x9009;&#x9879;&#x4E4B;&#x5916;&#xFF0C;s_client&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x8FD8;&#x652F;&#x6301;SSL_CONF_cmd&#xFF08;3&#xFF09;&#x624B;&#x518C;&#x9875;&#x7684;&ldquo;&#x652F;&#x6301;&#x7684;&#x547D;&#x4EE4;&#x884C;&#x547D;&#x4EE4;&rdquo;&#x90E8;&#x5206;&#x4E2D;&#x8BB0;&#x5F55;&#x7684;&#x901A;&#x7528;&#x548C;&#x5BA2;&#x6237;&#x7AEF;&#x9009;&#x9879;&#x3002;</p>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Print out a usage message.</p>
+
+<p>&#x8F93;&#x51FA;&#x4F7F;&#x7528;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="connect-host:port"><b>-connect host:port</b></dt>
+<dd>
+
+<p>This specifies the host and optional port to connect to. If not specified then an attempt is made to connect to the local host on port 4433.</p>
+
+<p>&#x8FD9;&#x6307;&#x5B9A;&#x8981;&#x8FDE;&#x63A5;&#x7684;&#x4E3B;&#x673A;&#x548C;&#x53EF;&#x9009;&#x7AEF;&#x53E3;&#x3002; &#x5982;&#x679C;&#x672A;&#x6307;&#x5B9A;&#xFF0C;&#x5219;&#x5C1D;&#x8BD5;&#x8FDE;&#x63A5;&#x5230;&#x7AEF;&#x53E3;4433&#x4E0A;&#x7684;&#x672C;&#x5730;&#x4E3B;&#x673A;&#x3002;</p>
+
+</dd>
+<dt id="proxy-host:port"><b>-proxy host:port</b></dt>
+<dd>
+
+<p>When used with the <b>-connect</b> flag, the program uses the host and port specified with this flag and issues an HTTP CONNECT command to connect to the desired server.</p>
+
+<p>&#x5F53;&#x4E0E;-connect&#x6807;&#x5FD7;&#x4E00;&#x8D77;&#x4F7F;&#x7528;&#x65F6;&#xFF0C;&#x7A0B;&#x5E8F;&#x4F7F;&#x7528;&#x7531;&#x8BE5;&#x6807;&#x5FD7;&#x6307;&#x5B9A;&#x7684;&#x4E3B;&#x673A;&#x548C;&#x7AEF;&#x53E3;&#xFF0C;&#x5E76;&#x53D1;&#x51FA;HTTP CONNECT&#x547D;&#x4EE4;&#x8FDE;&#x63A5;&#x5230;&#x6240;&#x9700;&#x7684;&#x670D;&#x52A1;&#x5668;&#x3002;</p>
+
+</dd>
+<dt id="unix-path"><b>-unix path</b></dt>
+<dd>
+
+<p>Connect over the specified Unix-domain socket.</p>
+
+<p>&#x8FDE;&#x63A5;&#x6307;&#x5B9A;&#x7684;Unix&#x57DF;&#x5957;&#x63A5;&#x5B57;&#x3002;</p>
+
+</dd>
+<dt id="pod-4"><b>-4</b></dt>
+<dd>
+
+<p>Use IPv4 only.</p>
+
+<p>&#x4EC5;&#x4F7F;&#x7528;IPv4&#x3002;</p>
+
+</dd>
+<dt id="pod-6"><b>-6</b></dt>
+<dd>
+
+<p>Use IPv6 only.</p>
+
+<p>&#x4EC5;&#x4F7F;&#x7528;IPv6.</p>
+
+</dd>
+<dt id="servername-name"><b>-servername name</b></dt>
+<dd>
+
+<p>Set the TLS SNI (Server Name Indication) extension in the ClientHello message.</p>
+
+<p>&#x5728;ClientHello&#x6D88;&#x606F;&#x4E2D;&#x8BBE;&#x7F6E;TLS SNI&#xFF08;&#x670D;&#x52A1;&#x5668;&#x540D;&#x79F0;&#x6307;&#x793A;&#xFF09;&#x6269;&#x5C55;&#x3002;</p>
+
+</dd>
+<dt id="cert-certname"><b>-cert certname</b></dt>
+<dd>
+
+<p>The certificate to use, if one is requested by the server. The default is not to use a certificate.</p>
+
+<p>&#x8981;&#x4F7F;&#x7528;&#x7684;&#x8BC1;&#x4E66;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x670D;&#x52A1;&#x5668;&#x8BF7;&#x6C42;&#x7684;&#x3002; &#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#x4E0D;&#x4F7F;&#x7528;&#x8BC1;&#x4E66;&#x3002;</p>
+
+</dd>
+<dt id="certform-format"><b>-certform format</b></dt>
+<dd>
+
+<p>The certificate format to use: DER or PEM. PEM is the default.</p>
+
+<p>&#x4F7F;&#x7528;&#x7684;&#x8BC1;&#x4E66;&#x683C;&#x5F0F;&#xFF1A;DER&#x6216;PEM&#x3002; PEM&#x662F;&#x9ED8;&#x8BA4;&#x503C;&#x3002;</p>
+
+</dd>
+<dt id="key-keyfile"><b>-key keyfile</b></dt>
+<dd>
+
+<p>The private key to use. If not specified then the certificate file will be used.</p>
+
+<p>&#x4F7F;&#x7528;&#x79C1;&#x94A5;&#x3002; &#x5982;&#x679C;&#x672A;&#x6307;&#x5B9A;&#xFF0C;&#x5219;&#x5C06;&#x4F7F;&#x7528;&#x8BC1;&#x4E66;&#x6587;&#x4EF6;&#x3002;</p>
+
+</dd>
+<dt id="keyform-format"><b>-keyform format</b></dt>
+<dd>
+
+<p>The private format to use: DER or PEM. PEM is the default.</p>
+
+<p>&#x8981;&#x4F7F;&#x7528;&#x7684;&#x79C1;&#x6709;&#x683C;&#x5F0F;&#xFF1A;DER&#x6216;PEM&#x3002; PEM&#x662F;&#x9ED8;&#x8BA4;&#x503C;&#x3002;</p>
+
+</dd>
+<dt id="pass-arg"><b>-pass arg</b></dt>
+<dd>
+
+<p>the private key password source. For more information about the format of <b>arg</b> see the <b>PASS PHRASE ARGUMENTS</b> section in <a href="../man1/gmssl.html>gmssl(1)</a>.</p>
+
+<p>&#x79C1;&#x94A5;&#x5BC6;&#x7801;&#x6E90;&#x3002; &#x6709;&#x5173;arg&#x683C;&#x5F0F;&#x7684;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;gmssl&#xFF08;1&#xFF09;&#x4E2D;&#x7684;PASS PHRASE ARGUMENTS&#x90E8;&#x5206;&#x3002;</p>
+
+</dd>
+<dt id="verify-depth"><b>-verify depth</b></dt>
+<dd>
+
+<p>The verify depth to use. This specifies the maximum length of the server certificate chain and turns on server certificate verification. Currently the verify operation continues after errors so all the problems with a certificate chain can be seen. As a side effect the connection will never fail due to a server certificate verify failure.</p>
+
+<p>&#x9A8C;&#x8BC1;&#x4F7F;&#x7528;&#x6DF1;&#x5EA6;&#x3002; &#x8FD9;&#x6307;&#x5B9A;&#x670D;&#x52A1;&#x5668;&#x8BC1;&#x4E66;&#x94FE;&#x7684;&#x6700;&#x5927;&#x957F;&#x5EA6;&#xFF0C;&#x5E76;&#x6253;&#x5F00;&#x670D;&#x52A1;&#x5668;&#x8BC1;&#x4E66;&#x9A8C;&#x8BC1;&#x3002; &#x76EE;&#x524D;&#xFF0C;&#x9A8C;&#x8BC1;&#x64CD;&#x4F5C;&#x5728;&#x9519;&#x8BEF;&#x4E4B;&#x540E;&#x7EE7;&#x7EED;&#xFF0C;&#x6240;&#x4EE5;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x8BC1;&#x4E66;&#x94FE;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x95EE;&#x9898;&#x3002; &#x4F5C;&#x4E3A;&#x526F;&#x4F5C;&#x7528;&#xFF0C;&#x7531;&#x4E8E;&#x670D;&#x52A1;&#x5668;&#x8BC1;&#x4E66;&#x9A8C;&#x8BC1;&#x5931;&#x8D25;&#xFF0C;&#x8FDE;&#x63A5;&#x6C38;&#x8FDC;&#x4E0D;&#x4F1A;&#x5931;&#x8D25;&#x3002;</p>
+
+</dd>
+<dt id="verify_return_error"><b>-verify_return_error</b></dt>
+<dd>
+
+<p>Return verification errors instead of continuing. This will typically abort the handshake with a fatal error.</p>
+
+<p>&#x8FD4;&#x56DE;&#x9A8C;&#x8BC1;&#x9519;&#x8BEF;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x7EE7;&#x7EED;&#x3002; &#x8FD9;&#x901A;&#x5E38;&#x4F1A;&#x4EE5;&#x81F4;&#x547D;&#x9519;&#x8BEF;&#x4E2D;&#x6B62;&#x63E1;&#x624B;&#x3002;</p>
+
+</dd>
+<dt id="CApath-directory"><b>-CApath directory</b></dt>
+<dd>
+
+<p>The directory to use for server certificate verification. This directory must be in &quot;hash format&quot;, see <b>verify</b> for more information. These are also used when building the client certificate chain.</p>
+
+<p>&#x7528;&#x4E8E;&#x670D;&#x52A1;&#x5668;&#x8BC1;&#x4E66;&#x9A8C;&#x8BC1;&#x7684;&#x76EE;&#x5F55;&#x3002; &#x6B64;&#x76EE;&#x5F55;&#x5FC5;&#x987B;&#x4E3A;&ldquo;&#x54C8;&#x5E0C;&#x683C;&#x5F0F;&rdquo;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;&#x9A8C;&#x8BC1;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#x3002; &#x8FD9;&#x4E9B;&#x4E5F;&#x5728;&#x6784;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;&#x94FE;&#x65F6;&#x4F7F;&#x7528;&#x3002;</p>
+
+</dd>
+<dt id="CAfile-file"><b>-CAfile file</b></dt>
+<dd>
+
+<p>A file containing trusted certificates to use during server authentication and to use when attempting to build the client certificate chain.</p>
+
+<p>&#x5305;&#x542B;&#x5728;&#x670D;&#x52A1;&#x5668;&#x8BA4;&#x8BC1;&#x671F;&#x95F4;&#x4F7F;&#x7528;&#x5E76;&#x5728;&#x5C1D;&#x8BD5;&#x6784;&#x5EFA;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;&#x94FE;&#x65F6;&#x4F7F;&#x7528;&#x7684;&#x53EF;&#x4FE1;&#x8BC1;&#x4E66;&#x7684;&#x6587;&#x4EF6;&#x3002;</p>
+
+</dd>
+<dt id="no-CAfile"><b>-no-CAfile</b></dt>
+<dd>
+
+<p>Do not load the trusted CA certificates from the default file location</p>
+
+<p>&#x4E0D;&#x8981;&#x4ECE;&#x9ED8;&#x8BA4;&#x6587;&#x4EF6;&#x4F4D;&#x7F6E;&#x52A0;&#x8F7D;&#x53D7;&#x4FE1;&#x4EFB;&#x7684;CA&#x8BC1;&#x4E66;</p>
+
+</dd>
+<dt id="no-CApath"><b>-no-CApath</b></dt>
+<dd>
+
+<p>Do not load the trusted CA certificates from the default directory location</p>
+
+<p>&#x4E0D;&#x8981;&#x4ECE;&#x9ED8;&#x8BA4;&#x76EE;&#x5F55;&#x4F4D;&#x7F6E;&#x52A0;&#x8F7D;&#x53D7;&#x4FE1;&#x4EFB;&#x7684;CA&#x8BC1;&#x4E66;</p>
+
+</dd>
+<dt id="dane_tlsa_domain-domain"><b>-dane_tlsa_domain domain</b></dt>
+<dd>
+
+<p>Enable RFC6698/RFC7671 DANE TLSA authentication and specify the TLSA base domain which becomes the default SNI hint and the primary reference identifier for hostname checks. This must be used in combination with at least one instance of the <b>-dane_tlsa_rrdata</b> option below.</p>
+
+<p>When DANE authentication succeeds, the diagnostic output will include the lowest (closest to 0) depth at which a TLSA record authenticated a chain certificate. When that TLSA record is a &quot;2 1 0&quot; trust anchor public key that signed (rather than matched) the top-most certificate of the chain, the result is reported as &quot;TA public key verified&quot;. Otherwise, either the TLSA record &quot;matched TA certificate&quot; at a positive depth or else &quot;matched EE certificate&quot; at depth 0.</p>
+
+<p>&#x542F;&#x7528;RFC6698 / RFC7671 DANE TLSA&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#xFF0C;&#x5E76;&#x6307;&#x5B9A;&#x6210;&#x4E3A;&#x9ED8;&#x8BA4;SNI&#x63D0;&#x793A;&#x7684;TLSA&#x57FA;&#x672C;&#x57DF;&#x548C;&#x4E3B;&#x673A;&#x540D;&#x68C0;&#x67E5;&#x7684;&#x4E3B;&#x53C2;&#x8003;&#x6807;&#x8BC6;&#x7B26;&#x3002; &#x8FD9;&#x5FC5;&#x987B;&#x4E0E;&#x4EE5;&#x4E0B;-dane_tlsa_rrdata&#x9009;&#x9879;&#x7684;&#x81F3;&#x5C11;&#x4E00;&#x4E2A;&#x5B9E;&#x4F8B;&#x7ED3;&#x5408;&#x4F7F;&#x7528;&#x3002;</p>
+
+<p>&#x5F53;DANE&#x8BA4;&#x8BC1;&#x6210;&#x529F;&#x65F6;&#xFF0C;&#x8BCA;&#x65AD;&#x8F93;&#x51FA;&#x5C06;&#x5305;&#x62EC;TLSA&#x8BB0;&#x5F55;&#x8BA4;&#x8BC1;&#x94FE;&#x5F0F;&#x8BC1;&#x4E66;&#x7684;&#x6700;&#x4F4E;&#xFF08;&#x6700;&#x63A5;&#x8FD1;0&#xFF09;&#x6DF1;&#x5EA6;&#x3002; &#x5F53;&#x8BE5;TLSA&#x8BB0;&#x5F55;&#x662F;&#x4E00;&#x4E2A;&ldquo;2 1 0&rdquo;&#x4FE1;&#x4EFB;&#x951A;&#x516C;&#x94A5;&#xFF0C;&#x8BE5;&#x4FE1;&#x4EFB;&#x951A;&#x516C;&#x94A5;&#x662F;&#x7B7E;&#x540D;&#xFF08;&#x800C;&#x4E0D;&#x662F;&#x5339;&#x914D;&#xFF09;&#x94FE;&#x4E2D;&#x6700;&#x9876;&#x5C42;&#x7684;&#x8BC1;&#x4E66;&#xFF0C; &#x7ED3;&#x679C;&#x88AB;&#x62A5;&#x544A;&#x4E3A;&ldquo;TA&#x516C;&#x94A5;&#x9A8C;&#x8BC1;&rdquo;&#x3002; &#x5426;&#x5219;&#xFF0C;TLSA&#x8BB0;&#x5F55;&ldquo;&#x5339;&#x914D;&#x7684;TA&#x8BC1;&#x4E66;&rdquo;&#x5728;&#x6DF1;&#x5EA6;&#x4E3A;&#x6DF1;&#x5EA6;&#xFF0C;&#x5426;&#x5219;&ldquo;&#x5339;&#x914D;&#x7684;EE&#x8BC1;&#x4E66;&rdquo;&#x5728;&#x6DF1;&#x5EA6;0&#x3002;</p>
+
+</dd>
+<dt id="dane_tlsa_rrdata-rrdata"><b>-dane_tlsa_rrdata rrdata</b></dt>
+<dd>
+
+<p>Use one or more times to specify the RRDATA fields of the DANE TLSA RRset associated with the target service. The <b>rrdata</b> value is specied in &quot;presentation form&quot;, that is four whitespace separated fields that specify the usage, selector, matching type and associated data, with the last of these encoded in hexadecimal. Optional whitespace is ignored in the associated data field. For example:</p>
+
+<p>&#x4F7F;&#x7528;&#x4E00;&#x6B21;&#x6216;&#x591A;&#x6B21;&#x6765;&#x6307;&#x5B9A;&#x4E0E;&#x76EE;&#x6807;&#x670D;&#x52A1;&#x76F8;&#x5173;&#x8054;&#x7684;DANE TLSA RRset&#x7684;RRDATA&#x5B57;&#x6BB5;&#x3002; rrdata&#x503C;&#x4EE5;&ldquo;&#x8868;&#x793A;&#x5F62;&#x5F0F;&rdquo;&#x6307;&#x5B9A;&#xFF0C;&#x5373;&#x6307;&#x5B9A;&#x4F7F;&#x7528;&#xFF0C;&#x9009;&#x62E9;&#x5668;&#xFF0C;&#x5339;&#x914D;&#x7C7B;&#x578B;&#x548C;&#x5173;&#x8054;&#x6570;&#x636E;&#x7684; &#x56DB;&#x4E2A;&#x7A7A;&#x767D;&#x5206;&#x9694;&#x5B57;&#x6BB5;&#xFF0C;&#x5176;&#x4E2D;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x4EE5;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x7F16;&#x7801;&#x3002; &#x53EF;&#x9009;&#x7684;&#x7A7A;&#x683C;&#x5728;&#x5173;&#x8054;&#x7684;&#x6570;&#x636E;&#x5B57;&#x6BB5;&#x4E2D;&#x88AB;&#x5FFD;&#x7565;&#x3002; &#x4F8B;&#x5982;&#xFF1A;</p>
+
+<pre><code>  $ gmssl s_client -brief -starttls smtp \
+    -connect smtp.example.com:25 \
+    -dane_tlsa_domain smtp.example.com \
+    -dane_tlsa_rrdata &quot;2 1 1
+      B111DD8A1C2091A89BD4FD60C57F0716CCE50FEEFF8137CDBEE0326E 02CF362B&quot; \
+    -dane_tlsa_rrdata &quot;2 1 1
+      60B87575447DCBA2A36B7D11AC09FB24A9DB406FEE12D2CC90180517 616E8A18&quot;
+  ...
+  Verification: OK
+  Verified peername: smtp.example.com
+  DANE TLSA 2 1 1 ...ee12d2cc90180517616e8a18 matched TA certificate at depth 1
+  ...</code></pre>
+
+</dd>
+<dt id="dane_ee_no_namechecks"><b>-dane_ee_no_namechecks</b></dt>
+<dd>
+
+<p>This disables server name checks when authenticating via DANE-EE(3) TLSA records. For some applications, primarily web browsers, it is not safe to disable name checks due to &quot;unknown key share&quot; attacks, in which a malicious server can convince a client that a connection to a victim server is instead a secure connection to the malicious server. The malicious server may then be able to violate cross-origin scripting restrictions. Thus, despite the text of RFC7671, name checks are by default enabled for DANE-EE(3) TLSA records, and can be disabled in applications where it is safe to do so. In particular, SMTP and XMPP clients should set this option as SRV and MX records already make it possible for a remote domain to redirect client connections to any server of its choice, and in any case SMTP and XMPP clients do not execute scripts downloaded from remote servers.</p>
+
+<p>&#x5F53;&#x901A;&#x8FC7;DANE-EE&#xFF08;3&#xFF09;TLSA&#x8BB0;&#x5F55;&#x8FDB;&#x884C;&#x8EAB;&#x4EFD;&#x9A8C;&#x8BC1;&#x65F6;&#xFF0C;&#x8FD9;&#x5C06;&#x7981;&#x7528;&#x670D;&#x52A1;&#x5668;&#x540D;&#x79F0;&#x68C0;&#x67E5;&#x3002; &#x5BF9;&#x4E8E;&#x67D0;&#x4E9B;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF08;&#x4E3B;&#x8981;&#x662F;Web&#x6D4F;&#x89C8;&#x5668;&#xFF09;&#xFF0C;&#x7531;&#x4E8E;&ldquo;&#x672A;&#x77E5;&#x5BC6;&#x94A5;&#x5171;&#x4EAB;&rdquo;&#x653B;&#x51FB;&#xFF0C;&#x7981;&#x7528;&#x540D;&#x79F0;&#x68C0;&#x67E5;&#x662F; &#x4E0D;&#x5B89;&#x5168;&#x7684;&#xFF0C;&#x6076;&#x610F;&#x670D;&#x52A1;&#x5668;&#x53EF;&#x4EE5;&#x8BF4;&#x670D;&#x5BA2;&#x6237;&#x7AEF;&#x4E0E;&#x53D7;&#x5BB3;&#x8005;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8FDE;&#x63A5;&#x800C;&#x4E0D;&#x662F;&#x4E0E;&#x6076;&#x610F;&#x670D;&#x52A1;&#x5668;&#x7684;&#x5B89;&#x5168; &#x8FDE;&#x63A5;&#x3002; &#x6076;&#x610F;&#x670D;&#x52A1;&#x5668;&#x53EF;&#x80FD;&#x80FD;&#x591F;&#x8FDD;&#x53CD;&#x8DE8;&#x539F;&#x59CB;&#x811A;&#x672C;&#x9650;&#x5236;&#x3002; &#x56E0;&#x6B64;&#xFF0C;&#x5C3D;&#x7BA1;RFC7671&#x7684;&#x6587;&#x672C;&#xFF0C;&#x9ED8;&#x8BA4;&#x60C5; &#x51B5;&#x4E0B;&#xFF0C;&#x5BF9;DANE-EE&#xFF08;3&#xFF09;TLSA&#x8BB0;&#x5F55;&#x542F;&#x7528;&#x540D;&#x79F0;&#x68C0;&#x67E5;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x5728;&#x5B89;&#x5168;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x7981;&#x7528;&#x540D;&#x79F0;&#x68C0;&#x67E5;&#x3002; &#x7279;&#x522B;&#x662F;&#xFF0C;SMTP&#x548C;XMPP&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x8BE5;&#x5C06;&#x6B64;&#x9009;&#x9879;&#x8BBE;&#x7F6E;&#x4E3A;SRV&#x548C;MX&#x8BB0;&#x5F55;&#xFF0C;&#x4F7F;&#x8FDC;&#x7A0B;&#x57DF;&#x53EF;&#x4EE5;&#x5C06;&#x5BA2;&#x6237;&#x7AEF;&#x8FDE;&#x63A5; &#x91CD;&#x5B9A;&#x5411;&#x5230;&#x6240;&#x9009;&#x7684;&#x4EFB;&#x4F55;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x65E0;&#x8BBA;&#x5982;&#x4F55;&#xFF0C;SMTP&#x548C;XMPP&#x5BA2;&#x6237;&#x7AEF;&#x4E0D;&#x4F1A;&#x6267;&#x884C;&#x4ECE;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x5668;&#x4E0B;&#x8F7D;&#x7684;&#x811A;&#x672C;&#x670D;&#x52A1;&#x5668;&#x3002;</p>
+
+</dd>
+<dt id="attime--check_ss_sig--crl_check--crl_check_all--explicit_policy--extended_crl--ignore_critical--inhibit_any--inhibit_map--no_alt_chains--no_check_time--partial_chain--policy--policy_check--policy_print--purpose--suiteB_128--suiteB_128_only--suiteB_192--trusted_first--use_deltas--auth_level--verify_depth--verify_email--verify_hostname--verify_ip--verify_name--x509_strict"><b>-attime</b>, <b>-check_ss_sig</b>, <b>-crl_check</b>, <b>-crl_check_all</b>, <b>-explicit_policy</b>, <b>-extended_crl</b>, <b>-ignore_critical</b>, <b>-inhibit_any</b>, <b>-inhibit_map</b>, <b>-no_alt_chains</b>, <b>-no_check_time</b>, <b>-partial_chain</b>, <b>-policy</b>, <b>-policy_check</b>, <b>-policy_print</b>, <b>-purpose</b>, <b>-suiteB_128</b>, <b>-suiteB_128_only</b>, <b>-suiteB_192</b>, <b>-trusted_first</b>, <b>-use_deltas</b>, <b>-auth_level</b>, <b>-verify_depth</b>, <b>-verify_email</b>, <b>-verify_hostname</b>, <b>-verify_ip</b>, <b>-verify_name</b>, <b>-x509_strict</b></dt>
+<dd>
+
+<p>Set various certificate chain validation options. See the <a href="../man1/verify.html>verify(1)</a> manual page for details.</p>
+
+</dd>
+<dt id="reconnect"><b>-reconnect</b></dt>
+<dd>
+
+<p>reconnects to the same server 5 times using the same session ID, this can be used as a test that session caching is working.</p>
+
+<p>&#x4F7F;&#x7528;&#x76F8;&#x540C;&#x7684;&#x4F1A;&#x8BDD;ID&#x91CD;&#x65B0;&#x8FDE;&#x63A5;&#x5230;&#x76F8;&#x540C;&#x7684;&#x670D;&#x52A1;&#x5668;5&#x6B21;&#xFF0C;&#x8FD9;&#x53EF;&#x4EE5;&#x7528;&#x4F5C;&#x4F1A;&#x8BDD;&#x7F13;&#x5B58;&#x6B63;&#x5728;&#x5DE5;&#x4F5C;&#x7684;&#x6D4B;&#x8BD5;&#x3002;</p>
+
+</dd>
+<dt id="showcerts"><b>-showcerts</b></dt>
+<dd>
+
+<p>display the whole server certificate chain: normally only the server certificate itself is displayed.</p>
+
+<p>&#x663E;&#x793A;&#x6574;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#x8BC1;&#x4E66;&#x94FE;&#xFF1A;&#x901A;&#x5E38;&#x53EA;&#x663E;&#x793A;&#x670D;&#x52A1;&#x5668;&#x8BC1;&#x4E66;&#x672C;&#x8EAB;&#x3002;</p>
+
+</dd>
+<dt id="prexit"><b>-prexit</b></dt>
+<dd>
+
+<p>print session information when the program exits. This will always attempt to print out information even if the connection fails. Normally information will only be printed out once if the connection succeeds. This option is useful because the cipher in use may be renegotiated or the connection may fail because a client certificate is required or is requested only after an attempt is made to access a certain URL. Note: the output produced by this option is not always accurate because a connection might never have been established.</p>
+
+<p>&#x5F53;&#x7A0B;&#x5E8F;&#x9000;&#x51FA;&#x65F6;&#x6253;&#x5370;&#x4F1A;&#x8BDD;&#x4FE1;&#x606F;&#x3002; &#x5373;&#x4F7F;&#x8FDE;&#x63A5;&#x5931;&#x8D25;&#xFF0C;&#x5B83;&#x4E5F;&#x5C06;&#x59CB;&#x7EC8;&#x5C1D;&#x8BD5;&#x6253;&#x5370;&#x51FA;&#x4FE1;&#x606F;&#x3002; &#x901A;&#x5E38;&#xFF0C; &#x5982;&#x679C;&#x8FDE;&#x63A5;&#x6210;&#x529F;&#xFF0C;&#x4FE1;&#x606F;&#x5C06;&#x4EC5;&#x6253;&#x5370;&#x4E00;&#x6B21;&#x3002; &#x6B64;&#x9009;&#x9879;&#x975E;&#x5E38;&#x6709;&#x7528;&#xFF0C;&#x56E0;&#x4E3A;&#x6B63;&#x5728;&#x4F7F;&#x7528;&#x7684;&#x5BC6;&#x7801;&#x53EF;&#x80FD;&#x88AB; &#x91CD;&#x65B0;&#x534F;&#x5546;&#xFF0C;&#x6216;&#x8FDE;&#x63A5;&#x53EF;&#x80FD;&#x4F1A;&#x5931;&#x8D25;&#xFF0C;&#x56E0;&#x4E3A;&#x5BA2;&#x6237;&#x7AEF;&#x8BC1;&#x4E66;&#x662F;&#x5FC5;&#x9700;&#x7684;&#xFF0C;&#x6216;&#x4EC5;&#x5728;&#x5C1D;&#x8BD5;&#x8BBF;&#x95EE;&#x67D0;&#x4E2A;URL &#x540E;&#x624D;&#x88AB;&#x8BF7;&#x6C42;&#x3002; &#x6CE8;&#x610F;&#xFF1A;&#x6B64;&#x9009;&#x9879;&#x751F;&#x6210;&#x7684;&#x8F93;&#x51FA;&#x5E76;&#x4E0D;&#x603B;&#x662F;&#x51C6;&#x786E;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;&#x8FDE;&#x63A5;&#x53EF;&#x80FD;&#x6C38;&#x8FDC;&#x4E0D;&#x4F1A;&#x5EFA;&#x7ACB;&#x3002;</p>
+
+</dd>
+<dt id="state"><b>-state</b></dt>
+<dd>
+
+<p>prints out the SSL session states.</p>
+
+<p>&#x6253;&#x5370;&#x51FA;SSL&#x4F1A;&#x8BDD;&#x72B6;&#x6001;&#x3002;</p>
+
+</dd>
+<dt id="debug"><b>-debug</b></dt>
+<dd>
+
+<p>print extensive debugging information including a hex dump of all traffic.</p>
+
+<p>&#x6253;&#x5370;&#x5E7F;&#x6CDB;&#x7684;&#x8C03;&#x8BD5;&#x4FE1;&#x606F;&#xFF0C;&#x5305;&#x62EC;&#x6240;&#x6709;&#x6D41;&#x91CF;&#x7684;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x8F6C;&#x50A8;&#x3002;</p>
+
+</dd>
+<dt id="msg"><b>-msg</b></dt>
+<dd>
+
+<p>show all protocol messages with hex dump.</p>
+
+<p>&#x663E;&#x793A;&#x6240;&#x6709;&#x5177;&#x6709;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x8F6C;&#x50A8;&#x7684;&#x534F;&#x8BAE;&#x6D88;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="trace"><b>-trace</b></dt>
+<dd>
+
+<p>show verbose trace output of protocol messages. GmSSL needs to be compiled with <b>enable-ssl-trace</b> for this option to work.</p>
+
+<p>&#x663E;&#x793A;&#x534F;&#x8BAE;&#x6D88;&#x606F;&#x7684;&#x8BE6;&#x7EC6;&#x8DDF;&#x8E2A;&#x8F93;&#x51FA;&#x3002; &#x9700;&#x8981;&#x4F7F;&#x7528;enable-ssl-trace&#x7F16;&#x8BD1;GmSSL&#x624D;&#x80FD;&#x4F7F;&#x6B64;&#x9009;&#x9879;&#x751F;&#x6548;&#x3002;</p>
+
+</dd>
+<dt id="msgfile"><b>-msgfile</b></dt>
+<dd>
+
+<p>file to send output of <b>-msg</b> or <b>-trace</b> to, default standard output.</p>
+
+<p>&#x6587;&#x4EF6;&#x5C06;-msg&#x6216;-trace&#x7684;&#x8F93;&#x51FA;&#x53D1;&#x9001;&#x5230;&#xFF0C;&#x9ED8;&#x8BA4;&#x6807;&#x51C6;&#x8F93;&#x51FA;&#x3002;</p>
+
+</dd>
+<dt id="nbio_test"><b>-nbio_test</b></dt>
+<dd>
+
+<p>tests non-blocking I/O</p>
+
+<p>&#x6D4B;&#x8BD5;&#x975E;&#x963B;&#x585E;I / O</p>
+
+</dd>
+<dt id="nbio"><b>-nbio</b></dt>
+<dd>
+
+<p>turns on non-blocking I/O</p>
+
+<p>&#x6253;&#x5F00;&#x975E;&#x963B;&#x585E;I / O</p>
+
+</dd>
+<dt id="crlf"><b>-crlf</b></dt>
+<dd>
+
+<p>this option translated a line feed from the terminal into CR+LF as required by some servers.</p>
+
+<p>&#x8BE5;&#x9009;&#x9879;&#x6839;&#x636E;&#x67D0;&#x4E9B;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8981;&#x6C42;&#x5C06;&#x7EC8;&#x7AEF;&#x8F6C;&#x6362;&#x4E3A;CR + LF&#x3002;</p>
+
+</dd>
+<dt id="ign_eof"><b>-ign_eof</b></dt>
+<dd>
+
+<p>inhibit shutting down the connection when end of file is reached in the input.</p>
+
+<p>&#x7981;&#x6B62;&#x5728;&#x8F93;&#x5165;&#x7AEF;&#x5230;&#x8FBE;&#x6587;&#x4EF6;&#x7ED3;&#x675F;&#x65F6;&#x5173;&#x95ED;&#x8FDE;&#x63A5;&#x3002;</p>
+
+</dd>
+<dt id="quiet"><b>-quiet</b></dt>
+<dd>
+
+<p>inhibit printing of session and certificate information. This implicitly turns on <b>-ign_eof</b> as well.</p>
+
+<p>&#x7981;&#x6B62;&#x6253;&#x5370;&#x4F1A;&#x8BDD;&#x548C;&#x8BC1;&#x4E66;&#x4FE1;&#x606F;&#x3002; &#x8FD9;&#x4E5F;&#x9690;&#x542B;&#x5730;&#x6253;&#x5F00;-ign_eof&#x3002;</p>
+
+</dd>
+<dt id="no_ign_eof"><b>-no_ign_eof</b></dt>
+<dd>
+
+<p>shut down the connection when end of file is reached in the input. Can be used to override the implicit <b>-ign_eof</b> after <b>-quiet</b>.</p>
+
+<p>&#x5728;&#x8F93;&#x5165;&#x7AEF;&#x5230;&#x8FBE;&#x6587;&#x4EF6;&#x7ED3;&#x675F;&#x65F6;&#x5173;&#x95ED;&#x8FDE;&#x63A5;&#x3002; &#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x5728;-quiet&#x4E4B;&#x540E;&#x8986;&#x76D6;&#x9690;&#x5F0F;&#x7684;-ign_eof&#x3002;</p>
+
+</dd>
+<dt id="psk_identity-identity"><b>-psk_identity identity</b></dt>
+<dd>
+
+<p>Use the PSK identity <b>identity</b> when using a PSK cipher suite.</p>
+
+<p>&#x4F7F;&#x7528;PSK&#x5BC6;&#x7801;&#x5957;&#x4EF6;&#x65F6;&#x4F7F;&#x7528;PSK&#x8EAB;&#x4EFD;&#x6807;&#x8BC6;&#x3002;</p>
+
+</dd>
+<dt id="psk-key"><b>-psk key</b></dt>
+<dd>
+
+<p>Use the PSK key <b>key</b> when using a PSK cipher suite. The key is given as a hexadecimal number without leading 0x, for example -psk 1a2b3c4d.</p>
+
+<p>&#x4F7F;&#x7528;PSK&#x5BC6;&#x7801;&#x5957;&#x4EF6;&#x65F6;&#xFF0C;&#x8BF7;&#x4F7F;&#x7528;PSK&#x5BC6;&#x94A5;&#x3002; &#x5BC6;&#x94A5;&#x4EE5;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x6570;&#x5B57;&#x7684;&#x5F62;&#x5F0F;&#x7ED9;&#x51FA;&#xFF0C;&#x4E0D;&#x5E26;&#x524D;&#x7F00;0x&#xFF0C;&#x4F8B;&#x5982;-psk 1a2b3c4d&#x3002;</p>
+
+</dd>
+<dt id="ssl3--tls1--tls1_1--tls1_2--tls1_3--no_ssl3--no_tls1--no_tls1_1--no_tls1_2--no_tls1_3"><b>-ssl3</b>, <b>-tls1</b>, <b>-tls1_1</b>, <b>-tls1_2</b>, <b>-tls1_3</b>, <b>-no_ssl3</b>, <b>-no_tls1</b>, <b>-no_tls1_1</b>, <b>-no_tls1_2</b>, <b>-no_tls1_3</b></dt>
+<dd>
+
+<p>These options require or disable the use of the specified SSL or TLS protocols. By default <b>s_client</b> will negotiate the highest mutually supported protocol version. When a specific TLS version is required, only that version will be offered to and accepted from the server.</p>
+
+<p>&#x8FD9;&#x4E9B;&#x9009;&#x9879;&#x9700;&#x8981;&#x6216;&#x7981;&#x6B62;&#x4F7F;&#x7528;&#x6307;&#x5B9A;&#x7684;SSL&#x6216;TLS&#x534F;&#x8BAE;&#x3002; &#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;s_client&#x5C06;&#x534F;&#x5546;&#x6700;&#x9AD8;&#x76F8;&#x4E92; &#x652F;&#x6301;&#x7684;&#x534F;&#x8BAE;&#x7248;&#x672C;&#x3002; &#x5F53;&#x9700;&#x8981;&#x7279;&#x5B9A;&#x7684;TLS&#x7248;&#x672C;&#x65F6;&#xFF0C;&#x53EA;&#x6709;&#x8BE5;&#x7248;&#x672C;&#x5C06;&#x88AB;&#x63D0;&#x4F9B;&#x7ED9;&#x670D;&#x52A1;&#x5668;&#x5E76;&#x4ECE;&#x670D;&#x52A1;&#x5668;&#x63A5;&#x53D7;&#x3002;</p>
+
+</dd>
+<dt id="dtls--dtls1--dtls1_2"><b>-dtls</b>, <b>-dtls1</b>, <b>-dtls1_2</b></dt>
+<dd>
+
+<p>These options make <b>s_client</b> use DTLS protocols instead of TLS. With <b>-dtls</b>, <b>s_client</b> will negotiate any supported DTLS protocol version, whilst <b>-dtls1</b> and <b>-dtls1_2</b> will only support DTLS1.0 and DTLS1.2 respectively.</p>
+
+<p>&#x8FD9;&#x4E9B;&#x9009;&#x9879;&#x4F7F;s_client&#x4F7F;&#x7528;DTLS&#x534F;&#x8BAE;&#x800C;&#x4E0D;&#x662F;TLS&#x3002; &#x4F7F;&#x7528;-dtls&#xFF0C;s_client&#x5C06;&#x534F;&#x5546;&#x4EFB;&#x4F55;&#x652F;&#x6301;&#x7684; DTLS&#x534F;&#x8BAE;&#x7248;&#x672C;&#xFF0C;&#x800C;-dtls1&#x548C;-dtls1_2&#x5C06;&#x5206;&#x522B;&#x4EC5;&#x652F;&#x6301;DTLS1.0&#x548C;DTLS1.2&#x3002;</p>
+
+</dd>
+<dt id="fallback_scsv"><b>-fallback_scsv</b></dt>
+<dd>
+
+<p>Send TLS_FALLBACK_SCSV in the ClientHello.</p>
+
+<p>&#x5728;ClientHello&#x4E2D;&#x53D1;&#x9001;TLS_FALLBACK_SCSV&#x3002;</p>
+
+</dd>
+<dt id="async"><b>-async</b></dt>
+<dd>
+
+<p>switch on asynchronous mode. Cryptographic operations will be performed asynchronously. This will only have an effect if an asynchronous capable engine is also used via the <b>-engine</b> option. For test purposes the dummy async engine (dasync) can be used (if available).</p>
+
+<p>&#x5F00;&#x542F;&#x5F02;&#x6B65;&#x6A21;&#x5F0F;&#x3002; &#x52A0;&#x5BC6;&#x64CD;&#x4F5C;&#x5C06;&#x88AB;&#x5F02;&#x6B65;&#x6267;&#x884C;&#x3002; &#x53EA;&#x6709;&#x901A;&#x8FC7;-engine&#x9009;&#x9879;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5F02;&#x6B65;&#x7684;&#x5F15;&#x64CE;&#xFF0C; &#x8FD9;&#x53EA;&#x4F1A;&#x4EA7;&#x751F;&#x5F71;&#x54CD;&#x3002; &#x4E3A;&#x4E86;&#x6D4B;&#x8BD5;&#x76EE;&#x7684;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x865A;&#x62DF;&#x5F02;&#x6B65;&#x5F15;&#x64CE;&#xFF08;dasync&#xFF09;&#xFF08;&#x5982;&#x679C;&#x53EF;&#x7528;&#xFF09;&#x3002;</p>
+
+</dd>
+<dt id="split_send_frag-int"><b>-split_send_frag int</b></dt>
+<dd>
+
+<p>The size used to split data for encrypt pipelines. If more data is written in one go than this value then it will be split into multiple pipelines, up to the maximum number of pipelines defined by max_pipelines. This only has an effect if a suitable ciphersuite has been negotiated, an engine that supports pipelining has been loaded, and max_pipelines is greater than 1. See <a href="../man3/SSL_CTX_set_split_send_fragment.html>SSL_CTX_set_split_send_fragment(3)</a> for further information.</p>
+
+<p>&#x7528;&#x4E8E;&#x5206;&#x5272;&#x52A0;&#x5BC6;&#x7BA1;&#x9053;&#x6570;&#x636E;&#x7684;&#x5927;&#x5C0F;&#x3002; &#x5982;&#x679C;&#x4E00;&#x6B21;&#x5199;&#x5165;&#x7684;&#x6570;&#x636E;&#x591A;&#x4E8E;&#x6B64;&#x503C;&#xFF0C;&#x90A3;&#x4E48;&#x5B83;&#x5C06;&#x88AB;&#x5206;&#x5272;&#x6210;&#x591A;&#x4E2A;&#x7BA1;&#x9053;&#xFF0C; &#x76F4;&#x5230;max_pipelines&#x5B9A;&#x4E49;&#x7684;&#x6700;&#x5927;&#x7BA1;&#x9053;&#x6570;&#x3002; &#x5982;&#x679C;&#x5DF2;&#x7ECF;&#x534F;&#x5546;&#x4E86;&#x5408;&#x9002;&#x7684;&#x5BC6;&#x7801;&#x5957;&#x4EF6;&#xFF0C;&#x5219;&#x652F;&#x6301;&#x6D41;&#x6C34;&#x7EBF;&#x7684; &#x5F15;&#x64CE;&#x5DF2;&#x88AB;&#x52A0;&#x8F7D;&#xFF0C;&#x5E76;&#x4E14;max_pipelines&#x5927;&#x4E8E;1.&#x8BF7;&#x53C2;&#x9605;SSL_CTX_set_split_send_fragment&#xFF08;3&#xFF09; &#x4EE5;&#x83B7;&#x53D6;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="max_pipelines-int"><b>-max_pipelines int</b></dt>
+<dd>
+
+<p>The maximum number of encrypt/decrypt pipelines to be used. This will only have an effect if an engine has been loaded that supports pipelining (e.g. the dasync engine) and a suitable ciphersuite has been negotiated. The default value is 1. See <a href="../man3/SSL_CTX_set_max_pipelines.html>SSL_CTX_set_max_pipelines(3)</a> for further information.</p>
+
+<p>&#x8981;&#x4F7F;&#x7528;&#x7684;&#x52A0;&#x5BC6;/&#x89E3;&#x5BC6;&#x7BA1;&#x9053;&#x7684;&#x6700;&#x5927;&#x6570;&#x91CF;&#x3002; &#x5982;&#x679C;&#x5DF2;&#x7ECF;&#x52A0;&#x8F7D;&#x652F;&#x6301;&#x6D41;&#x6C34;&#x7EBF;&#x7684;&#x5F15;&#x64CE;&#xFF08;&#x4F8B;&#x5982;&#xFF0C;dasync&#x5F15;&#x64CE;&#xFF09; &#x5E76;&#x4E14;&#x5DF2;&#x7ECF;&#x534F;&#x5546;&#x4E86;&#x5408;&#x9002;&#x7684;&#x5BC6;&#x7801;&#x5957;&#x4EF6;&#xFF0C;&#x5219;&#x8FD9;&#x5C06;&#x4EC5;&#x8D77;&#x4F5C;&#x7528;&#x3002; &#x9ED8;&#x8BA4;&#x503C;&#x4E3A;1.&#x6709;&#x5173;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605; SSL_CTX_set_max_pipelines&#xFF08;3&#xFF09;&#x3002;</p>
+
+</dd>
+<dt id="read_buf-int"><b>-read_buf int</b></dt>
+<dd>
+
+<p>The default read buffer size to be used for connections. This will only have an effect if the buffer size is larger than the size that would otherwise be used and pipelining is in use (see <a href="../man3/SSL_CTX_set_default_read_buffer_len.html>SSL_CTX_set_default_read_buffer_len(3)</a> for further information).</p>
+
+<p>&#x7528;&#x4E8E;&#x8FDE;&#x63A5;&#x7684;&#x9ED8;&#x8BA4;&#x8BFB;&#x7F13;&#x51B2;&#x533A;&#x5927;&#x5C0F;&#x3002; &#x5982;&#x679C;&#x7F13;&#x51B2;&#x533A;&#x5927;&#x5C0F;&#x5927;&#x4E8E;&#x4F7F;&#x7528;&#x7684;&#x6D41;&#x6C34;&#x7EBF;&#x5927;&#x5C0F;&#xFF08;&#x5982;&#x679C;&#x9700;&#x8981;&#x8FDB;&#x4E00;&#x6B65;&#x7684;&#x4FE1;&#x606F;&#xFF0C; &#x8BF7;&#x53C2;&#x9605;SSL_CTX_set_default_read_buffer_len&#xFF08;3&#xFF09;&#xFF09;&#xFF0C;&#x8FD9;&#x53EA;&#x4F1A;&#x4EA7;&#x751F;&#x5F71;&#x54CD;&#x3002;</p>
+
+</dd>
+<dt id="bugs"><b>-bugs</b></dt>
+<dd>
+
+<p>there are several known bug in SSL and TLS implementations. Adding this option enables various workarounds.</p>
+
+<p>SSL&#x548C;TLS&#x5B9E;&#x73B0;&#x4E2D;&#x6709;&#x51E0;&#x4E2A;&#x5DF2;&#x77E5;&#x7684;&#x9519;&#x8BEF;&#x3002; &#x6DFB;&#x52A0;&#x6B64;&#x9009;&#x9879;&#x53EF;&#x4EE5;&#x542F;&#x7528;&#x5404;&#x79CD;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x3002;</p>
+
+</dd>
+<dt id="comp"><b>-comp</b></dt>
+<dd>
+
+<p>Enables support for SSL/TLS compression. This option was introduced in GmSSL 1.1.0. TLS compression is not recommended and is off by default as of GmSSL 1.1.0.</p>
+
+<p>&#x652F;&#x6301;SSL / TLS&#x538B;&#x7F29;&#x3002; &#x6B64;&#x9009;&#x9879;&#x5728;GmSSL 1.1.0&#x4E2D;&#x5F15;&#x5165;&#x3002; &#x4E0D;&#x63A8;&#x8350;&#x4F7F;&#x7528;TLS&#x538B;&#x7F29;&#xFF0C; &#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;GmSSL 1.1.0&#x5173;&#x95ED;&#x3002;</p>
+
+</dd>
+<dt id="no_comp"><b>-no_comp</b></dt>
+<dd>
+
+<p>Disables support for SSL/TLS compression. TLS compression is not recommended and is off by default as of GmSSL 1.1.0.</p>
+
+<p>&#x7981;&#x7528;&#x5BF9;SSL / TLS&#x538B;&#x7F29;&#x7684;&#x652F;&#x6301;&#x3002; &#x4E0D;&#x63A8;&#x8350;&#x4F7F;&#x7528;TLS&#x538B;&#x7F29;&#xFF0C;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;GmSSL 1.1.0&#x5173;&#x95ED;&#x3002;</p>
+
+</dd>
+<dt id="brief"><b>-brief</b></dt>
+<dd>
+
+<p>only provide a brief summary of connection parameters instead of the normal verbose output.</p>
+
+<p>&#x53EA;&#x63D0;&#x4F9B;&#x8FDE;&#x63A5;&#x53C2;&#x6570;&#x7684;&#x7B80;&#x8981;&#x6458;&#x8981;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x6B63;&#x5E38;&#x7684;&#x8BE6;&#x7EC6;&#x8F93;&#x51FA;&#x3002;</p>
+
+</dd>
+<dt id="cipher-cipherlist"><b>-cipher cipherlist</b></dt>
+<dd>
+
+<p>this allows the cipher list sent by the client to be modified. Although the server determines which cipher suite is used it should take the first supported cipher in the list sent by the client. See the <b>ciphers</b> command for more information.</p>
+
+<p>&#x8FD9;&#x5141;&#x8BB8;&#x5BA2;&#x6237;&#x7AEF;&#x53D1;&#x9001;&#x7684;&#x5BC6;&#x7801;&#x5217;&#x8868;&#x88AB;&#x4FEE;&#x6539;&#x3002; &#x867D;&#x7136;&#x670D;&#x52A1;&#x5668;&#x786E;&#x5B9A;&#x4F7F;&#x7528;&#x54EA;&#x4E2A;&#x5BC6;&#x7801;&#x5957;&#x4EF6;&#xFF0C; &#x4F46;&#x5B83;&#x5E94;&#x8BE5;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x53D1;&#x9001;&#x7684;&#x5217;&#x8868;&#x4E2D;&#x4F7F;&#x7528;&#x7B2C;&#x4E00;&#x4E2A;&#x652F;&#x6301;&#x7684;&#x5BC6;&#x7801;&#x3002; &#x6709;&#x5173;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;ciphers&#x547D;&#x4EE4;&#x3002;</p>
+
+</dd>
+<dt id="starttls-protocol"><b>-starttls protocol</b></dt>
+<dd>
+
+<p>send the protocol-specific message(s) to switch to TLS for communication. <b>protocol</b> is a keyword for the intended protocol. Currently, the only supported keywords are &quot;smtp&quot;, &quot;pop3&quot;, &quot;imap&quot;, &quot;ftp&quot;, &quot;xmpp&quot;, &quot;xmpp-server&quot;, and &quot;irc.&quot;</p>
+
+<p>&#x53D1;&#x9001;&#x7279;&#x5B9A;&#x4E8E;&#x534F;&#x8BAE;&#x7684;&#x6D88;&#x606F;&#x5207;&#x6362;&#x5230;TLS&#x8FDB;&#x884C;&#x901A;&#x4FE1;&#x3002; &#x534F;&#x8BAE;&#x662F;&#x76EE;&#x6807;&#x534F;&#x8BAE;&#x7684;&#x5173;&#x952E;&#x5B57;&#x3002; &#x76EE;&#x524D;&#xFF0C; &#x552F;&#x4E00;&#x652F;&#x6301;&#x7684;&#x5173;&#x952E;&#x5B57;&#x662F;&ldquo;smtp&rdquo;&#xFF0C;&ldquo;pop3&rdquo;&#xFF0C;&ldquo;imap&rdquo;&#xFF0C;&ldquo;ftp&rdquo;&#xFF0C;&ldquo;xmpp&rdquo;&#xFF0C;&ldquo;xmpp-server&rdquo;&#x548C;&ldquo;irc&rdquo;&#x3002;</p>
+
+</dd>
+<dt id="xmpphost-hostname"><b>-xmpphost hostname</b></dt>
+<dd>
+
+<p>This option, when used with &quot;-starttls xmpp&quot; or &quot;-starttls xmpp-server&quot;, specifies the host for the &quot;to&quot; attribute of the stream element. If this option is not specified, then the host specified with &quot;-connect&quot; will be used.</p>
+
+<p>&#x6B64;&#x9009;&#x9879;&#x4E0E;&ldquo;-starttls xmpp&rdquo;&#x6216;&ldquo;-starttls xmpp-server&rdquo;&#x4E00;&#x8D77;&#x4F7F;&#x7528;&#x65F6;&#xFF0C;&#x6307;&#x5B9A;&#x6D41;&#x5143;&#x7D20; &ldquo;to&rdquo;&#x5C5E;&#x6027;&#x7684;&#x4E3B;&#x673A;&#x3002; &#x5982;&#x679C;&#x672A;&#x6307;&#x5B9A;&#x6B64;&#x9009;&#x9879;&#xFF0C;&#x5219;&#x5C06;&#x4F7F;&#x7528;&ldquo;-connect&rdquo;&#x6307;&#x5B9A;&#x7684;&#x4E3B;&#x673A;&#x3002;</p>
+
+</dd>
+<dt id="tlsextdebug"><b>-tlsextdebug</b></dt>
+<dd>
+
+<p>print out a hex dump of any TLS extensions received from the server.</p>
+
+<p>&#x6253;&#x5370;&#x4ECE;&#x670D;&#x52A1;&#x5668;&#x63A5;&#x6536;&#x7684;&#x4EFB;&#x4F55;TLS&#x6269;&#x5C55;&#x7684;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x8F6C;&#x50A8;&#x3002;</p>
+
+</dd>
+<dt id="no_ticket"><b>-no_ticket</b></dt>
+<dd>
+
+<p>disable RFC4507bis session ticket support.</p>
+
+<p>&#x7981;&#x7528;RFC4507bis&#x4F1A;&#x8BDD;&#x7968;&#x8BC1;&#x652F;&#x6301;&#x3002;</p>
+
+</dd>
+<dt id="sess_out-filename"><b>-sess_out filename</b></dt>
+<dd>
+
+<p>output SSL session to <b>filename</b></p>
+
+<p>&#x8F93;&#x51FA;SSL&#x4F1A;&#x8BDD;&#x5230;filename</p>
+
+</dd>
+<dt id="sess_in-sess.pem"><b>-sess_in sess.pem</b></dt>
+<dd>
+
+<p>load SSL session from <b>filename</b>. The client will attempt to resume a connection from this session.</p>
+
+<p>&#x4ECE;filename&#x52A0;&#x8F7D;SSL&#x4F1A;&#x8BDD;&#x3002; &#x5BA2;&#x6237;&#x7AEF;&#x5C06;&#x5C1D;&#x8BD5;&#x4ECE;&#x6B64;&#x4F1A;&#x8BDD;&#x6062;&#x590D;&#x8FDE;&#x63A5;&#x3002;</p>
+
+</dd>
+<dt id="engine-id"><b>-engine id</b></dt>
+<dd>
+
+<p>specifying an engine (by its unique <b>id</b> string) will cause <b>s_client</b> to attempt to obtain a functional reference to the specified engine, thus initialising it if needed. The engine will then be set as the default for all available algorithms.</p>
+
+<p>&#x6307;&#x5B9A;&#x5F15;&#x64CE;&#xFF08;&#x901A;&#x8FC7;&#x5176;&#x552F;&#x4E00;&#x7684;id&#x5B57;&#x7B26;&#x4E32;&#xFF09;&#x5C06;&#x5BFC;&#x81F4;s_client&#x5C1D;&#x8BD5;&#x83B7;&#x53D6;&#x5BF9;&#x6307;&#x5B9A;&#x5F15;&#x64CE;&#x7684;&#x529F;&#x80FD;&#x5F15;&#x7528;&#xFF0C;&#x4ECE;&#x800C;&#x5728;&#x9700;&#x8981;&#x65F6;&#x5BF9;&#x5176;&#x8FDB;&#x884C;&#x521D;&#x59CB;&#x5316;&#x3002; &#x7136;&#x540E;&#xFF0C;&#x5F15;&#x64CE;&#x5C06;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;&#x6240;&#x6709;&#x53EF;&#x7528;&#x7B97;&#x6CD5;&#x7684;&#x9ED8;&#x8BA4;&#x503C;&#x3002;</p>
+
+</dd>
+<dt id="rand-file-s"><b>-rand file(s)</b></dt>
+<dd>
+
+<p>a file or files containing random data used to seed the random number generator, or an EGD socket (see <a href="../man3/RAND_egd.html>RAND_egd(3)</a>). Multiple files can be specified separated by an OS-dependent character. The separator is <b>;</b> for MS-Windows, <b>,</b> for OpenVMS, and <b>:</b> for all others.</p>
+
+<p>&#x5305;&#x542B;&#x7528;&#x4E8E;&#x79CD;&#x5B50;&#x968F;&#x673A;&#x6570;&#x751F;&#x6210;&#x5668;&#x6216;EGD&#x5957;&#x63A5;&#x5B57;&#x7684;&#x968F;&#x673A;&#x6570;&#x636E;&#x7684;&#x6587;&#x4EF6;&#x6216;&#x6587;&#x4EF6;&#xFF08;&#x53C2;&#x89C1;RAND_egd&#xFF08;3&#xFF09;&#xFF09;&#x3002; &#x591A;&#x4E2A;&#x6587;&#x4EF6;&#x53EF;&#x4EE5;&#x7531;&#x4E0E;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x76F8;&#x5173;&#x7684;&#x5B57;&#x7B26;&#x5206;&#x9694;&#x3002; &#x5206;&#x79BB;&#x5668;&#x662F; &#x5BF9;&#x4E8E;MS-Windows&#xFF0C;&#x5BF9;&#x4E8E;OpenVMS&#xFF0C;&#x4EE5;&#x53CA;&#xFF1A;&#x5BF9;&#x4E8E;&#x6240;&#x6709;&#x5176;&#x4ED6;&#x3002;</p>
+
+</dd>
+<dt id="serverinfo-types"><b>-serverinfo types</b></dt>
+<dd>
+
+<p>a list of comma-separated TLS Extension Types (numbers between 0 and 65535). Each type will be sent as an empty ClientHello TLS Extension. The server&#39;s response (if any) will be encoded and displayed as a PEM file.</p>
+
+<p>&#x9017;&#x53F7;&#x5206;&#x9694;&#x7684;TLS&#x6269;&#x5C55;&#x7C7B;&#x578B;&#x5217;&#x8868;&#xFF08;0&#x5230;65535&#x4E4B;&#x95F4;&#x7684;&#x6570;&#x5B57;&#xFF09;&#x3002; &#x6BCF;&#x4E2A;&#x7C7B;&#x578B;&#x5C06;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x7A7A;&#x7684;ClientHello TLS&#x6269;&#x5C55;&#x53D1;&#x9001;&#x3002; &#x670D;&#x52A1;&#x5668;&#x7684;&#x54CD;&#x5E94;&#xFF08;&#x5982;&#x679C;&#x6709;&#xFF09;&#x5C06;&#x88AB;&#x7F16;&#x7801;&#x5E76;&#x663E;&#x793A;&#x4E3A;PEM&#x6587;&#x4EF6;&#x3002;</p>
+
+</dd>
+<dt id="status"><b>-status</b></dt>
+<dd>
+
+<p>sends a certificate status request to the server (OCSP stapling). The server response (if any) is printed out.</p>
+
+<p>&#x5411;&#x670D;&#x52A1;&#x5668;&#x53D1;&#x9001;&#x8BC1;&#x4E66;&#x72B6;&#x6001;&#x8BF7;&#x6C42;&#xFF08;OCSP&#x88C5;&#x8BA2;&#xFF09;&#x3002; &#x6253;&#x5370;&#x51FA;&#x670D;&#x52A1;&#x5668;&#x54CD;&#x5E94;&#xFF08;&#x5982;&#x679C;&#x6709;&#xFF09;&#x3002;</p>
+
+</dd>
+<dt id="alpn-protocols--nextprotoneg-protocols"><b>-alpn protocols</b>, <b>-nextprotoneg protocols</b></dt>
+<dd>
+
+<p>these flags enable the Enable the Application-Layer Protocol Negotiation or Next Protocol Negotiation extension, respectively. ALPN is the IETF standard and replaces NPN. The <b>protocols</b> list is a comma-separated protocol names that the client should advertise support for. The list should contain most wanted protocols first. Protocol names are printable ASCII strings, for example &quot;http/1.1&quot; or &quot;spdy/3&quot;. Empty list of protocols is treated specially and will cause the client to advertise support for the TLS extension but disconnect just after receiving ServerHello with a list of server supported protocols.</p>
+
+<p>&#x8FD9;&#x4E9B;&#x6807;&#x5FD7;&#x5206;&#x522B;&#x542F;&#x7528;&#x542F;&#x7528;&#x5E94;&#x7528;&#x5C42;&#x534F;&#x8BAE;&#x534F;&#x5546;&#x534F;&#x8BAE;&#x6216;&#x4E0B;&#x4E00;&#x534F;&#x8BAE;&#x534F;&#x8BAE;&#x6269;&#x5C55;&#x3002; ALPN&#x662F;IETF&#x6807;&#x51C6;&#xFF0C;&#x66FF;&#x4EE3;NPN&#x3002; &#x534F;&#x8BAE;&#x5217;&#x8868;&#x662F;&#x5BA2;&#x6237;&#x7AEF;&#x5E94;&#x8BE5;&#x5E7F;&#x544A;&#x652F;&#x6301;&#x7684;&#x9017;&#x53F7;&#x5206;&#x9694;&#x7684;&#x534F;&#x8BAE;&#x540D;&#x79F0;&#x3002; &#x8BE5;&#x5217;&#x8868;&#x5E94;&#x8BE5;&#x5305;&#x542B;&#x6700;&#x9700;&#x8981;&#x7684;&#x534F;&#x8BAE;&#x3002; &#x534F;&#x8BAE;&#x540D;&#x79F0;&#x662F;&#x53EF;&#x6253;&#x5370;&#x7684;ASCII&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4F8B;&#x5982;&ldquo;http / 1.1&rdquo;&#x6216;&ldquo;spdy / 3&rdquo;&#x3002; &#x534F;&#x8BAE;&#x7684;&#x7A7A;&#x5217;&#x8868;&#x88AB;&#x7279;&#x522B;&#x5904;&#x7406;&#xFF0C;&#x5E76;&#x4E14;&#x5C06;&#x5BFC;&#x81F4;&#x5BA2;&#x6237;&#x7AEF;&#x5411;TLS&#x6269;&#x5C55;&#x53D1;&#x5E03;&#x652F;&#x6301;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x4F7F;&#x7528;&#x670D;&#x52A1;&#x5668;&#x652F;&#x6301;&#x7684;&#x534F;&#x8BAE;&#x5217;&#x8868;&#x63A5;&#x6536;ServerHello&#x4E4B;&#x540E;&#x65AD;&#x5F00;&#x8FDE;&#x63A5;&#x3002;</p>
+
+</dd>
+<dt id="ct-noct"><b>-ct|noct</b></dt>
+<dd>
+
+<p>Use one of these two options to control whether Certificate Transparency (CT) is enabled (<b>-ct</b>) or disabled (<b>-noct</b>). If CT is enabled, signed certificate timestamps (SCTs) will be requested from the server and reported at handshake completion.</p>
+
+<p>Enabling CT also enables OCSP stapling, as this is one possible delivery method for SCTs.</p>
+
+<p>&#x4F7F;&#x7528;&#x8FD9;&#x4E24;&#x4E2A;&#x9009;&#x9879;&#x4E4B;&#x4E00;&#x6765;&#x63A7;&#x5236;&#x662F;&#x5426;&#x542F;&#x7528;&#x8BC1;&#x4E66;&#x900F;&#x660E;&#x5EA6;&#xFF08;CT&#xFF09;&#x6216;&#x7981;&#x7528;&#xFF08;-noct&#xFF09;&#x3002; &#x5982;&#x679C;&#x542F;&#x7528;CT&#xFF0C;&#x5C06;&#x4ECE;&#x670D;&#x52A1;&#x5668;&#x8BF7;&#x6C42;&#x7B7E;&#x540D;&#x7684;&#x8BC1;&#x4E66;&#x65F6;&#x95F4;&#x6233;&#xFF08;SCT&#xFF09;&#xFF0C;&#x5E76;&#x5728;&#x63E1;&#x624B;&#x5B8C;&#x6210;&#x65F6;&#x62A5;&#x544A;&#x3002;</p>
+
+<p>&#x542F;&#x7528;CT&#x8FD8;&#x53EF;&#x4EE5;&#x5B9E;&#x73B0;OCSP&#x88C5;&#x8BA2;&#xFF0C;&#x56E0;&#x4E3A;&#x8FD9;&#x662F;SCT&#x7684;&#x4E00;&#x79CD;&#x53EF;&#x80FD;&#x7684;&#x4F20;&#x9001;&#x65B9;&#x5F0F;&#x3002;</p>
+
+</dd>
+<dt id="ctlogfile"><b>-ctlogfile</b></dt>
+<dd>
+
+<p>A file containing a list of known Certificate Transparency logs. See <a href="../man3/SSL_CTX_set_ctlog_list_file.html>SSL_CTX_set_ctlog_list_file(3)</a> for the expected file format.</p>
+
+<p>&#x5305;&#x542B;&#x5DF2;&#x77E5;&#x8BC1;&#x4E66;&#x900F;&#x660E;&#x5EA6;&#x65E5;&#x5FD7;&#x5217;&#x8868;&#x7684;&#x6587;&#x4EF6;&#x3002; &#x6709;&#x5173;&#x9884;&#x671F;&#x7684;&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;SSL_CTX_set_ctlog_list_file&#xFF08;3&#xFF09;&#x3002;</p>
+
+</dd>
+</dl>
+
+<h1 id="CONNECTED-COMMANDS">CONNECTED COMMANDS</h1>
+
+<p>If a connection is established with an SSL server then any data received from the server is displayed and any key presses will be sent to the server. When used interactively (which means neither <b>-quiet</b> nor <b>-ign_eof</b> have been given), the session will be renegotiated if the line begins with an <b>R</b>, and if the line begins with a <b>Q</b> or if end of file is reached, the connection will be closed down.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p><b>s_client</b> can be used to debug SSL servers. To connect to an SSL HTTP server the command:</p>
+
+<pre><code> gmssl s_client -connect servername:443</code></pre>
+
+<p>would typically be used (https uses port 443). If the connection succeeds then an HTTP command can be given such as &quot;GET /&quot; to retrieve a web page.</p>
+
+<p>If the handshake fails then there are several possible causes, if it is nothing obvious like no client certificate then the <b>-bugs</b>, <b>-ssl3</b>, <b>-tls1</b>, <b>-no_ssl3</b>, <b>-no_tls1</b> options can be tried in case it is a buggy server. In particular you should play with these options <b>before</b> submitting a bug report to an GmSSL mailing list.</p>
+
+<p>A frequent problem when attempting to get client certificates working is that a web client complains it has no certificates or gives an empty list to choose from. This is normally because the server is not sending the clients certificate authority in its &quot;acceptable CA list&quot; when it requests a certificate. By using <b>s_client</b> the CA list can be viewed and checked. However some servers only request client authentication after a specific URL is requested. To obtain the list in this case it is necessary to use the <b>-prexit</b> option and send an HTTP request for an appropriate page.</p>
+
+<p>If a certificate is specified on the command line using the <b>-cert</b> option it will not be used unless the server specifically requests a client certificate. Therefor merely including a client certificate on the command line is no guarantee that the certificate works.</p>
+
+<p>If there are problems verifying a server certificate then the <b>-showcerts</b> option can be used to show the whole chain.</p>
+
+<p>The <b>s_client</b> utility is a test tool and is designed to continue the handshake after any certificate verification errors. As a result it will accept any certificate chain (trusted or not) sent by the peer. None test applications should <b>not</b> do this as it makes them vulnerable to a MITM attack. This behaviour can be changed by with the <b>-verify_return_error</b> option: any verify errors are then returned aborting the handshake.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Because this program has a lot of options and also because some of the techniques used are rather old, the C source of <b>s_client</b> is rather hard to read and not a model of how things should be done. A typical SSL client program would be much simpler.</p>
+
+<p>The <b>-prexit</b> option is a bit of a hack. We should really report information whenever a session is renegotiated.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/SSL_CONF_cmd.html>SSL_CONF_cmd(3)</a>, <a href="../man1/sess_id.html>sess_id(1)</a>, <a href="../man1/s_server.html>s_server(1)</a>, <a href="../man1/ciphers.html>ciphers(1)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The -no_alt_chains options was first added to GmSSL 1.1.0.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2000-2016 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

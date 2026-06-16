@@ -1,0 +1,716 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>gmssl</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#COMMAND-SUMMARY">COMMAND SUMMARY</a>
+    <ul>
+      <li><a href="#Standard-Commands">Standard Commands</a></li>
+      <li><a href="#Message-Digest-Commands">Message Digest Commands</a></li>
+      <li><a href="#Encoding-and-Cipher-Commands">Encoding and Cipher Commands</a></li>
+    </ul>
+  </li>
+  <li><a href="#OPTIONS">OPTIONS</a>
+    <ul>
+      <li><a href="#Common-Options">Common Options</a></li>
+      <li><a href="#Pass-Phrase-Options">Pass Phrase Options</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>gmssl - GmSSL command line tool</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>gmssl</b> <i>command</i> [ <i>command_opts</i> ] [ <i>command_args</i> ]</p>
+
+<p><b>gmssl</b> <b>list</b> [ <b>standard-commands</b> | <b>digest-commands</b> | <b>cipher-commands</b> | <b>cipher-algorithms</b> | <b>digest-algorithms</b> | <b>public-key-algorithms</b>]</p>
+
+<p><b>gmssl</b> <b>no-</b><i>XXX</i> [ <i>arbitrary options</i> ]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>GmSSL is a cryptography toolkit implementing the Secure Sockets Layer (SSL v2/v3) and Transport Layer Security (TLS v1) network protocols and related cryptography standards required by them.</p>
+
+<p>The <b>gmssl</b> program is a command line tool for using the various cryptography functions of GmSSL&#39;s <b>crypto</b> library from the shell. It can be used for</p>
+
+<p>GmSSL&#x662F;&#x5B9E;&#x73B0;&#x5B89;&#x5168;&#x5957;&#x63A5;&#x5B57;&#x5C42;&#xFF08;SSL v2 / v3&#xFF09;&#x548C;&#x4F20;&#x8F93;&#x5C42;&#x5B89;&#x5168;&#xFF08;TLS v1&#xFF09;&#x7F51;&#x7EDC;&#x534F;&#x8BAE; &#x53CA;&#x5176;&#x6240;&#x9700;&#x7684;&#x76F8;&#x5173;&#x52A0;&#x5BC6;&#x6807;&#x51C6;&#x7684;&#x52A0;&#x5BC6;&#x5DE5;&#x5177;&#x5305;&#x3002;</p>
+
+<pre><code> o  Creation and management of private keys, public keys and parameters
+ o  Public key cryptographic operations
+ o  Creation of X.509 certificates, CSRs and CRLs
+ o  Calculation of Message Digests
+ o  Encryption and Decryption with Ciphers
+ o  SSL/TLS Client and Server Tests
+ o  Handling of S/MIME signed or encrypted mail
+ o  Time Stamp requests, generation and verification</code></pre>
+
+<p>&#x521B;&#x5EFA;&#x5E76;&#x7BA1;&#x7406;&#x516C;&#x94A5;&#xFF0C;&#x79C1;&#x94A5;&#x548C;&#x53C2;&#x6570;&#x3002;</p>
+
+<p>&#x516C;&#x94A5;&#x52A0;&#x5BC6;&#x64CD;&#x4F5C;&#x3002;</p>
+
+<p>x509&#xFF0C;CSR&#x548C;CRL&#x7684;&#x521B;&#x5EFA;</p>
+
+<p>&#x8BA1;&#x7B97;&#x6D88;&#x606F;&#x6458;&#x8981;&#x3002;</p>
+
+<p>&#x5BC6;&#x7801;&#x52A0;&#x5BC6;&#x89E3;&#x5BC6;</p>
+
+<p>SSC/TLS&#x5BA2;&#x6237;&#x7AEF;&#x670D;&#x52A1;&#x5668;&#x7684;&#x6D4B;&#x8BD5;</p>
+
+<p>&#x5904;&#x7406;S / MIME&#x7B7E;&#x540D;&#x6216;&#x52A0;&#x5BC6;&#x7684;&#x90AE;&#x4EF6;</p>
+
+<p>&#x65F6;&#x95F4;&#x6233;&#x8BF7;&#x6C42;&#xFF0C;&#x751F;&#x6210;&#x548C;&#x9A8C;&#x8BC1;</p>
+
+<h1 id="COMMAND-SUMMARY">COMMAND SUMMARY</h1>
+
+<p>The <b>gmssl</b> program provides a rich variety of commands (<i>command</i> in the SYNOPSIS above), each of which often has a wealth of options and arguments (<i>command_opts</i> and <i>command_args</i> in the SYNOPSIS).</p>
+
+<p>The list parameters <b>standard-commands</b>, <b>digest-commands</b>, and <b>cipher-commands</b> output a list (one entry per line) of the names of all standard commands, message digest commands, or cipher commands, respectively, that are available in the present <b>gmssl</b> utility.</p>
+
+<p>The list parameters <b>cipher-algorithms</b> and <b>digest-algorithms</b> list all cipher and message digest names, one entry per line. Aliases are listed as:</p>
+
+<pre><code> from =&gt; to</code></pre>
+
+<p>The list parameter <b>public-key-algorithms</b> lists all supported public key algorithms.</p>
+
+<p>The command <b>no-</b><i>XXX</i> tests whether a command of the specified name is available. If no command named <i>XXX</i> exists, it returns 0 (success) and prints <b>no-</b><i>XXX</i>; otherwise it returns 1 and prints <i>XXX</i>. In both cases, the output goes to <b>stdout</b> and nothing is printed to <b>stderr</b>. Additional command line arguments are always ignored. Since for each cipher there is a command of the same name, this provides an easy way for shell scripts to test for the availability of ciphers in the <b>gmssl</b> program. (<b>no-</b><i>XXX</i> is not able to detect pseudo-commands such as <b>quit</b>, <b>list</b>, or <b>no-</b><i>XXX</i> itself.)</p>
+
+<p>gmssl&#x7A0B;&#x5E8F;&#x63D0;&#x4F9B;&#x4E30;&#x5BCC;&#x591A;&#x6837;&#x7684;&#x547D;&#x4EE4;&#xFF08;&#x4E0A;&#x9762;&#x7684;&#x6982;&#x8981;&#x4E2D;&#x7684;&#x547D;&#x4EE4;&#xFF09;&#xFF0C;&#x6BCF;&#x4E2A;&#x547D;&#x4EE4;&#x901A;&#x5E38;&#x5177;&#x6709; &#x4E30;&#x5BCC;&#x7684;&#x9009;&#x9879;&#x548C;&#x53C2;&#x6570;&#xFF08;&#x6982;&#x8981;&#x4E2D;&#x7684;command_opts&#x548C;command_args&#xFF09;&#x3002;</p>
+
+<p>&#x5217;&#x8868;&#x53C2;&#x6570;standard-commands&#xFF0C;digest-commands&#x548C;cipher-commands&#x5206;&#x522B;&#x8F93;&#x51FA; &#x76EE;&#x524D;gmssl&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x53EF;&#x7528;&#x7684;&#x6240;&#x6709;&#x6807;&#x51C6;&#x547D;&#x4EE4;&#xFF0C;&#x6D88;&#x606F;&#x6458;&#x8981;&#x547D;&#x4EE4;&#x6216;&#x5BC6;&#x7801;&#x547D;&#x4EE4;&#x7684;&#x5217;&#x8868; &#xFF08;&#x6BCF;&#x884C;&#x4E00;&#x4E2A;&#x6761;&#x76EE;&#xFF09;&#x3002;</p>
+
+<p>&#x5217;&#x8868;&#x53C2;&#x6570;&#x5BC6;&#x7801;&#x7B97;&#x6CD5;&#x548C;&#x6458;&#x8981;&#x7B97;&#x6CD5;&#x5217;&#x51FA;&#x6240;&#x6709;&#x5BC6;&#x7801;&#x548C;&#x6D88;&#x606F;&#x6458;&#x8981;&#x540D;&#x79F0;&#xFF0C;&#x6BCF;&#x884C;&#x4E00;&#x4E2A;&#x6761;&#x76EE;&#x3002;</p>
+
+<p>&#x5217;&#x8868;&#x53C2;&#x6570;public-key-algorithms&#x5217;&#x51FA;&#x4E86;&#x6240;&#x6709;&#x652F;&#x6301;&#x7684;&#x516C;&#x94A5;&#x7B97;&#x6CD5;&#x3002;</p>
+
+<p>&#x547D;&#x4EE4;no-XXX&#x6D4B;&#x8BD5;&#x6307;&#x5B9A;&#x540D;&#x79F0;&#x7684;&#x547D;&#x4EE4;&#x662F;&#x5426;&#x53EF;&#x7528;&#x3002; &#x5982;&#x679C;&#x6CA1;&#x6709;&#x547D;&#x540D;&#x4E3A;XXX&#x7684;&#x547D;&#x4EE4;&#xFF0C; &#x5219;&#x8FD4;&#x56DE;0&#xFF08;&#x6210;&#x529F;&#xFF09;&#xFF0C;&#x5E76;&#x6253;&#x5370;no-XXX; &#x5426;&#x5219;&#x8FD4;&#x56DE;1&#x5E76;&#x6253;&#x5370;XXX&#x3002; &#x5728;&#x8FD9;&#x4E24;&#x79CD;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C; &#x8F93;&#x51FA;&#x5230;stdout&#xFF0C;&#x6CA1;&#x6709;&#x4EC0;&#x4E48;&#x6253;&#x5370;&#x5230;stderr&#x3002; &#x5176;&#x4ED6;&#x547D;&#x4EE4;&#x884C;&#x53C2;&#x6570;&#x59CB;&#x7EC8;&#x88AB;&#x5FFD;&#x7565;&#x3002; &#x56E0;&#x4E3A;&#x6BCF;&#x4E2A;&#x5BC6;&#x7801;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x76F8;&#x540C;&#x540D;&#x79F0;&#x7684;&#x547D;&#x4EE4;&#xFF0C;&#x8FD9;&#x4E3A;shell&#x811A;&#x672C;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x7B80; &#x5355;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x6D4B;&#x8BD5;gmssl&#x7A0B;&#x5E8F;&#x4E2D;&#x5BC6;&#x7801;&#x7684;&#x53EF;&#x7528;&#x6027;&#x3002; &#xFF08;&#x5426; - XXX&#x65E0;&#x6CD5;&#x68C0;&#x6D4B;&#x5230;&#x4F2A;&#x547D;&#x4EE4; &#xFF0C;&#x5982;quit&#xFF0C;list&#x6216;no-XXX&#x672C;&#x8EAB;&#x3002;&#xFF09;</p>
+
+<h2 id="Standard-Commands">Standard Commands</h2>
+
+<dl>
+
+<dt id="asn1parse"><a href="../man1/asn1parse.html><b>asn1parse</b></a></dt>
+<dd>
+
+<p>Parse an ASN.1 sequence.</p>
+
+<p>&#x89E3;&#x6790;ASN1&#x5E8F;&#x5217;</p>
+
+</dd>
+<dt id="ca"><a href="../man1/ca.html><b>ca</b></a></dt>
+<dd>
+
+<p>Certificate Authority (CA) Management.</p>
+
+<p>CA&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="ciphers"><a href="../man1/ciphers.html><b>ciphers</b></a></dt>
+<dd>
+
+<p>Cipher Suite Description Determination.</p>
+
+<p>&#x5BC6;&#x7801;&#x5957;&#x4EF6;&#x63CF;&#x8FF0;&#x786E;&#x5B9A;&#x3002;</p>
+
+</dd>
+<dt id="cms"><a href="../man1/cms.html><b>cms</b></a></dt>
+<dd>
+
+<p>CMS (Cryptographic Message Syntax) utility</p>
+
+<p>CMS&#x6709;&#x6548;&#x3002;</p>
+
+</dd>
+<dt id="crl"><a href="../man1/crl.html><b>crl</b></a></dt>
+<dd>
+
+<p>Certificate Revocation List (CRL) Management.</p>
+
+<p>CRL&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="crl2pkcs7"><a href="../man1/crl2pkcs7.html><b>crl2pkcs7</b></a></dt>
+<dd>
+
+<p>CRL to PKCS#7 Conversion.</p>
+
+<p>CRL&#x8F6C;&#x53D8;&#x4E3A;PKCS#7</p>
+
+</dd>
+<dt id="dgst"><a href="../man1/dgst.html><b>dgst</b></a></dt>
+<dd>
+
+<p>Message Digest Calculation.</p>
+
+<p>&#x6D88;&#x606F;&#x6458;&#x8981;&#x8BA1;&#x7B97;</p>
+
+</dd>
+<dt id="dh"><b>dh</b></dt>
+<dd>
+
+<p>Diffie-Hellman Parameter Management. Obsoleted by <a href="../man1/dhparam.html><b>dhparam</b></a>.</p>
+
+<p>DH&#x53C2;&#x6570;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="dhparam"><a href="../man1/dhparam.html><b>dhparam</b></a></dt>
+<dd>
+
+<p>Generation and Management of Diffie-Hellman Parameters. Superseded by <a href="../man1/genpkey.html><b>genpkey</b></a> and <a href="../man1/pkeyparam.html><b>pkeyparam</b></a></p>
+
+<p>Diffie-Hellman&#x53C2;&#x6570;&#x7684;&#x751F;&#x6210;&#x4E0E;&#x7BA1;&#x7406;&#x3002; &#x88AB;genpkey&#x548C;pkeyparam&#x53D6;&#x4EE3;</p>
+
+</dd>
+<dt id="dsa"><a href="../man1/dsa.html><b>dsa</b></a></dt>
+<dd>
+
+<p>DSA Data Management.</p>
+
+<p>DSA&#x6570;&#x636E;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="dsaparam"><a href="../man1/dsaparam.html><b>dsaparam</b></a></dt>
+<dd>
+
+<p>DSA Parameter Generation and Management. Superseded by <a href="../man1/genpkey.html><b>genpkey</b></a> and <a href="../man1/pkeyparam.html><b>pkeyparam</b></a></p>
+
+<p>DSA&#x53C2;&#x6570;&#x7684;&#x751F;&#x6210;&#x4E0E;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="ec"><a href="../man1/ec.html><b>ec</b></a></dt>
+<dd>
+
+<p>EC/SM2 (Elliptic curve) key processing</p>
+
+<p>EC/SM2&#x5BC6;&#x94A5;&#x5904;&#x7406;</p>
+
+</dd>
+<dt id="ecparam"><a href="../man1/ecparam.html><b>ecparam</b></a></dt>
+<dd>
+
+<p>EC/SM2 parameter manipulation and generation</p>
+
+<p>EC / SM2&#x53C2;&#x6570;&#x7684;&#x64CD;&#x4F5C;&#x548C;&#x751F;&#x6210;</p>
+
+</dd>
+<dt id="enc"><a href="../man1/enc.html><b>enc</b></a></dt>
+<dd>
+
+<p>Encoding with Ciphers.</p>
+
+<p>&#x5BC6;&#x7801;&#x8FDB;&#x884C;&#x7F16;&#x7801;</p>
+
+</dd>
+<dt id="engine"><a href="../man1/engine.html><b>engine</b></a></dt>
+<dd>
+
+<p>Engine (loadable module) information and manipulation.</p>
+
+<p>&#x5F15;&#x64CE;&#x4FE1;&#x606F;&#x548C;&#x64CD;&#x4F5C;</p>
+
+</dd>
+<dt id="errstr"><a href="../man1/errstr.html><b>errstr</b></a></dt>
+<dd>
+
+<p>Error Number to Error String Conversion.</p>
+
+<p>&#x9519;&#x8BEF;&#x5B57;&#x7B26;&#x4E32;&#x8F6C;&#x6362;&#x7684;&#x9519;&#x8BEF;&#x7F16;&#x53F7;</p>
+
+</dd>
+<dt id="gendh"><b>gendh</b></dt>
+<dd>
+
+<p>Generation of Diffie-Hellman Parameters. Obsoleted by <a href="../man1/dhparam.html><b>dhparam</b></a>.</p>
+
+<p>&#x751F;&#x6210;Diffie-Hellman&#x53C2;&#x6570;&#x3002; &#x88AB;dhparam&#x6DD8;&#x6C70;&#x3002;</p>
+
+</dd>
+<dt id="gendsa"><a href="../man1/gendsa.html><b>gendsa</b></a></dt>
+<dd>
+
+<p>Generation of DSA Private Key from Parameters. Superseded by <a href="../man1/genpkey.html><b>genpkey</b></a> and <a href="../man1/pkey.html><b>pkey</b></a></p>
+
+<p>&#x751F;&#x6210;&#x4ECE;&#x53C2;&#x6570;&#x7684;DSA&#x79C1;&#x94A5;&#xFF0C;&#x88AB;genpkey pkey&#x6DD8;&#x6C70;</p>
+
+</dd>
+<dt id="genpkey"><a href="../man1/genpkey.html><b>genpkey</b></a></dt>
+<dd>
+
+<p>Generation of Private Key or Parameters.</p>
+
+<p>&#x79C1;&#x94A5;&#x548C;&#x53C2;&#x6570;&#x7684;&#x751F;&#x6210;</p>
+
+</dd>
+<dt id="genrsa"><a href="../man1/genrsa.html><b>genrsa</b></a></dt>
+<dd>
+
+<p>Generation of RSA Private Key. Superseded by <a href="../man1/genpkey.html><b>genpkey</b></a>.</p>
+
+<p>RSA&#x79C1;&#x94A5;&#x7684;&#x751F;&#x6210;</p>
+
+</dd>
+<dt id="nseq"><a href="../man1/nseq.html><b>nseq</b></a></dt>
+<dd>
+
+<p>Create or examine a Netscape certificate sequence</p>
+
+<p>&#x521B;&#x5EFA;&#x6216;&#x68C0;&#x67E5;Netscape&#x8BC1;&#x4E66;&#x5E8F;&#x5217;</p>
+
+</dd>
+<dt id="ocsp"><a href="../man1/ocsp.html><b>ocsp</b></a></dt>
+<dd>
+
+<p>Online Certificate Status Protocol utility.</p>
+
+<p>&#x5728;&#x7EBF;&#x8BC1;&#x4E66;&#x72B6;&#x6001;&#x534F;&#x8BAE;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x3002;</p>
+
+</dd>
+<dt id="passwd"><a href="../man1/passwd.html><b>passwd</b></a></dt>
+<dd>
+
+<p>Generation of hashed passwords.</p>
+
+<p>&#x54C8;&#x5E0C;&#x5BC6;&#x7801;&#x751F;&#x6210;</p>
+
+</dd>
+<dt id="pkcs12"><a href="../man1/pkcs12.html><b>pkcs12</b></a></dt>
+<dd>
+
+<p>PKCS#12 Data Management.</p>
+
+<p>PKCS#12 &#x6570;&#x636E;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="pkcs7"><a href="../man1/pkcs7.html><b>pkcs7</b></a></dt>
+<dd>
+
+<p>PKCS#7 Data Management.</p>
+
+<p>PKCS#7 &#x6570;&#x636E;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="pkey"><a href="../man1/pkey.html><b>pkey</b></a></dt>
+<dd>
+
+<p>Public and private key management.</p>
+
+<p>&#x516C;&#x79C1;&#x94A5;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="pkeyparam"><a href="../man1/pkeyparam.html><b>pkeyparam</b></a></dt>
+<dd>
+
+<p>Public key algorithm parameter management.</p>
+
+<p>&#x516C;&#x94A5;&#x7B97;&#x6CD5;&#x53C2;&#x6570;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="pkeyutl"><a href="../man1/pkeyutl.html><b>pkeyutl</b></a></dt>
+<dd>
+
+<p>Public key algorithm cryptographic operation utility.</p>
+
+<p>&#x516C;&#x94A5;&#x7B97;&#x6CD5;&#x52A0;&#x5BC6;&#x8FD0;&#x7B97;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x3002;</p>
+
+</dd>
+<dt id="rand"><a href="../man1/rand.html><b>rand</b></a></dt>
+<dd>
+
+<p>Generate pseudo-random bytes.</p>
+
+<p>&#x751F;&#x6210;&#x4F2A;&#x968F;&#x673A;&#x5B57;&#x8282;</p>
+
+</dd>
+<dt id="req"><a href="../man1/req.html><b>req</b></a></dt>
+<dd>
+
+<p>PKCS#10 X.509 Certificate Signing Request (CSR) Management.</p>
+
+<p>PKCS#10 X509 CSR&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="rsa"><a href="../man1/rsa.html><b>rsa</b></a></dt>
+<dd>
+
+<p>RSA key management.</p>
+
+<p>RSA&#x5BC6;&#x94A5;&#x7BA1;&#x7406;</p>
+
+</dd>
+<dt id="rsautl"><a href="../man1/rsautl.html><b>rsautl</b></a></dt>
+<dd>
+
+<p>RSA utility for signing, verification, encryption, and decryption. Superseded by <a href="../man1/pkeyutl.html><b>pkeyutl</b></a></p>
+
+<p>&#x7528;&#x4E8E;&#x7B7E;&#x540D;&#xFF0C;&#x9A8C;&#x8BC1;&#xFF0C;&#x52A0;&#x5BC6;&#x548C;&#x89E3;&#x5BC6;&#x7684;RSA&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x3002; &#x53D6;&#x800C;&#x4EE3;&#x4E4B;&#x7684;&#x662F;pkeyutl</p>
+
+</dd>
+<dt id="s_client"><a href="../man1/s_client.html><b>s_client</b></a></dt>
+<dd>
+
+<p>This implements a generic SSL/TLS client which can establish a transparent connection to a remote server speaking SSL/TLS. It&#39;s intended for testing purposes only and provides only rudimentary interface functionality but internally uses mostly all functionality of the GmSSL <b>ssl</b> library.</p>
+
+<p>&#x8FD9;&#x5B9E;&#x73B0;&#x4E86;&#x901A;&#x7528;&#x7684;SSL / TLS&#x5BA2;&#x6237;&#x7AEF;&#xFF0C;&#x53EF;&#x4EE5;&#x5EFA;&#x7ACB;&#x4E0E;&#x8FDC;&#x7A0B;&#x670D;&#x52A1;&#x5668;&#x7684;SSL / TLS&#x7684;&#x900F;&#x660E;&#x8FDE;&#x63A5;&#x3002; &#x5B83;&#x4EC5;&#x7528;&#x4E8E;&#x6D4B;&#x8BD5;&#x76EE;&#x7684;&#xFF0C;&#x4EC5;&#x63D0;&#x4F9B;&#x57FA;&#x672C;&#x7684;&#x63A5;&#x53E3;&#x529F;&#x80FD;&#xFF0C;&#x4F46;&#x5185;&#x90E8;&#x4E3B;&#x8981;&#x4F7F;&#x7528;GmSSL ssl&#x5E93;&#x7684;&#x6240;&#x6709;&#x529F;&#x80FD;&#x3002;</p>
+
+</dd>
+<dt id="s_server"><a href="../man1/s_server.html><b>s_server</b></a></dt>
+<dd>
+
+<p>This implements a generic SSL/TLS server which accepts connections from remote clients speaking SSL/TLS. It&#39;s intended for testing purposes only and provides only rudimentary interface functionality but internally uses mostly all functionality of the GmSSL <b>ssl</b> library. It provides both an own command line oriented protocol for testing SSL functions and a simple HTTP response facility to emulate an SSL/TLS-aware webserver.</p>
+
+<p>&#x8FD9;&#x5B9E;&#x73B0;&#x4E86;&#x4E00;&#x4E2A;&#x901A;&#x7528;&#x7684;SSL / TLS&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x5B83;&#x63A5;&#x53D7;&#x6765;&#x81EA;&#x8FDC;&#x7A0B;&#x5BA2;&#x6237;&#x7AEF;&#x7684;SSL / TLS&#x8FDE;&#x63A5;&#x3002; &#x5B83;&#x4EC5;&#x7528;&#x4E8E;&#x6D4B;&#x8BD5;&#x76EE;&#x7684;&#xFF0C;&#x4EC5;&#x63D0;&#x4F9B;&#x57FA;&#x672C;&#x7684;&#x63A5;&#x53E3;&#x529F;&#x80FD;&#xFF0C;&#x4F46;&#x5185;&#x90E8;&#x4E3B;&#x8981;&#x4F7F;&#x7528;GmSSL ssl&#x5E93;&#x7684;&#x6240;&#x6709;&#x529F;&#x80FD;&#x3002; &#x5B83;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x6D4B;&#x8BD5;SSL&#x529F;&#x80FD;&#x7684;&#x81EA;&#x5DF1;&#x7684;&#x9762;&#x5411;&#x547D;&#x4EE4;&#x884C;&#x7684;&#x534F;&#x8BAE;&#x548C;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;HTTP&#x54CD;&#x5E94;&#x5DE5;&#x5177;&#x6765;&#x6A21;&#x62DF;&#x4E00;&#x4E2A;&#x652F;&#x6301;SSL / TLS&#x7684;Web&#x670D;&#x52A1;&#x5668;&#x3002;</p>
+
+</dd>
+<dt id="s_time"><a href="../man1/s_time.html><b>s_time</b></a></dt>
+<dd>
+
+<p>SSL Connection Timer.</p>
+
+<p>SSL&#x8FDE;&#x63A5;&#x8BA1;&#x65F6;&#x5668;</p>
+
+</dd>
+<dt id="sess_id"><a href="../man1/sess_id.html><b>sess_id</b></a></dt>
+<dd>
+
+<p>SSL Session Data Management.</p>
+
+<p>SSL&#x4F1A;&#x8BAE;&#x6570;&#x636E;&#x7BA1;&#x7406;&#x3002;</p>
+
+</dd>
+<dt id="smime"><a href="../man1/smime.html><b>smime</b></a></dt>
+<dd>
+
+<p>S/MIME mail processing.</p>
+
+<p>S/MIME &#x90AE;&#x4EF6;&#x5904;&#x7406;</p>
+
+</dd>
+<dt id="speed"><a href="../man1/speed.html><b>speed</b></a></dt>
+<dd>
+
+<p>Algorithm Speed Measurement.</p>
+
+<p>&#x7B97;&#x6CD5;&#x901F;&#x5EA6;&#x6D4B;&#x91CF;</p>
+
+</dd>
+<dt id="spkac"><a href="../man1/spkac.html><b>spkac</b></a></dt>
+<dd>
+
+<p>SPKAC printing and generating utility</p>
+
+<p>SPKAC&#x6253;&#x5370;&#x548C;&#x751F;&#x6210;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x3002;</p>
+
+</dd>
+<dt id="ts"><a href="../man1/ts.html><b>ts</b></a></dt>
+<dd>
+
+<p>Time Stamping Authority tool (client/server)</p>
+
+<p>&#x65F6;&#x95F4;&#x6233;&#x673A;&#x6784;&#x5DE5;&#x5177;&#xFF08;&#x5BA2;&#x6237;&#x7AEF;/&#x670D;&#x52A1;&#x5668;&#xFF09;</p>
+
+</dd>
+<dt id="verify"><a href="../man1/verify.html><b>verify</b></a></dt>
+<dd>
+
+<p>X.509 Certificate Verification.</p>
+
+<p>X.509&#x8BC1;&#x4E66;&#x9A8C;&#x8BC1;</p>
+
+</dd>
+<dt id="version"><a href="../man1/version.html><b>version</b></a></dt>
+<dd>
+
+<p>GmSSL Version Information.</p>
+
+<p>GmSSL &#x7248;&#x672C;&#x4FE1;&#x606F;</p>
+
+</dd>
+<dt id="x509"><a href="../man1/x509.html><b>x509</b></a></dt>
+<dd>
+
+<p>X.509 Certificate Data Management.</p>
+
+<p>X.509&#x8BC1;&#x4E66;&#x6570;&#x636E;&#x7BA1;&#x7406;</p>
+
+</dd>
+</dl>
+
+<h2 id="Message-Digest-Commands">Message Digest Commands</h2>
+
+<dl>
+
+<dt id="sm3"><b>sm3</b></dt>
+<dd>
+
+<p>SM3 Digest</p>
+
+<p>SM3&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="md5"><b>md5</b></dt>
+<dd>
+
+<p>MD5 Digest</p>
+
+<p>MD5&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="mdc2"><b>mdc2</b></dt>
+<dd>
+
+<p>MDC2 Digest</p>
+
+<p>MDC2&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="rmd160"><b>rmd160</b></dt>
+<dd>
+
+<p>RMD-160 Digest</p>
+
+<p>RMD-160&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="sha"><b>sha</b></dt>
+<dd>
+
+<p>SHA Digest</p>
+
+<p>SHA&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="sha1"><b>sha1</b></dt>
+<dd>
+
+<p>SHA-1 Digest</p>
+
+<p>SHA-1&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="sha224"><b>sha224</b></dt>
+<dd>
+
+<p>SHA-224 Digest</p>
+
+<p>SHA-224&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="sha256"><b>sha256</b></dt>
+<dd>
+
+<p>SHA-256 Digest</p>
+
+<p>SHA-256&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="sha384"><b>sha384</b></dt>
+<dd>
+
+<p>SHA-384 Digest</p>
+
+<p>SHA-384&#x6458;&#x8981;</p>
+
+</dd>
+<dt id="sha512"><b>sha512</b></dt>
+<dd>
+
+<p>SHA-512 Digest</p>
+
+<p>SHA-512&#x6458;&#x8981;</p>
+
+</dd>
+</dl>
+
+<h2 id="Encoding-and-Cipher-Commands">Encoding and Cipher Commands</h2>
+
+<dl>
+
+<dt id="base64"><b>base64</b></dt>
+<dd>
+
+<p>Base64 Encoding</p>
+
+<p>Base64 &#x7F16;&#x7801;</p>
+
+</dd>
+<dt id="sms4-sms4-cbc-sms4-cfb-sms4-ecb-sms4-ofb"><b>sms4 sms4-cbc sms4-cfb sms4-ecb sms4-ofb</b></dt>
+<dd>
+
+<p>SMS4 Cipher</p>
+
+<p>SMS4&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="cast-cast-cbc"><b>cast cast-cbc</b></dt>
+<dd>
+
+<p>CAST Cipher</p>
+
+<p>CAST&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="cast5-cbc-cast5-cfb-cast5-ecb-cast5-ofb"><b>cast5-cbc cast5-cfb cast5-ecb cast5-ofb</b></dt>
+<dd>
+
+<p>CAST5 Cipher</p>
+
+<p>CAST5&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="des-des-cbc-des-cfb-des-ecb-des-ede-des-ede-cbc-des-ede-cfb-des-ede-ofb-des-ofb"><b>des des-cbc des-cfb des-ecb des-ede des-ede-cbc des-ede-cfb des-ede-ofb des-ofb</b></dt>
+<dd>
+
+<p>DES Cipher</p>
+
+<p>DES&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="des3-desx-des-ede3-des-ede3-cbc-des-ede3-cfb-des-ede3-ofb"><b>des3 desx des-ede3 des-ede3-cbc des-ede3-cfb des-ede3-ofb</b></dt>
+<dd>
+
+<p>Triple-DES Cipher</p>
+
+<p>&#x4E09;&#x91CD;DES&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="idea-idea-cbc-idea-cfb-idea-ecb-idea-ofb"><b>idea idea-cbc idea-cfb idea-ecb idea-ofb</b></dt>
+<dd>
+
+<p>IDEA Cipher</p>
+
+<p>IDEA&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="rc2-rc2-cbc-rc2-cfb-rc2-ecb-rc2-ofb"><b>rc2 rc2-cbc rc2-cfb rc2-ecb rc2-ofb</b></dt>
+<dd>
+
+<p>RC2 Cipher</p>
+
+<p>RC2&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="rc4"><b>rc4</b></dt>
+<dd>
+
+<p>RC4 Cipher</p>
+
+<p>RC4&#x5BC6;&#x7801;</p>
+
+</dd>
+<dt id="rc5-rc5-cbc-rc5-cfb-rc5-ecb-rc5-ofb"><b>rc5 rc5-cbc rc5-cfb rc5-ecb rc5-ofb</b></dt>
+<dd>
+
+<p>RC5 Cipher</p>
+
+<p>RC5&#x5BC6;&#x7801;</p>
+
+</dd>
+</dl>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<p>Details of which options are available depend on the specific command. This section describes some common options with common behavior.</p>
+
+<p>&#x54EA;&#x4E9B;&#x9009;&#x9879;&#x53EF;&#x7528;&#x7684;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#x53D6;&#x51B3;&#x4E8E;&#x5177;&#x4F53;&#x7684;&#x547D;&#x4EE4;&#x3002; &#x672C;&#x8282;&#x4ECB;&#x7ECD;&#x4E00;&#x4E9B;&#x5E38;&#x89C1;&#x7684;&#x5E38;&#x89C1;&#x9009;&#x9879;&#x3002;</p>
+
+<h2 id="Common-Options">Common Options</h2>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Provides a terse summary of all options.</p>
+
+<p>&#x8F93;&#x51FA;&#x6240;&#x6709;&#x9009;&#x9879;&#x7684;&#x6458;&#x8981;</p>
+
+</dd>
+</dl>
+
+<h2 id="Pass-Phrase-Options">Pass Phrase Options</h2>
+
+<p>Several commands accept password arguments, typically using <b>-passin</b> and <b>-passout</b> for input and output passwords respectively. These allow the password to be obtained from a variety of sources. Both of these options take a single argument whose format is described below. If no password argument is given and a password is required then the user is prompted to enter one: this will typically be read from the current terminal with echoing turned off.</p>
+
+<p>&#x51E0;&#x4E2A;&#x547D;&#x4EE4;&#x63A5;&#x53D7;&#x5BC6;&#x7801;&#x53C2;&#x6570;&#xFF0C;&#x901A;&#x5E38;&#x5206;&#x522B;&#x4F7F;&#x7528;-passin&#x548C;-passout&#x6765;&#x8F93;&#x5165;&#x548C;&#x8F93;&#x51FA;&#x5BC6;&#x7801;&#x3002; &#x8FD9;&#x4E9B;&#x5141;&#x8BB8;&#x4ECE;&#x5404;&#x79CD;&#x6765;&#x6E90;&#x83B7;&#x53D6;&#x5BC6;&#x7801;&#x3002; &#x8FD9;&#x4E24;&#x4E2A;&#x9009;&#x9879;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x5176;&#x683C;&#x5F0F;&#x5982;&#x4E0B;&#x6240;&#x8FF0;&#x3002; &#x5982;&#x679C;&#x6CA1;&#x6709;&#x63D0;&#x4F9B;&#x5BC6;&#x7801;&#x53C2;&#x6570;&#x5E76;&#x4E14;&#x9700;&#x8981;&#x5BC6;&#x7801;&#xFF0C;&#x5219;&#x4F1A;&#x63D0;&#x793A;&#x7528;&#x6237;&#x8F93;&#x5165;&#x5BC6;&#x7801;&#xFF1A;&#x901A;&#x5E38;&#x5C06;&#x4ECE;&#x5F53;&#x524D;&#x7EC8;&#x7AEF;&#x8BFB;&#x53D6;&#xFF0C;&#x5E76;&#x4E14;&#x56DE;&#x663E;&#x5173;&#x95ED;&#x3002;</p>
+
+<dl>
+
+<dt id="pass:password"><b>pass:password</b></dt>
+<dd>
+
+<p>the actual password is <b>password</b>. Since the password is visible to utilities (like &#39;ps&#39; under Unix) this form should only be used where security is not important.</p>
+
+<p>&#x5B9E;&#x9645;&#x7684;&#x5BC6;&#x7801;&#x662F;password&#x3002; &#x7531;&#x4E8E;&#x5BC6;&#x7801;&#x5BF9;&#x4E8E;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x662F;&#x53EF;&#x89C1;&#x7684;&#xFF08;&#x4F8B;&#x5982;Unix&#x4E0B;&#x7684;&ldquo;ps&rdquo;&#xFF09; &#xFF0C;&#x56E0;&#x6B64;&#x53EA;&#x80FD;&#x5728;&#x5B89;&#x5168;&#x6027;&#x4E0D;&#x91CD;&#x8981;&#x7684;&#x5730;&#x65B9;&#x4F7F;&#x7528;&#x6B64;&#x8868;&#x5355;&#x3002;</p>
+
+</dd>
+<dt id="env:var"><b>env:var</b></dt>
+<dd>
+
+<p>obtain the password from the environment variable <b>var</b>. Since the environment of other processes is visible on certain platforms (e.g. ps under certain Unix OSes) this option should be used with caution.</p>
+
+<p>&#x4ECE;&#x73AF;&#x5883;&#x53D8;&#x91CF;var&#x83B7;&#x53D6;&#x5BC6;&#x7801;&#x3002; &#x7531;&#x4E8E;&#x5176;&#x4ED6;&#x8FDB;&#x7A0B;&#x7684;&#x73AF;&#x5883;&#x5728;&#x67D0;&#x4E9B;&#x5E73;&#x53F0;&#x4E0A;&#x53EF;&#x89C1;&#xFF08;&#x4F8B;&#x5982;&#x67D0;&#x4E9B;Unix&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x4E0B;&#x7684;ps&#xFF09;&#xFF0C;&#x56E0;&#x6B64;&#x8C28;&#x614E;&#x4F7F;&#x7528;&#x6B64;&#x9009;&#x9879;&#x3002;</p>
+
+</dd>
+<dt id="file:pathname"><b>file:pathname</b></dt>
+<dd>
+
+<p>the first line of <b>pathname</b> is the password. If the same <b>pathname</b> argument is supplied to <b>-passin</b> and <b>-passout</b> arguments then the first line will be used for the input password and the next line for the output password. <b>pathname</b> need not refer to a regular file: it could for example refer to a device or named pipe.</p>
+
+<p>&#x8DEF;&#x5F84;&#x540D;&#x7684;&#x7B2C;&#x4E00;&#x884C;&#x662F;&#x5BC6;&#x7801;&#x3002; &#x5982;&#x679C;&#x76F8;&#x540C;&#x7684;pathname&#x53C2;&#x6570;&#x63D0;&#x4F9B;&#x7ED9;-passin&#x548C;-passout&#x53C2;&#x6570;&#xFF0C; &#x5219;&#x7B2C;&#x4E00;&#x884C;&#x5C06;&#x7528;&#x4E8E;&#x8F93;&#x5165;&#x5BC6;&#x7801;&#xFF0C;&#x8F93;&#x51FA;&#x5BC6;&#x7801;&#x7684;&#x4E0B;&#x4E00;&#x884C;&#x5C06;&#x88AB;&#x4F7F;&#x7528;&#x3002; &#x8DEF;&#x5F84;&#x540D;&#x4E0D;&#x9700;&#x8981;&#x5F15;&#x7528;&#x5E38;&#x89C4;&#x6587;&#x4EF6;&#xFF1A; &#x4F8B;&#x5982;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#x8BBE;&#x5907;&#x6216;&#x547D;&#x540D;&#x7BA1;&#x9053;&#x3002;</p>
+
+</dd>
+<dt id="fd:number"><b>fd:number</b></dt>
+<dd>
+
+<p>read the password from the file descriptor <b>number</b>. This can be used to send the data via a pipe for example.</p>
+
+<p>&#x4ECE;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#x7F16;&#x53F7;&#x8BFB;&#x53D6;&#x5BC6;&#x7801;&#x3002;&#x6BD4;&#x65B9;&#x8BF4;&#x8FD9;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x901A;&#x8FC7;&#x7BA1;&#x9053;&#x53D1;&#x9001;&#x6570;&#x636E;&#x3002;</p>
+
+</dd>
+<dt id="stdin"><b>stdin</b></dt>
+<dd>
+
+<p>read the password from standard input.</p>
+
+<p>&#x4ECE;&#x6807;&#x51C6;&#x8F93;&#x5165;&#x8BFB;&#x53D6;&#x5BC6;&#x7801;&#x3002;</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man1/asn1parse.html>asn1parse(1)</a>, <a href="../man1/ca.html>ca(1)</a>, <a href="../man5/config.html>config(5)</a>, <a href="../man1/crl.html>crl(1)</a>, <a href="../man1/crl2pkcs7.html>crl2pkcs7(1)</a>, <a href="../man1/dgst.html>dgst(1)</a>, <a href="../man1/dhparam.html>dhparam(1)</a>, <a href="../man1/dsa.html>dsa(1)</a>, <a href="../man1/dsaparam.html>dsaparam(1)</a>, <a href="../man1/enc.html>enc(1)</a>, <a href="../man1/engine.html>engine(1)</a>, <a href="../man1/gendsa.html>gendsa(1)</a>, <a href="../man1/genpkey.html>genpkey(1)</a>, <a href="../man1/genrsa.html>genrsa(1)</a>, <a href="../man1/nseq.html>nseq(1)</a>, <a href="../man1/gmssl.html>gmssl(1)</a>, <a href="../man1/passwd.html>passwd(1)</a>, <a href="../man1/pkcs12.html>pkcs12(1)</a>, <a href="../man1/pkcs7.html>pkcs7(1)</a>, <a href="../man1/pkcs8.html>pkcs8(1)</a>, <a href="../man1/rand.html>rand(1)</a>, <a href="../man1/req.html>req(1)</a>, <a href="../man1/rsa.html>rsa(1)</a>, <a href="../man1/rsautl.html>rsautl(1)</a>, <a href="../man1/s_client.html>s_client(1)</a>, <a href="../man1/s_server.html>s_server(1)</a>, <a href="../man1/s_time.html>s_time(1)</a>, <a href="../man1/smime.html>smime(1)</a>, <a href="../man1/spkac.html>spkac(1)</a>, <a href="../man1/verify.html>verify(1)</a>, <a href="../man1/version.html>version(1)</a>, <a href="../man1/x509.html>x509(1)</a>, <a href="../man7/crypto.html>crypto(7)</a>, <a href="../man7/ssl.html>ssl(7)</a>, <a href="../man5/x509v3_config.html>x509v3_config(5)</a></p>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The <b>list-</b><i>XXX</i><b>-algorithms</b> pseudo-commands were added in GmSSL 1.0.0; For notes on the availability of other commands, see their individual manual pages.</p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2000-2016 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

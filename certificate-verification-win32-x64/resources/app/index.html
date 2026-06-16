@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<script>
+	var gmssl = './gmssl.exe '
+</script>
+
+
+<p><font size="2">根证书&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">———————————————————————</font></p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" value="" disabled style="width:240px;" id="inputFileAgent" />&nbsp;&nbsp;
+<!--<div align="center">-->
+<input type="button" onclick="inputRootCert()" value="选择文件" />
+<input type="file" id="inputFile" name="inputFile" style="display:none" onchange="changeAgentContent()" />
+
+<script>
+	function inputRootCert() {
+		document.getElementById('inputFile').click();
+		//m=2;
+		//alert(m);
+
+	}
+</script>
+
+<script type="text/javascript">
+    function changeAgentContent(){
+        document.getElementById("inputFileAgent").value = document.getElementById("inputFile").value;
+    }
+</script>&nbsp;&nbsp;
+<!--<button onclick="viewRootCert()">证书信息</button>-->
+<input type="button" onclick="viewRootCert()" value="查看证书">
+
+
+<script>
+	function viewRootCert(){
+		//var   c=document.getElementById("inputFile").files[0].path;
+		var   str= document.getElementById("inputFileAgent").value;
+		if (str=='') {
+			alert("请选择根证书");
+		}
+		//else {
+		//alert("jj");
+		//}
+		//alert(str);
+		
+        var   c=document.getElementById("inputFile").files[0].path;
+		const exec = require('child_process').exec
+		//var   c= c || "1";
+		//var   c=document.getElementById("inputFile").files[0].path;
+		
+		let cmdStr =  'gmssl x509 -in ' + c +' -noout -text'
+		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+
+		let workerProcess
+
+		workerProcess = exec(cmdStr, {})
+		// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
+
+
+		workerProcess.stdout.on('data', function (data) {
+		//console.log(data);
+        //document.write(data);
+        alert(data);
+        });
+ 
+  // 打印错误的后台可执行程序输出
+         workerProcess.stderr.on('data', function (data) {
+//console.log(data);
+         //document.write(data);
+         alert(data);
+         //confirm(data);
+         });
+         //m=1;
+	}
+
+</script>
+<!--</div>-->
+<p><font size="2">CRL&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">————————————————————————</font></p>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="file" id="inputFile2" name="inputFile2" style="display:none" onchange="changeAgentContent2()" />
+<input type="text" value="" disabled style="width:240px;" id="inputFileAgent2" />&nbsp;&nbsp;
+<input type="button" onclick="document.getElementById('inputFile2').click()" value="选择文件" />
+
+
+<script type="text/javascript">
+    function changeAgentContent2(){
+        document.getElementById("inputFileAgent2").value = document.getElementById("inputFile2").value;
+    }
+</script>&nbsp;&nbsp;
+
+<!--<button onclick="viewRootCert()">证书信息</button>-->
+<input type="button" onclick="viewCrl()" value="查看CRL">
+
+<br /><br />    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+<input type="button" onclick="verifyCrl()" value="验证CRL">
+<!--    查看Crl在此处    -->
+
+<script>
+	function viewCrl(){
+		var   str= document.getElementById("inputFileAgent2").value;
+		if (str=='') {
+			alert("请选择CRL");
+		}
+
+		const exec = require('child_process').exec
+		var   q = document.getElementById("inputFile2").files[0].path;
+		let cmdStr =  'gmssl crl -in ' + q + ' -noout -text'
+		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+
+		let workerProcess
+
+		workerProcess = exec(cmdStr, {})
+
+		workerProcess.stdout.on('data', function (data) {
+//console.log(data);
+        //document.write(data);
+        alert(data);
+        });
+ 
+  // 打印错误的后台可执行程序输出
+         workerProcess.stderr.on('data', function (data) {
+//console.log(data);
+         //document.write(data);
+         alert(data);
+         //confirm(data);
+         });
+	}
+
+
+	function verifyCrl() {
+		var   str=  document.getElementById("inputFileAgent").value;
+		var   str1= document.getElementById("inputFileAgent2").value;
+		if (str=='' && str1=='') {
+				alert("请选择根证书和要验证的CRL");
+			} 
+		else if (str==''){
+			alert("请选择根证书");
+		}
+		else if (str1==''){
+			alert("请选择要验证的CRL");
+		}
+		else{
+
+		}
+
+		const exec = require('child_process').exec
+		var   a=document.getElementById("inputFile").files[0].path;
+		var   b=document.getElementById("inputFile2").files[0].path;
+		//var   q=document.getElementById("inputFile2").files[0].path;
+
+
+		var nn =  'gmssl crl -in ' + b + ' -CAfile ' + a +' -noout ';
+
+		//const exec = require('child_process').exec
+		//var   a=document.getElementById("inputFile").files[0].path;
+		//var   b=document.getElementById("inputFile1").files[0].path;
+		//var   q=document.getElementById("inputFile2").files[0].path;
+
+	
+	
+		// 任何你期望执行的cmd命令，ls都可以
+		let cmdStr = nn
+		//let cmdStr = 'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b
+		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+		
+		// 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
+		//let cmdPath = '/users/xiaojin/Desktop/demoCA' 
+		// 子进程名称
+		let workerProcess
+		
+
+		// 执行命令行，如果命令不需要路径，或就是项目根目录，则不需要cwd参数：
+		workerProcess = exec(cmdStr, {})//{cwd: cmdPath}
+		// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
+		
+		// 打印正常的后台可执行程序输出
+		workerProcess.stdout.on('data', function (data) {
+		//console.log(data);
+		//document.write(data);
+		alert(data);
+		});
+		
+		// 打印错误的后台可执行程序输出
+		workerProcess.stderr.on('data', function (data) {
+		//console.log(data);
+		//document.write(data);
+		alert(data);
+		});
+		
+		// 退出之后的输出
+		//workerProcess.on('close', function (code) {
+		//console.log(code);
+		//document.write(code);
+		//})
+	}
+</script>
+
+<p><font size="2">要验证的证书&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">—————————————————————</font></p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<input type="file" id="inputFile1" name="inputFile1" style="display:none" onchange="changeAgentContent1()" />
+<input type="text" value="" disabled style="width:240px;" id="inputFileAgent1" />&nbsp;&nbsp;
+<input type="button" onclick="document.getElementById('inputFile1').click()" value="选择文件" />
+<script type="text/javascript">
+    function changeAgentContent1(){
+        document.getElementById("inputFileAgent1").value = document.getElementById("inputFile1").value;
+    }
+</script>&nbsp;&nbsp;
+<!--<button onclick="viewCert()">证书信息</button>-->
+<input type="button" onclick="viewCert()" value="查看证书">
+
+<script>
+	function viewCert(){
+
+        var   str1= document.getElementById("inputFileAgent1").value;
+		if (str1=='') {
+			alert("请选择要验证的证书");
+		}
+
+		const exec = require('child_process').exec
+		var   d = document.getElementById("inputFile1").files[0].path;
+		let cmdStr =  'gmssl x509 -in ' + d +' -noout -text'
+
+
+        //let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+
+		let workerProcess
+
+		workerProcess = exec(cmdStr, {})
+
+		workerProcess.stdout.on('data', function (data) {
+//console.log(data);
+        //document.write(data);
+        alert(data);
+        });
+ 
+  // 打印错误的后台可执行程序输出
+         workerProcess.stderr.on('data', function (data) {
+//console.log(data);
+         //document.write(data);
+         alert(data);
+         });
+	}
+</script>
+
+
+<!--<br />-->
+
+<br />
+<br />   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+<!--<button onclick="myFunction()">确定</button>-->
+<input type="button" onclick="verifyCert()" value="验证证书">
+
+<script>
+	function verifyCert() {
+		var   str=  document.getElementById("inputFileAgent").value;
+		var   str1= document.getElementById("inputFileAgent1").value;
+		if (str=='' && str1=='') {
+				alert("请选择根证书和要验证的证书");
+			} 
+		else if (str==''){
+			alert("请选择根证书");
+		}
+		else if (str1==''){
+			alert("请选择要验证的证书");
+		}
+		else{
+
+		}
+
+		const exec = require('child_process').exec
+		var   a=document.getElementById("inputFile").files[0].path;
+		var   b=document.getElementById("inputFile1").files[0].path;
+		//var   q=document.getElementById("inputFile2").files[0].path;
+
+
+		var   str2= document.getElementById("inputFileAgent2").value;
+			if (str2=='') {
+				var nn =  'gmssl verify -CAfile ' + a + ' '+ b;
+				//alert(nn);
+			}
+			else {
+				var   q=document.getElementById("inputFile2").files[0].path;
+
+				var nn =  'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b;
+				//alert(nn);
+			}
+
+	//const exec = require('child_process').exec
+	//var   a=document.getElementById("inputFile").files[0].path;
+	//var   b=document.getElementById("inputFile1").files[0].path;
+	//var   q=document.getElementById("inputFile2").files[0].path;
+
+	
+	
+	// 任何你期望执行的cmd命令，ls都可以
+	let cmdStr = nn
+	//let cmdStr = 'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b
+	//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+	
+	// 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
+	//let cmdPath = '/users/xiaojin/Desktop/demoCA' 
+	// 子进程名称
+	let workerProcess
+	
+
+	// 执行命令行，如果命令不需要路径，或就是项目根目录，则不需要cwd参数：
+	workerProcess = exec(cmdStr, {})//{cwd: cmdPath}
+	// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
+	
+	// 打印正常的后台可执行程序输出
+	workerProcess.stdout.on('data', function (data) {
+	//console.log(data);
+	//document.write(data);
+	alert(data);
+	});
+	
+	// 打印错误的后台可执行程序输出
+	workerProcess.stderr.on('data', function (data) {
+	//console.log(data);
+	//document.write(data);
+	alert(data);
+	});
+	
+	// 退出之后的输出
+	//workerProcess.on('close', function (code) {
+	//console.log(code);
+	//document.write(code);
+	//})
+	}
+
+</script>
+
+<p><font size="2">OCSP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">———————————————————————</font></p>
+
+<!-- <form>
+&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="sex" value="是"><font size="2">是
+<input type="radio" name="sex" value="否" checked>否
+</form> -->
+<!--       OCSP在这里      -->
+
+<font size="2">OCSP URL</font>
+&nbsp;&nbsp;
+<!-- <input type="url" id="ocspUrl" name="ocspUrl" style="display:none" onchange="changeOcspUrl()" /> -->
+<input type="text" value="" style="width:240px;" id="inputOcspUrl" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" onclick="queryOcsp()" value="查询OCSP" />
+&nbsp;&nbsp;
+
+<script>
+    //function changeOcspUrl() {
+    //    document.getElementById("inputOcspUrl").value = document.getElementById("ocspUrl").value;
+    //}
+
+	function queryOcsp() {
+		//alert("url为" + document.getElementById("inputOcspUrl").value);
+
+		var str =  document.getElementById("inputFileAgent").value;
+		var str1 = document.getElementById("inputFileAgent1").value;
+		var str2 = document.getElementById("inputOcspUrl").value;
+
+		if (str=='' && str1=='' && str2=='') {
+			alert("请选择根证书和要验证的证书, 并输入OCSP的URL");
+		} else if (str=='' && str1==''){
+			alert("请选择根证书和要验证的证书");
+		} else if (str1=='' && str2==''){
+			alert("请选择要验证的证书, 并输入OCSP的URL");
+		} else if (str=='' && str2==''){
+			alert("请选择根证书, 并输入OCSP的URL");
+		} else if (str==''){
+			alert("请选择根证书");
+		} else if (str1==''){
+			alert("请选择要验证的证书");
+		} else if (str2==''){
+			alert("请输入OCSP的URL");
+		}
+		// 重新聚焦到输入框
+		document.getElementById("inputOcspUrl").focus();
+
+		const exec = require('child_process').exec
+		var a = document.getElementById("inputFile").files[0].path;
+		var b = document.getElementById("inputFile1").files[0].path;
+		var c = str2;
+
+		var nn =  ' gmssl ocsp -issuer ' + a + ' -cert ' + b + ' -text -url ' + c;
+		// 任何你期望执行的cmd命令，ls都可以
+		let cmdStr = nn
+		//let cmdStr = 'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b
+		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+		
+		// 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
+		//let cmdPath = '/users/xiaojin/Desktop/demoCA' 
+		// 子进程名称
+		let workerProcess
+		
+
+		// 执行命令行，如果命令不需要路径，或就是项目根目录，则不需要cwd参数：
+		workerProcess = exec(cmdStr, {})//{cwd: cmdPath}
+		// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
+		
+		// 打印正常的后台可执行程序输出
+		workerProcess.stdout.on('data', function (data) {
+		//console.log(data);
+		//document.write(data);
+		alert(data);
+		});
+		
+		// 打印错误的后台可执行程序输出
+		workerProcess.stderr.on('data', function (data) {
+		//console.log(data);
+		//document.write(data);
+		alert(data);
+		});
+
+	}
+
+</script>
+&nbsp;&nbsp;
+
+
+
+</body>
+</html>

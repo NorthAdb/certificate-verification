@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OTP_generate</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#CONFORMING-TO">CONFORMING TO</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>OTP_generate - One-Time Password Algorithm</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> <span class="comment">#include &lt;openssl/otp.h&gt;</span>
+ 
+ <span class="variable">typedef</span> <span class="variable">struct</span> <span class="variable">OTP_PARAMS_st</span> <span class="operator">{</span>
+        <span class="keyword">int</span> <span class="variable">type</span><span class="operator">;</span>
+        <span class="keyword">int</span> <span class="variable">te</span><span class="operator">;</span>
+        <span class="variable">void</span> <span class="variable">*option</span><span class="operator">;</span>
+        <span class="variable">size_t</span> <span class="variable">option_size</span><span class="operator">;</span>
+        <span class="keyword">int</span> <span class="variable">otp_digits</span><span class="operator">;</span>
+        <span class="regex">/* adjust the clock in seconds */</span>
+        <span class="keyword">int</span> <span class="variable">offset</span><span class="operator">;</span>
+ <span class="operator">}</span> <span class="variable">OTP_PARAMS</span><span class="operator">;</span>
+ 
+ <span class="keyword">int</span> <span class="variable">OTP_generate</span><span class="operator">(</span><span class="variable">const</span> <span class="variable">OTP_PARAMS</span> <span class="variable">*params</span><span class="operator">,</span>
+                  <span class="variable">const</span> <span class="variable">void</span> <span class="variable">*event</span><span class="operator">,</span> <span class="variable">size_t</span> <span class="variable">eventlen</span><span class="operator">,</span>
+                  <span class="variable">unsigned</span> <span class="keyword">int</span> <span class="variable">*otp</span><span class="operator">,</span>
+                  <span class="variable">const</span> <span class="variable">unsigned</span> <span class="variable">char</span> <span class="variable">*key</span><span class="operator">,</span> <span class="variable">size_t</span> <span class="variable">keylen</span><span class="operator">);</span>
+</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Applications should use the higher level functions <a href="../man3/EVP_DigestInit.html>EVP_DigestInit(3)</a> etc. instead of calling the hash functions directly.</p>
+
+<p>SM3 (ShangMi#3 Hash Algorithm) is a cryptographic hash function with a 256 bit output.</p>
+
+<p>sm3() computes the SM3 message digest of the <b>n</b> bytes at <b>d</b> and places it in <b>md</b> (which must have space for SHA_DIGEST_LENGTH == 20 bytes of output). If <b>md</b> is NULL, the digest is placed in a static array. Note: setting <b>md</b> to NULL is <b>not thread safe</b>.</p>
+
+<p>The following functions may be used if the message is not completely stored in memory:</p>
+
+<p>sm3_nit() initializes a <b>sm3_ctx_t</b> structure.</p>
+
+<p>sm3_update() can be called repeatedly with chunks of the message to be hashed (<b>len</b> bytes at <b>data</b>).</p>
+
+<p>sm3_final() places the message digest in <b>md</b>, which must have space for SM3_DIGEST_LENGTH == 32 bytes of output, and erases the <b>sm3_ctx_t</b>.</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>sm3_init(), sm3_update(), sm3_final(), sm3_compress() and sm3() return void.</p>
+
+<h1 id="CONFORMING-TO">CONFORMING TO</h1>
+
+<p>GM/T 0004-2012 SM3 Cryptogrpahic Hash Algorithm.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_DigestInit.html>EVP_DigestInit(3)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2014-2019 The GmSSL Project. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="http://gmssl.org/license.html">http://gmssl.org/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

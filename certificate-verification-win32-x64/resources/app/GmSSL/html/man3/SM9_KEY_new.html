@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>SM9_MASTER_KEY_new</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#CONFORMING-TO">CONFORMING TO</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SM9_MASTER_KEY_new, SM9_MASTER_KEY_free, SM9_KEY_new, SM9_KEY_free - SM9 Algorithm</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> <span class="comment">#include &lt;openssl/sm9.h&gt;</span>
+ 
+ <span class="variable">SM9_MASTER_KEY</span> <span class="variable">*SM9_MASTER_KEY_new</span><span class="operator">(</span><span class="variable">void</span><span class="operator">);</span>
+ <span class="variable">void</span> <span class="variable">SM9_MASTER_KEY_free</span><span class="operator">(</span><span class="variable">SM9_MASTER_KEY</span> <span class="variable">*a</span><span class="operator">);</span>
+ 
+ <span class="variable">SM9_KEY</span> <span class="variable">*SM9_KEY_new</span><span class="operator">(</span><span class="variable">void</span><span class="operator">);</span>
+ <span class="variable">void</span> <span class="variable">SM9_KEY_free</span><span class="operator">(</span><span class="variable">SM9_KEY</span> <span class="variable">*a</span><span class="operator">);</span>
+</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SM9_MASTER_KEY_new() allocates an empty <b>SM9_MASTER_KEY</b> structure.</p>
+
+<p>SM9_MASTER_KEY_new()&#x5206;&#x914D;&#x4E00;&#x4E2A;&#x65B0;&#x7684;<b>SM9_MASTER_KEY</b>&#x7ED3;&#x6784;&#x3002;</p>
+
+<p>SM9_MASTER_KEY_free() frees the given <b>SM9_MASTER_KEY</b> structure.</p>
+
+<p>SM9_MASTER_KEY_free()&#x5C06;&#x7ED9;&#x5B9A;&#x7684;<b>SM9_MASTER_KEY</b>&#x7ED3;&#x6784;&#x91CA;&#x653E;&#x3002;</p>
+
+<p>SM9_KEY_new() allocates an empty <b>SM9_KEY</b> structure.</p>
+
+<p>SM9_KEY_new()&#x5206;&#x914D;&#x4E00;&#x4E2A;&#x65B0;&#x7684;<b>SM9_KEY</b>&#x7ED3;&#x6784;&#x3002;</p>
+
+<p>SM9_KEY_free() frees the given <b>SM9_KEY</b> structure.</p>
+
+<p>SM9_KEY_free()&#x5C06;&#x7ED9;&#x5B9A;&#x7684;<b>SM9_KEY</b>&#x7ED3;&#x6784;&#x91CA;&#x653E;&#x3002;</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>SM9_MASTER_KEY_new() returns a pointer to an allocated <b>SM9_MASTER_KEY</b> structure or NULL on error.</p>
+
+<p>SM9_MASTER_KEY_new()&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5DF2;&#x5206;&#x914D;&#x7684;<b>SM9_MASTER_KEY</b>&#x7ED3;&#x6784;&#x7684;&#x6307;&#x9488;&#x3002;&#x5982;&#x679C;&#x53D1;&#x751F;&#x9519;&#x8BEF;&#x5219;&#x8FD4;&#x56DE;NULL&#x3002;</p>
+
+<p>SM9_KEY_new() returns a pointer to an allocated <b>SM9_KEY</b> structure or NULL on error.</p>
+
+<p>SM9_KEY_new()&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5DF2;&#x5206;&#x914D;&#x7684;<b>SM9_KEY</b>&#x7ED3;&#x6784;&#x7684;&#x6307;&#x9488;&#x3002;&#x5982;&#x679C;&#x53D1;&#x751F;&#x9519;&#x8BEF;&#x5219;&#x8FD4;&#x56DE;NULL&#x3002;</p>
+
+<p>SM9_MASTER_KEY_free() and SM9_KEY_free() have no return value.</p>
+
+<p>SM9_MASTER_KEY_free()&#x548C;SM9_KEY_free()&#x65E0;&#x8FD4;&#x56DE;&#x503C;&#x3002;</p>
+
+<h1 id="CONFORMING-TO">CONFORMING TO</h1>
+
+<p>GM/T 0044-2016 SM9 Identification Cryptographic Algorithm</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_DigestInit.html>EVP_DigestInit(3)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2014-2019 The GmSSL Project. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="http://gmssl.org/license.html">http://gmssl.org/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

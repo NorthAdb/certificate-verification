@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>SM9_setup</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#CONFORMING-TO">CONFORMING TO</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>SM9_setup, SM9_generate_master_secret, SM9_extract_public_parameters, SM9_extract_private_key, SM9_extract_public_key - SM9 Algorithm</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> <span class="comment">#include &lt;openssl/sm9.h&gt;</span>
+ 
+ <span class="keyword">int</span> <span class="variable">SM9_setup</span><span class="operator">(</span><span class="keyword">int</span> <span class="variable">pairing</span><span class="operator">,</span> <span class="keyword">int</span> <span class="variable">scheme</span><span class="operator">,</span> <span class="keyword">int</span> <span class="variable">hash1</span><span class="operator">,</span>
+        <span class="variable">SM9PublicParameters</span> <span class="operator">**</span><span class="variable">mpk</span><span class="operator">,</span> <span class="variable">SM9MasterSecret</span> <span class="operator">**</span><span class="variable">msk</span><span class="operator">);</span>
+ 
+ <span class="variable">SM9MasterSecret</span> <span class="variable">*SM9_generate_master_secret</span><span class="operator">(</span><span class="keyword">int</span> <span class="variable">pairing</span><span class="operator">,</span> <span class="keyword">int</span> <span class="variable">scheme</span><span class="operator">,</span> <span class="keyword">int</span> <span class="variable">hash1</span><span class="operator">);</span>
+ <span class="variable">SM9PublicParameters</span> <span class="variable">*SM9_extract_public_parameters</span><span class="operator">(</span><span class="variable">SM9MasterSecret</span> <span class="variable">*msk</span><span class="operator">);</span>
+ 
+ <span class="variable">SM9PrivateKey</span> <span class="variable">*SM9_extract_private_key</span><span class="operator">(</span><span class="variable">SM9MasterSecret</span> <span class="variable">*msk</span><span class="operator">,</span>
+        <span class="variable">const</span> <span class="variable">char</span> <span class="variable">*id</span><span class="operator">,</span> <span class="variable">size_t</span> <span class="variable">idlen</span><span class="operator">);</span>
+ 
+ <span class="variable">SM9PublicKey</span> <span class="variable">*SM9_extract_public_key</span><span class="operator">(</span><span class="variable">SM9PublicParameters</span> <span class="variable">*mpk</span><span class="operator">,</span>
+        <span class="variable">const</span> <span class="variable">char</span> <span class="variable">*id</span><span class="operator">,</span> <span class="variable">size_t</span> <span class="variable">idlen</span><span class="operator">);</span>
+</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>SM9_setup() calls SM9_generate_master_secret() and SM9_extract_public_parameters() to set up public parameters and master key for a later usage of SM9 system.</p>
+
+<p>SM9_setup()&#x901A;&#x8FC7;&#x8C03;&#x7528;SM9_generate_master_secret()&#x548C;SM9_extract_public_parameters()&#x6765;&#x8BBE;&#x7F6E;SM9&#x7CFB;&#x7EDF;&#x7684;&#x516C;&#x5171;&#x53C2;&#x6570;&#x548C;&#x4E3B;&#x5BC6;&#x94A5;&#xFF0C;&#x4EE5;&#x5907;&#x4E4B;&#x540E;&#x4F7F;&#x7528;&#x3002;</p>
+
+<p>SM9_generate_master_secret() generates a new <b>SM9MasterSecret</b> structure and set its parameters including pairing type, helper functions, master secret value and master public point.</p>
+
+<p>SM9_generate_master_secret()&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x65B0;&#x7684;<b>SM9MasterSecret</b>&#x7ED3;&#x6784;&#xFF0C;&#x5E76;&#x4E3A;&#x5B83;&#x8BBE;&#x7F6E;&#x53CC;&#x7EBF;&#x6027;&#x5BF9;&#x7C7B;&#x578B;&#x3001;&#x4E3B;&#x5BC6;&#x94A5;&#x7B49;&#x53C2;&#x6570;&#x503C;&#x3002;</p>
+
+<p>SM9_extract_public_parameters() allocates an empty <b>SM9PublicParameters</b> structure and copies some parameters from the given <b>SM9MasterSecret</b> structure.</p>
+
+<p>SM9_extract_public_parameters()&#x5206;&#x914D;&#x4E00;&#x4E2A;&#x7A7A;&#x7684;<b>SM9PublicParameters</b>&#x7ED3;&#x6784;&#xFF0C;&#x5E76;&#x4ECE;&#x7ED9;&#x5B9A;&#x7684;<b>SM9MasterSecret</b>&#x7ED3;&#x6784;&#x4E2D;&#x62F7;&#x8D1D;&#x90E8;&#x5206;&#x53D8;&#x91CF;&#x503C;&#x3002;</p>
+
+<p>SM9_extract_private_key() and SM9_extract_public_key() both call SM9_MASTER_KEY_extract_key() (but using a different identifier) to generate public or private key for SM9.</p>
+
+<p>SM9_extract_private_key()&#x548C;SM9_extract_public_key()&#x90FD;&#x8C03;&#x7528;SM9_MASTER_KEY_extract_key()&#x751F;&#x6210;&#x4E00;&#x4E2A;<b>SM9_KEY</b>&#x7ED3;&#x6784;&#xFF0C;&#x4F46;&#x901A;&#x8FC7;&#x4E00;&#x4E2A;&#x6807;&#x8BC6;&#x4F4D;&#x533A;&#x522B;&#x751F;&#x6210;&#x7684;&#x662F;&#x516C;&#x94A5;&#x8FD8;&#x662F;&#x79C1;&#x94A5;&#x3002;</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>SM9_setup() returns 1 on success or 0 on failure.</p>
+
+<p>SM9_setup()&#x5982;&#x679C;&#x6267;&#x884C;&#x6210;&#x529F;&#x5219;&#x8FD4;&#x56DE;1&#xFF0C;&#x5931;&#x8D25;&#x8FD4;&#x56DE;0&#x3002;</p>
+
+<p>SM9_generate_master_secret() returns a pointer to an allocated <b>SM9MasterSecret</b> structure or NULL on error.</p>
+
+<p>SM9_generate_master_secret()&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5DF2;&#x5206;&#x914D;&#x7684;<b>SM9MasterSecret</b>&#x7ED3;&#x6784;&#x7684;&#x6307;&#x9488;&#x3002;&#x5982;&#x679C;&#x53D1;&#x751F;&#x9519;&#x8BEF;&#x5219;&#x8FD4;&#x56DE;NULL&#x3002;</p>
+
+<p>SM9_extract_public_parameters() returns a pointer to an allocated <b>SM9PublicParameters</b> structure or NULL on error.</p>
+
+<p>SM9_extract_public_parameters()&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5DF2;&#x5206;&#x914D;&#x7684;<b>SM9PublicParameters</b>&#x7ED3;&#x6784;&#x7684;&#x6307;&#x9488;&#x3002;&#x5982;&#x679C;&#x53D1;&#x751F;&#x9519;&#x8BEF;&#x5219;&#x8FD4;&#x56DE;NULL&#x3002;</p>
+
+<p>SM9_extract_private_key() and SM9_extract_public_key() return a pointer to an allocated <b>SM9_KEY</b> structure or NULL on error.</p>
+
+<p>SM9_extract_private_key()&#x548C;SM9_extract_public_key()&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5DF2;&#x5206;&#x914D;&#x7684;<b>SM9_KEY</b>&#x7ED3;&#x6784;&#x7684;&#x6307;&#x9488;&#x3002;&#x5982;&#x679C;&#x53D1;&#x751F;&#x9519;&#x8BEF;&#x5219;&#x8FD4;&#x56DE;NULL&#x3002;</p>
+
+<h1 id="CONFORMING-TO">CONFORMING TO</h1>
+
+<p>GM/T 0044-2016 SM9 Identification Cryptographic Algorithm</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_DigestInit.html>EVP_DigestInit(3)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2014-2019 The GmSSL Project. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="http://gmssl.org/license.html">http://gmssl.org/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

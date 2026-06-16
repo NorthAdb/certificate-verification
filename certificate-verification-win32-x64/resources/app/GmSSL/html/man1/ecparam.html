@@ -1,0 +1,231 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ecparam</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+  <li><a href="#NOTES">NOTES</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ecparam - EC parameter manipulation and generation</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>gmssl ecparam</b> [<b>-help</b>] [<b>-inform DER|PEM</b>] [<b>-outform DER|PEM</b>] [<b>-in filename</b>] [<b>-out filename</b>] [<b>-noout</b>] [<b>-text</b>] [<b>-C</b>] [<b>-check</b>] [<b>-name arg</b>] [<b>-list_curves</b>] [<b>-conv_form arg</b>] [<b>-param_enc arg</b>] [<b>-no_seed</b>] [<b>-rand file(s)</b>] [<b>-genkey</b>] [<b>-engine id</b>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This command is used to manipulate or generate EC parameter files.</p>
+
+<p>&#x6B64;&#x547D;&#x4EE4;&#x7528;&#x4E8E;&#x64CD;&#x4F5C;&#x6216;&#x751F;&#x6210;EC&#x53C2;&#x6570;&#x6587;&#x4EF6;&#x3002;</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Print out a usage message.</p>
+
+<p>&#x8F93;&#x51FA;&#x4F7F;&#x7528;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="inform-DER-PEM"><b>-inform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the input format. The <b>DER</b> option uses an ASN.1 DER encoded form compatible with RFC 3279 EcpkParameters. The PEM form is the default format: it consists of the <b>DER</b> format base64 encoded with additional header and footer lines.</p>
+
+<p>&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#xFF0C;DER&#x6216;PEM&#x683C;&#x5F0F;&#x3002;DER&#x91C7;&#x7528;&#x4E0E;RFC 3279EcpkParameters&#x517C;&#x5BB9;&#x7684;ASN1&#x7684;DER&#x6807;&#x51C6;&#x683C;&#x5F0F;&#x3002;PEM&#x683C;&#x5F0F;&#x662F;&#x9ED8;&#x8BA4;&#x683C;&#x5F0F;&#xFF1A;&#x5B83;&#x7531;DER&#x683C;&#x5F0F;base64&#x7F16;&#x7801;&#xFF0C;&#x5E26;&#x6709;&#x9644;&#x52A0;&#x7684;&#x9875;&#x7709;&#x548C;&#x9875;&#x811A;&#x884C;&#x3002;</p>
+
+</dd>
+<dt id="outform-DER-PEM"><b>-outform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the output format, the options have the same meaning as the <b>-inform</b> option.</p>
+
+<p>&#x6307;&#x51FA;&#x8F93;&#x51FA;&#x683C;&#x5F0F;&#x3002;&#x548C;-inform&#x7528;&#x6CD5;&#x76F8;&#x540C;&#x3002;</p>
+
+</dd>
+<dt id="in-filename"><b>-in filename</b></dt>
+<dd>
+
+<p>This specifies the input filename to read parameters from or standard input if this option is not specified.</p>
+
+<p>&#x6307;&#x51FA;&#x8F93;&#x5165;&#x7684;&#x5982;&#x679C;&#x672A;&#x6307;&#x5B9A;&#x6B64;&#x9009;&#x9879;&#xFF0C;&#x5219;&#x6307;&#x5B9A;&#x4ECE;&#x6216;&#x4ECE;&#x6807;&#x51C6;&#x8F93;&#x5165;&#x8BFB;&#x53D6;&#x53C2;&#x6570;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x540D;&#x3002;</p>
+
+</dd>
+<dt id="out-filename"><b>-out filename</b></dt>
+<dd>
+
+<p>This specifies the output filename parameters to. Standard output is used if this option is not present. The output filename should <b>not</b> be the same as the input filename.</p>
+
+<p>&#x6307;&#x5B9A;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x540D;&#x53C2;&#x6570;&#x3002; &#x5982;&#x679C;&#x6B64;&#x9009;&#x9879;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x5219;&#x4F7F;&#x7528;&#x6807;&#x51C6;&#x8F93;&#x51FA;&#x3002; &#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x540D;&#x4E0D;&#x80FD;&#x4E0E;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x540D;&#x76F8;&#x540C;</p>
+
+</dd>
+<dt id="noout"><b>-noout</b></dt>
+<dd>
+
+<p>This option inhibits the output of the encoded version of the parameters.</p>
+
+<p>&#x4E0D;&#x6253;&#x5370;&#x53C2;&#x6570;&#x7F16;&#x7801;&#x7684;&#x7248;&#x672C;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="text"><b>-text</b></dt>
+<dd>
+
+<p>This option prints out the EC parameters in human readable form.</p>
+
+<p>&#x6253;&#x5370;&#x692D;&#x5706;&#x66F2;&#x7EBF;&#x5BC6;&#x94A5;&#x53C2;&#x6570;&#x4FE1;&#x606F;&#x503C;&#x3002;</p>
+
+</dd>
+<dt id="C"><b>-C</b></dt>
+<dd>
+
+<p>This option converts the EC parameters into C code. The parameters can then be loaded by calling the get_ec_group_XXX() function.</p>
+
+<p>&#x7528;C&#x8BED;&#x8A00;&#x6253;&#x5370;&#x692D;&#x5706;&#x66F2;&#x7EBF;&#x53C2;&#x6570;&#x3002;&#x7136;&#x540E;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8C03;&#x7528;get_ec_group_XXX&#x51FD;&#x6570;&#x6765;&#x52A0;&#x8F7D;&#x53C2;&#x6570;&#x3002;</p>
+
+</dd>
+<dt id="check"><b>-check</b></dt>
+<dd>
+
+<p>Validate the elliptic curve parameters.</p>
+
+<p>&#x9A8C;&#x8BC1;&#x692D;&#x5706;&#x66F2;&#x7EBF;&#x5BC6;&#x94A5;&#x53C2;&#x6570;&#x3002;</p>
+
+</dd>
+<dt id="name-arg"><b>-name arg</b></dt>
+<dd>
+
+<p>Use the EC parameters with the specified &#39;short&#39; name. Use <b>-list_curves</b> to get a list of all currently implemented EC parameters.</p>
+
+<p>&#x4F7F;&#x7528;EC&#x53C2;&#x6570;&#x7684;&#x6307;&#x5B9A;&#x77ED;&#x540D;&#x79F0;&#x3002;&#x4F7F;&#x7528;-list_curves&#x6765;&#x5F97;&#x5230;&#x6240;&#x6709;&#x5F53;&#x524D;&#x5B9E;&#x73B0;&#x7684;EC&#x53C2;&#x6570;&#x7684;&#x5217;&#x8868;&#x3002;</p>
+
+</dd>
+<dt id="list_curves"><b>-list_curves</b></dt>
+<dd>
+
+<p>If this options is specified <b>ecparam</b> will print out a list of all currently implemented EC parameters names and exit.</p>
+
+<p>&#x6253;&#x5370;&#x6240;&#x6709;&#x53EF;&#x7528;&#x7684;&#x77ED;&#x540D;&#x79F0;&#x3002;</p>
+
+</dd>
+<dt id="conv_form"><b>-conv_form</b></dt>
+<dd>
+
+<p>This specifies how the points on the elliptic curve are converted into octet strings. Possible values are: <b>compressed</b> (the default value), <b>uncompressed</b> and <b>hybrid</b>. For more information regarding the point conversion forms please read the X9.62 standard. <b>Note</b> Due to patent issues the <b>compressed</b> option is disabled by default for binary curves and can be enabled by defining the preprocessor macro <b>OPENSSL_EC_BIN_PT_COMP</b> at compile time.</p>
+
+<p>&#x8FD9;&#x6307;&#x5B9A;&#x692D;&#x5706;&#x66F2;&#x7EBF;&#x4E0A;&#x7684;&#x70B9;&#x5982;&#x4F55;&#x8F6C;&#x6362;&#x4E3A;&#x516B;&#x4F4D;&#x5B57;&#x8282;&#x4E32;&#x3002; &#x53EF;&#x80FD;&#x7684;&#x503C;&#x6709;&#xFF1A;&#x538B;&#x7F29;&#xFF08;&#x9ED8;&#x8BA4;&#x503C;&#xFF09;&#xFF0C;&#x672A;&#x538B;&#x7F29;&#x548C;&#x6DF7;&#x5408;&#x3002; &#x6709;&#x5173;&#x70B9;&#x8F6C;&#x6362;&#x8868;&#x5355;&#x7684;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x9605;&#x8BFB;X9.62&#x6807;&#x51C6;&#x3002; &#x6CE8;&#x610F;&#x7531;&#x4E8E;&#x4E13;&#x5229;&#x95EE;&#x9898;&#xFF0C;&#x538B;&#x7F29;&#x9009;&#x9879;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#x7981;&#x7528;&#x4E8C;&#x8FDB;&#x5236;&#x66F2;&#x7EBF;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5728;&#x7F16;&#x8BD1;&#x65F6;&#x5B9A;&#x4E49;&#x9884;&#x5904;&#x7406;&#x5668;&#x5B8F;OPENSSL_EC_BIN_PT_COMP&#x6765;&#x542F;&#x7528;&#x3002;</p>
+
+</dd>
+<dt id="param_enc-arg"><b>-param_enc arg</b></dt>
+<dd>
+
+<p>This specifies how the elliptic curve parameters are encoded. Possible value are: <b>named_curve</b>, i.e. the ec parameters are specified by an OID, or <b>explicit</b> where the ec parameters are explicitly given (see RFC 3279 for the definition of the EC parameters structures). The default value is <b>named_curve</b>. <b>Note</b> the <b>implicitlyCA</b> alternative, as specified in RFC 3279, is currently not implemented in GmSSL.</p>
+
+<p>&#x8FD9;&#x6307;&#x5B9A;&#x692D;&#x5706;&#x66F2;&#x7EBF;&#x53C2;&#x6570;&#x7684;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x3002; &#x53EF;&#x80FD;&#x7684;&#x503C;&#x4E3A;&#xFF1A;named_curve&#xFF0C;&#x5373;ec&#x53C2;&#x6570;&#x7531;OID&#x6307;&#x5B9A;&#xFF0C;&#x6216;&#x663E;&#x5F0F;&#x6307;&#x5B9A;ec&#x53C2;&#x6570;&#xFF08;&#x53C2;&#x89C1;RFC 3279&#x4EE5;&#x4E86;&#x89E3;EC&#x53C2;&#x6570;&#x7ED3;&#x6784;&#x7684;&#x5B9A;&#x4E49;&#xFF09;&#x3002; &#x9ED8;&#x8BA4;&#x503C;&#x4E3A;named_curve&#x3002; &#x6CE8;&#x610F;&#xFF0C;&#x5982;RFC 3279&#x6240;&#x8FF0;&#xFF0C;implicitlyCA&#x66FF;&#x4EE3;&#x65B9;&#x6848;&#x76EE;&#x524D;&#x5C1A;&#x672A;&#x5728;GmSSL&#x4E2D;&#x5B9E;&#x73B0;</p>
+
+</dd>
+<dt id="no_seed"><b>-no_seed</b></dt>
+<dd>
+
+<p>This option inhibits that the &#39;seed&#39; for the parameter generation is included in the ECParameters structure (see RFC 3279).</p>
+
+<p>&#x8BE5;&#x9009;&#x9879;&#x7981;&#x6B62;&#x53C2;&#x6570;&#x751F;&#x6210;&ldquo;seed&rdquo;&#x5305;&#x542B;&#x5728;ECParameters&#x7ED3;&#x6784;&#x4E2D;&#xFF08;&#x53C2;&#x89C1;RFC 3279&#xFF09;&#x3002;</p>
+
+</dd>
+<dt id="genkey"><b>-genkey</b></dt>
+<dd>
+
+<p>This option will generate an EC private key using the specified parameters.</p>
+
+<p>&#x8BE5;&#x6307;&#x4EE4;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x6307;&#x5B9A;&#x53C2;&#x6570;&#x7684;EC&#x79C1;&#x94A5;&#x3002;</p>
+
+</dd>
+<dt id="rand-file-s"><b>-rand file(s)</b></dt>
+<dd>
+
+<p>a file or files containing random data used to seed the random number generator, or an EGD socket (see <a href="../man3/RAND_egd.html>RAND_egd(3)</a>). Multiple files can be specified separated by an OS-dependent character. The separator is <b>;</b> for MS-Windows, <b>,</b> for OpenVMS, and <b>:</b> for all others.</p>
+
+<p>&#x542B;&#x6709;&#x968F;&#x673A;&#x6570;&#x4EA7;&#x751F;&#x79CD;&#x5B50;&#x7684;&#x6587;&#x4EF6;&#x3002;</p>
+
+</dd>
+<dt id="engine-id"><b>-engine id</b></dt>
+<dd>
+
+<p>specifying an engine (by its unique <b>id</b> string) will cause <b>ecparam</b> to attempt to obtain a functional reference to the specified engine, thus initialising it if needed. The engine will then be set as the default for all available algorithms.</p>
+
+<p>&#x6307;&#x5B9A;&#x786C;&#x4EF6;&#x5F15;&#x64CE;&#x3002;&#x8BE5;&#x5F15;&#x64CE;&#x4F1A;&#x88AB;&#x8BBE;&#x4E3A;&#x6240;&#x6709;&#x53EF;&#x884C;&#x7684;&#x7B97;&#x6CD5;&#x7684;&#x9ED8;&#x8BA4;&#x5F15;&#x64CE;&#x3002;</p>
+
+</dd>
+</dl>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>PEM format EC parameters use the header and footer lines:</p>
+
+<pre><code> -----BEGIN EC PARAMETERS-----
+ -----END EC PARAMETERS-----</code></pre>
+
+<p>GmSSL is currently not able to generate new groups and therefore <b>ecparam</b> can only create EC parameters from known (named) curves.</p>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>To create EC parameters with the group &#39;prime192v1&#39;:</p>
+
+<pre><code>  gmssl ecparam -out ec_param.pem -name prime192v1</code></pre>
+
+<p>To create EC parameters with explicit parameters:</p>
+
+<pre><code>  gmssl ecparam -out ec_param.pem -name prime192v1 -param_enc explicit</code></pre>
+
+<p>To validate given EC parameters:</p>
+
+<pre><code>  gmssl ecparam -in ec_param.pem -check</code></pre>
+
+<p>To create EC parameters and a private key:</p>
+
+<pre><code>  gmssl ecparam -out ec_key.pem -name prime192v1 -genkey</code></pre>
+
+<p>To change the point encoding to &#39;compressed&#39;:</p>
+
+<pre><code>  gmssl ecparam -in ec_in.pem -out ec_out.pem -conv_form compressed</code></pre>
+
+<p>To print out the EC parameters to standard output:</p>
+
+<pre><code>  gmssl ecparam -in ec_param.pem -noout -text</code></pre>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man1/ec.html>ec(1)</a>, <a href="../man1/dsaparam.html>dsaparam(1)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2003-2016 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

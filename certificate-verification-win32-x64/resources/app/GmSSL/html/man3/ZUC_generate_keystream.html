@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ZUC_set_key</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#RETURN-VALUES">RETURN VALUES</a></li>
+  <li><a href="#CONFORMING-TO">CONFORMING TO</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>ZUC_set_key, ZUC_generate_keystream, ZUC_generate_keyword - ZUC Stream Cipher</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> <span class="comment">#include &lt;openssl/zuc.h&gt;</span>
+ 
+ <span class="variable">void</span> <span class="variable">ZUC_set_key</span><span class="operator">(</span><span class="variable">ZUC_KEY</span> <span class="variable">*key</span><span class="operator">,</span> <span class="variable">const</span> <span class="variable">unsigned</span> <span class="variable">char</span> <span class="variable">*user_key</span><span class="operator">,</span> <span class="variable">const</span> <span class="variable">unsigned</span> <span class="variable">char</span> <span class="variable">*iv</span><span class="operator">);</span>
+ <span class="variable">void</span> <span class="variable">ZUC_generate_keystream</span><span class="operator">(</span><span class="variable">ZUC_KEY</span> <span class="variable">*key</span><span class="operator">,</span> <span class="variable">size_t</span> <span class="variable">nwords</span><span class="operator">,</span> <span class="variable">uint32_t</span> <span class="variable">*words</span><span class="operator">);</span>
+ <span class="variable">uint32_t</span> <span class="variable">ZUC_generate_keyword</span><span class="operator">(</span><span class="variable">ZUC_KEY</span> <span class="variable">*key</span><span class="operator">);</span>
+</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>ZUC_set_key() sets up the <b>ZUC_KEY</b> key using the <b>user_key</b> and initial vector <b>iv</b>.</p>
+
+<p>ZUC_set_key()&#x901A;&#x8FC7;&#x7528;&#x6237;&#x7684;&#x5BC6;&#x94A5;<b>user_key</b>&#x4EE5;&#x53CA;&#x521D;&#x59CB;&#x5411;&#x91CF;<b>iv</b>&#x6765;&#x8BBE;&#x7F6E;&#x5BC6;&#x94A5;&#x7ED3;&#x6784;<b>ZUC_KEY</b>&#x3002;</p>
+
+<p>ZUC_generate_keystream() computes 32-bit keywords for <b>nwords</b> times by a <b>ZUC_KEY</b> structure, and stores them in the given <b>words</b> array(pointer).</p>
+
+<p>ZUC_generate_keystream()&#x901A;&#x8FC7;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x4E2D;&#x7684;<b>ZUC_KEY</b>&#x7ED3;&#x6784;&#x8BA1;&#x7B97;<b>nwords</b>&#x4E2A;32-bit&#x7684;&#x5BC6;&#x94A5;&#x5B57;&#xFF0C;&#x5E76;&#x88C5;&#x5165;&#x7ED9;&#x5B9A;&#x7684;<b>words</b>&#x6570;&#x7EC4;&#x4E2D;&#x3002;</p>
+
+<p>ZUC_generate_keyword() is simliar to ZUC_generate_keystream(), but computes keyword only once and return this value.</p>
+
+<p>ZUC_generate_keyword()&#x4E0E;ZUC_generate_keystream()&#x76F8;&#x4F3C;&#xFF0C;&#x4F46;&#x53EA;&#x8BA1;&#x7B97;&#x4E00;&#x6B21;&#x5E76;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x8BE5;&#x5BC6;&#x94A5;&#x5B57;&#x7684;&#x503C;&#x3002;</p>
+
+<h1 id="RETURN-VALUES">RETURN VALUES</h1>
+
+<p>ZUC_set_key() and ZUC_generate_keystream() have no return value.</p>
+
+<p>ZUC_set_key()&#x548C;ZUC_generate_keystream()&#x65E0;&#x8FD4;&#x56DE;&#x503C;&#x3002;</p>
+
+<p>ZUC_generate_keyword() returns a 32-bit unsigned integer.</p>
+
+<p>ZUC_generate_keyword()&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;32&#x4F4D;&#x65E0;&#x7B26;&#x53F7;&#x6574;&#x6570;&#x3002;</p>
+
+<h1 id="CONFORMING-TO">CONFORMING TO</h1>
+
+<p>GM/T 0004-2012 SM3 Cryptogrpahic Hash Algorithm.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man3/EVP_DigestInit.html>EVP_DigestInit(3)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2014-2019 The GmSSL Project. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="http://gmssl.org/license.html">http://gmssl.org/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+

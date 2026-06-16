@@ -1,0 +1,205 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>pkey</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#OPTIONS">OPTIONS</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#COPYRIGHT">COPYRIGHT</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>pkey - public or private key processing tool</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p><b>gmssl</b> <b>pkey</b> [<b>-help</b>] [<b>-inform PEM|DER</b>] [<b>-outform PEM|DER</b>] [<b>-in filename</b>] [<b>-passin arg</b>] [<b>-out filename</b>] [<b>-passout arg</b>] [<b>-traditional</b>] [<b>-cipher</b>] [<b>-text</b>] [<b>-text_pub</b>] [<b>-noout</b>] [<b>-pubin</b>] [<b>-pubout</b>] [<b>-engine id</b>]</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The <b>pkey</b> command processes public or private keys. They can be converted between various forms and their components printed out.</p>
+
+<p>pkey&#x6307;&#x4EE4;&#x5904;&#x7406;&#x516C;&#x94A5;&#x6216;&#x8005;&#x79C1;&#x94A5;&#x3002; &#x5B83;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x5404;&#x79CD;&#x5F62;&#x5F0F;&#x4E4B;&#x95F4;&#x8FDB;&#x884C;&#x8F6C;&#x6362;&#xFF0C;&#x5E76;&#x5C06;&#x5176;&#x7EC4;&#x4EF6;&#x6253;&#x5370;&#x51FA;&#x6765;&#x3002;</p>
+
+<h1 id="OPTIONS">OPTIONS</h1>
+
+<dl>
+
+<dt id="help"><b>-help</b></dt>
+<dd>
+
+<p>Print out a usage message.</p>
+
+<p>&#x6253;&#x5370;&#x4F7F;&#x7528;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="inform-DER-PEM"><b>-inform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the input format DER or PEM.</p>
+
+<p>&#x8BE5;&#x9009;&#x9879;&#x6307;&#x51FA;&#x4E86;&#x8F93;&#x5165;&#x683C;&#x5F0F;&#x662F;DER&#x8FD8;&#x662F;PEM&#x3002;</p>
+
+</dd>
+<dt id="outform-DER-PEM"><b>-outform DER|PEM</b></dt>
+<dd>
+
+<p>This specifies the output format, the options have the same meaning as the <b>-inform</b> option.</p>
+
+<p>&#x8BE5;&#x9009;&#x9879;&#x6307;&#x51FA;&#x4E86;&#x8F93;&#x51FA;&#x683C;&#x5F0F;&#xFF0C;&#x4E0E;-inform&#x610F;&#x4E49;&#x76F8;&#x540C;&#x3002;</p>
+
+</dd>
+<dt id="in-filename"><b>-in filename</b></dt>
+<dd>
+
+<p>This specifies the input filename to read a key from or standard input if this option is not specified. If the key is encrypted a pass phrase will be prompted for.</p>
+
+<p>&#x5982;&#x679C;&#x8BE5;&#x9009;&#x9879;&#x6CA1;&#x6709;&#x88AB;&#x6307;&#x5B9A;&#xFF0C;&#x5219;&#x6307;&#x5B9A;&#x4ECE;&#x5BC6;&#x94A5;&#x4E2D;&#x8BFB;&#x53D6;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x540D;&#x6216;&#x8005;&#x6807;&#x51C6;&#x8F93;&#x5165;&#x3002; &#x5982;&#x679C;&#x5BC6;&#x94A5;&#x88AB;&#x52A0;&#x5BC6;&#xFF0C;&#x5C06;&#x63D0;&#x793A;&#x8F93;&#x5165;&#x5BC6;&#x7801;&#x3002;</p>
+
+</dd>
+<dt id="passin-arg"><b>-passin arg</b></dt>
+<dd>
+
+<p>the input file password source. For more information about the format of <b>arg</b> see the <b>PASS PHRASE ARGUMENTS</b> section in <a href="../man1/gmssl.html>gmssl(1)</a>.</p>
+
+<p>&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x5BC6;&#x7801;&#x6765;&#x6E90;&#x3002;&#x6709;&#x5173;arg&#x683C;&#x5F0F;&#x7684;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x53C2;&#x9605;gmssl&#xFF08;1&#xFF09;&#x4E2D;&#x7684;PASS PHRASE ARGUMENTS&#x90E8;&#x5206;&#x3002;</p>
+
+</dd>
+<dt id="out-filename"><b>-out filename</b></dt>
+<dd>
+
+<p>This specifies the output filename to write a key to or standard output if this option is not specified. If any encryption options are set then a pass phrase will be prompted for. The output filename should <b>not</b> be the same as the input filename.</p>
+
+<p>&#x5982;&#x679C;&#x672A;&#x6307;&#x5B9A;&#x6B64;&#x9009;&#x9879;&#xFF0C;&#x5219;&#x6307;&#x5B9A;&#x5C06;&#x5BC6;&#x94A5;&#x5199;&#x5165;&#x6216;&#x8F93;&#x51FA;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x540D;&#x3002; &#x5982;&#x679C;&#x8BBE;&#x7F6E;&#x4E86;&#x4EFB;&#x4F55;&#x52A0;&#x5BC6;&#x9009;&#x9879;&#xFF0C; &#x5219;&#x4F1A;&#x63D0;&#x793A;&#x8F93;&#x5165;&#x5BC6;&#x7801;&#x3002; &#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x540D;&#x4E0D;&#x80FD;&#x4E0E;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x540D;&#x76F8;&#x540C;&#x3002;</p>
+
+</dd>
+<dt id="passout-password"><b>-passout password</b></dt>
+<dd>
+
+<p>the output file password source. For more information about the format of <b>arg</b> see the <b>PASS PHRASE ARGUMENTS</b> section in <a href="../man1/gmssl.html>gmssl(1)</a>.</p>
+
+<p>&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684;&#x5BC6;&#x7801;&#x6765;&#x6E90;&#x3002;&#x6709;&#x5173;arg&#x683C;&#x5F0F;&#x7684;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#x8BF7;&#x53C2;&#x9605;gmssl(1)&#x4E2D;&#x7684;PASS PHARSE ARGUMENTS&#x90E8;&#x5206;&#x3002;</p>
+
+</dd>
+<dt id="traditional"><b>-traditional</b></dt>
+<dd>
+
+<p>normally a private key is written using standard format: this is PKCS#8 form with the appropriate encryption algorithm (if any). If the <b>-traditional</b> option is specified then the older &quot;traditional&quot; format is used instead.</p>
+
+<p>&#x901A;&#x5E38;&#x4F7F;&#x7528;&#x6807;&#x51C6;&#x683C;&#x5F0F;&#x5199;&#x5165;&#x79C1;&#x94A5;&#xFF1A;&#x8FD9;&#x662F;&#x5177;&#x6709;&#x9002;&#x5F53;&#x52A0;&#x5BC6;&#x7B97;&#x6CD5;&#xFF08;&#x5982;&#x679C;&#x6709;&#x7684;&#x8BDD;&#xFF09;&#x7684;PKCS&#xFF03;8&#x8868;&#x5355;&#x3002; &#x5982;&#x679C;&#x6307;&#x5B9A;&#x4E86;-traditional&#x9009;&#x9879;&#xFF0C;&#x5219;&#x4F7F;&#x7528;&#x8F83;&#x65E7;&#x7684;&ldquo;traditional&rdquo;&#x683C;&#x5F0F;&#x3002;</p>
+
+</dd>
+<dt id="cipher"><b>-cipher</b></dt>
+<dd>
+
+<p>These options encrypt the private key with the supplied cipher. Any algorithm name accepted by EVP_get_cipherbyname() is acceptable such as <b>des3</b>.</p>
+
+<p>&#x8FD9;&#x4E9B;&#x9009;&#x9879;&#x4F7F;&#x7528;&#x63D0;&#x4F9B;&#x7684;&#x5BC6;&#x7801;&#x52A0;&#x5BC6;&#x79C1;&#x94A5;&#x3002; EVP_get_cipherbyname&#xFF08;&#xFF09;&#x63A5;&#x53D7;&#x7684;&#x4EFB;&#x4F55;&#x7B97;&#x6CD5;&#x540D;&#x79F0;&#x90FD;&#x53EF;&#x4EE5;&#x63A5;&#x53D7;&#xFF0C;&#x5982;des3&#x3002;</p>
+
+</dd>
+<dt id="text"><b>-text</b></dt>
+<dd>
+
+<p>prints out the various public or private key components in plain text in addition to the encoded version.</p>
+
+<p>&#x9664;&#x4E86;&#x7F16;&#x7801;&#x7248;&#x672C;&#x4E4B;&#x5916;&#xFF0C;&#x4EE5;&#x7EAF;&#x6587;&#x672C;&#x5F62;&#x5F0F;&#x6253;&#x5370;&#x5404;&#x79CD;&#x516C;&#x5171;&#x6216;&#x79C1;&#x4EBA;&#x5BC6;&#x94A5;&#x7EC4;&#x4EF6;&#x3002;</p>
+
+</dd>
+<dt id="text_pub"><b>-text_pub</b></dt>
+<dd>
+
+<p>print out only public key components even if a private key is being processed.</p>
+
+<p>&#x5373;&#x4F7F;&#x6B63;&#x5728;&#x5904;&#x7406;&#x79C1;&#x94A5;&#xFF0C;&#x4E5F;&#x6253;&#x5370;&#x516C;&#x94A5;&#x7EC4;&#x4EF6;&#x3002;</p>
+
+</dd>
+<dt id="noout"><b>-noout</b></dt>
+<dd>
+
+<p>do not output the encoded version of the key.</p>
+
+<p>&#x4E0D;&#x6253;&#x5370;&#x51FA;&#x5BC6;&#x94A5;&#x7684;&#x7F16;&#x7801;&#x7248;&#x672C;&#x4FE1;&#x606F;&#x3002;</p>
+
+</dd>
+<dt id="pubin"><b>-pubin</b></dt>
+<dd>
+
+<p>by default a private key is read from the input file: with this option a public key is read instead.</p>
+
+<p>&#x9ED8;&#x8BA4;&#x4ECE;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x8BFB;&#x53D6;&#x4E00;&#x4E2A;&#x79C1;&#x94A5;&#xFF1A;&#x4F7F;&#x7528;&#x8BE5;&#x9009;&#x9879;&#x540E;&#x5219;&#x53D8;&#x4E3A;&#x8BFB;&#x53D6;&#x4E00;&#x4E2A;&#x516C;&#x94A5;&#x3002;</p>
+
+</dd>
+<dt id="pubout"><b>-pubout</b></dt>
+<dd>
+
+<p>by default a private key is output: with this option a public key will be output instead. This option is automatically set if the input is a public key.</p>
+
+<p>&#x9ED8;&#x8BA4;&#x662F;&#x8F93;&#x51FA;&#x4E00;&#x4E2A;&#x79C1;&#x94A5;&#xFF1A;&#x4F7F;&#x7528;&#x8BE5;&#x9009;&#x9879;&#x540E;&#x5219;&#x53D8;&#x4E3A;&#x8F93;&#x51FA;&#x4E00;&#x4E2A;&#x516C;&#x94A5;&#x3002;&#x5982;&#x679C;&#x8F93;&#x5165;&#x662F;&#x516C;&#x94A5;&#x5219;&#x8BE5;&#x9009;&#x9879;&#x4F1A;&#x81EA;&#x52A8;&#x8BBE;&#x7F6E;&#x3002;</p>
+
+</dd>
+<dt id="engine-id"><b>-engine id</b></dt>
+<dd>
+
+<p>specifying an engine (by its unique <b>id</b> string) will cause <b>pkey</b> to attempt to obtain a functional reference to the specified engine, thus initialising it if needed. The engine will then be set as the default for all available algorithms.</p>
+
+<p>&#x6307;&#x5B9A;&#x8981;&#x4F7F;&#x7528;&#x7684;&#x786C;&#x4EF6;&#x5F15;&#x64CE;&#x3002;&#x6307;&#x5B9A;&#x4E00;&#x4E2A;&#x5F15;&#x64CE;&#xFF08;&#x901A;&#x8FC7;&#x5176;&#x552F;&#x4E00;&#x7684;id&#x5B57;&#x7B26;&#x4E32;&#xFF09;&#x5C06;&#x5BFC;&#x81F4;pkey&#x5C1D;&#x8BD5;&#x83B7;&#x53D6;&#x5BF9;&#x6307;&#x5B9A;&#x5F15;&#x64CE;&#x7684;&#x529F;&#x80FD;&#x5F15;&#x7528; &#xFF0C;&#x4ECE;&#x800C;&#x5982;&#x679C;&#x9700;&#x8981;&#x7684;&#x8BDD;&#x521D;&#x59CB;&#x5316;&#x5B83;&#x3002; &#x7136;&#x540E;&#xFF0C;&#x5F15;&#x64CE;&#x5C06;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;&#x6240;&#x6709;&#x53EF;&#x7528;&#x7B97;&#x6CD5;&#x7684;&#x9ED8;&#x8BA4;&#x503C;&#x3002;</p>
+
+</dd>
+</dl>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>To remove the pass phrase on an RSA private key:</p>
+
+<pre><code> gmssl pkey -in key.pem -out keyout.pem</code></pre>
+
+<p>To encrypt a private key using triple DES:</p>
+
+<pre><code> gmssl pkey -in key.pem -des3 -out keyout.pem</code></pre>
+
+<p>To convert a private key from PEM to DER format:</p>
+
+<pre><code> gmssl pkey -in key.pem -outform DER -out keyout.der</code></pre>
+
+<p>To print out the components of a private key to standard output:</p>
+
+<pre><code> gmssl pkey -in key.pem -text -noout</code></pre>
+
+<p>To print out the public components of a private key to standard output:</p>
+
+<pre><code> gmssl pkey -in key.pem -text_pub -noout</code></pre>
+
+<p>To just output the public part of a private key:</p>
+
+<pre><code> gmssl pkey -in key.pem -pubout -out pubkey.pem</code></pre>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><a href="../man1/genpkey.html>genpkey(1)</a>, <a href="../man1/rsa.html>rsa(1)</a>, <a href="../man1/pkcs8.html>pkcs8(1)</a>, <a href="../man1/dsa.html>dsa(1)</a>, <a href="../man1/genrsa.html>genrsa(1)</a>, <a href="../man1/gendsa.html>gendsa(1)</a></p>
+
+<h1 id="COPYRIGHT">COPYRIGHT</h1>
+
+<p>Copyright 2006-2016 The OpenSSL Project Authors. All Rights Reserved.</p>
+
+<p>Licensed under the GmSSL license (the &quot;License&quot;). You may not use this file except in compliance with the License. You can obtain a copy in the file LICENSE in the source distribution or at <a href="https://www.openssl.org/source/license.html">https://www.openssl.org/source/license.html</a>.</p>
+
+
+</body>
+
+</html>
+
+
