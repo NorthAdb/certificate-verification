@@ -9,8 +9,8 @@ Thumbs.db
 # --- zip packages go to GitHub Release ---
 *.zip
 
-# --- GitHub 100MB file limit: main exe is published via Release ---
-certificate-verification-win32-x64/????.exe
+# --- GitHub 100MB limit: ignore Electron shell exe at package root (keep nested openssl.exe) ---
+certificate-verification-win32-x64/*.exe
 
 # --- lab scratch ---
 cryptomator_lab.md
