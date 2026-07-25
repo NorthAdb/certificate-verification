@@ -1,0 +1,20 @@
+# --- local env ---
+.venv/
+.vscode/
+*.pyc
+__pycache__/
+Thumbs.db
+.DS_Store
+
+# --- zip packages go to GitHub Release ---
+*.zip
+
+# --- GitHub 100MB file limit: main exe is published via Release ---
+certificate-verification-win32-x64/????.exe
+
+# --- lab scratch ---
+cryptomator_lab.md
+cryptomator_lab.py
+
+# --- Electron dev deps ---
+certificate-verification-win32-x64/resources/app/node_modules/

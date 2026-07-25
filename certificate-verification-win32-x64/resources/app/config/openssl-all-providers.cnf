@@ -1,0 +1,31 @@
+config_diagnostics = 0
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_sect
+pqmagic = pqmagic_sect
+ml_dsa_sm2 = ml_dsa_sm2_sect
+cert_verify = cert_verify_sect
+aigis_enc = aigis_enc_sect
+
+[default_sect]
+activate = 1
+
+[pqmagic_sect]
+module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/pqmagic.dll
+activate = 1
+
+[ml_dsa_sm2_sect]
+module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/libml_dsa_sm2_provider.dll
+activate = 1
+
+[cert_verify_sect]
+module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/cert_verify.dll
+activate = 1
+
+[aigis_enc_sect]
+module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/aigis_enc.dll
+activate = 1

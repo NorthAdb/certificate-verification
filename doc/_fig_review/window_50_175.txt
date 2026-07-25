@@ -1,0 +1,110 @@
+[50] draw=False style=Heading 3 | 2.4.2 证书模板与示例
+[51] draw=False style=Normal | 表 2-4 标准 X.509 格式数字证书模板（纯净 PQC）
+[53] draw=False style=Normal | 表 2-5 纯净 PQC 签名与加密证书示例
+[55] draw=False style=Heading 3 | 2.4.3 验证流程
+[56] draw=False style=Normal | 验证步骤：格式校验 → 有效期/主体公钥/KeyUsage（可并行）→ 证书链验证 → PQC 签名验证 → 撤销检查（协议预留）。
+[57] draw=True style=Normal | 
+[58] draw=False style=Normal | 图 2-1 纯净 PQC 证书验证流程
+[59] draw=False style=Heading 2 | 2.5 方案二：混合串联证书
+[60] draw=False style=Heading 3 | 2.5.1 结构说明
+[61] draw=False style=Normal | SPKI 为组合公钥，签名值为 PQC‖SM2 双签。
+[62] draw=False style=Normal | 签名公钥 OID：1.2.156.10197.1.508.1；
+[63] draw=False style=Normal | 加密公钥 OID：1.2.156.10197.1.507.1；
+[64] draw=False style=Normal | 签名算法 OID：1.2.156.10197.1.506.1。
+[65] draw=False style=Normal | 签发/申请侧采用双私钥模型（ML-DSA + SM2），双签均覆盖完整 TBS/CRI。
+[66] draw=False style=Heading 3 | 2.5.2 证书示例要点
+[67] draw=False style=Normal | 表 2-6 混合串联证书示例要点
+[69] draw=False style=Heading 3 | 2.5.3 验证流程
+[70] draw=False style=Normal | 基础检查与证书链验证后，分别验证 SM2 与 PQC 签名，两路均成功才通过。
+[71] draw=True style=Normal | 
+[72] draw=False style=Normal | 图 2-2 混合串联证书验证流程
+[73] draw=False style=Heading 2 | 2.6 方案三：混合扩展证书
+[74] draw=False style=Heading 3 | 2.6.1 结构说明
+[75] draw=False style=Normal | 主体公钥与外层主签名仍为 SM2；PQC 公钥、签名算法与签名值分别放入扩展 1.2.156.10260.4.1.6 / 4.1.7 / 4.1.8。
+[76] draw=False style=Heading 3 | 2.6.2 证书示例要点
+[77] draw=False style=Normal | 表 2-7 混合扩展证书示例要点
+[79] draw=False style=Heading 3 | 2.6.3 验证流程
+[80] draw=False style=Normal | 外层 SM2 验证完整 TBS；内层按“保留 PQC 公钥扩展、去除签名算法/签名值扩展”的约定验证 PQC 签名。
+[81] draw=True style=Normal | 
+[82] draw=False style=Normal | 图 2-3 混合扩展证书验证流程
+[83] draw=False style=Heading 2 | 2.7 三类方案对比
+[84] draw=False style=Normal | 表 2-8 三类证书方案对比
+[86] draw=False style=Heading 2 | 2.8 CSR协议约定
+[87] draw=False style=Normal | 证书请求遵循 PKCS#10，摘要绑定 SM3。工具需支持现场生成、查看与自签验签，覆盖纯 PQC CSR 与复合 CSR。
+[88] draw=False style=Heading 3 | 2.8.1 设计目标
+[89] draw=False style=Normal | （1）统一密码运行时下，工作流与常规 CSR 一致。
+[90] draw=False style=Normal | （2）OID/长度/签名规则与前述证书方案对齐。
+[91] draw=False style=Normal | （3）复合方案采用双私钥模型，避免强制单一复合 PKCS#8。
+[92] draw=False style=Normal | （4）自签验签与证书验链共用同一套验签语义。
+[93] draw=False style=Heading 3 | 2.8.2 两类CSR对照
+[94] draw=False style=Normal | 表 2-9 两类 CSR 对照
+[96] draw=False style=Heading 3 | 2.8.3 纯PQC CSR
+[97] draw=False style=Normal | 处理流程：生成/选用 ML-DSA 私钥 → 填写 Subject 并写入 SPKI → 对完整 CRI 做 ML-DSA-with-SM3 签名 → 自签验签。私钥可采用 PKCS#8，并可附带公钥属性 OID 1.2.156.10197.1.304.1.1（携带 1312 字节裸公钥）。
+[98] draw=False style=Normal | 表 2-10 纯 PQC CSR 关键参数
+[100] draw=False style=Heading 3 | 2.8.4 复合CSR（双钥模型）
+[101] draw=False style=Normal | 选型采用“双钥 + 附加 SM2 密钥”：分别生成标准 ML-DSA/SM2 私钥；申请时主密钥为 ML-DSA，附加 SM2 密钥，由运行时合成 508.1 复合 SPKI 与 506.1 双签。接口标识为 -sm2key 或等价 API。
+[102] draw=False style=Normal | 表 2-11 复合 CSR 方案选型
+[104] draw=False style=Normal | 验签：识别 506.1 后拆分签名值；[1/2] 验证 ML-DSA 段；[2/2] 验证 SM2 段；两路均成功才通过。
+[105] draw=False style=Normal | 表 2-12 CSR 验证步骤
+[107] draw=False style=Normal | 本版本 CSR 主路径覆盖方案一、方案二；混合扩展类 CSR 可后续增补。
+[108] draw=False style=Heading 1 | 3 开发实现
+[109] draw=False style=Normal | 本章给出实现侧总体架构、模块划分、可配置与可测试性设计、前期工作计划及尚未解决问题。模块细节、接口与数据结构分别在第 4～6 章说明。本章作为详细设计与开发排期输入，不展开具体编码过程。
+[110] draw=False style=Heading 2 | 3.1 系统说明
+[111] draw=False style=Normal | 系统定位：Windows 本地抗量子/混合证书验证工具。主要输入：PEM/DER 证书、可选中间证、信任锚、CSR 主体信息与算法选择。主要输出：证书解析文本、验链结果（含双重验签结论）、CSR/密钥文件。
+[112] draw=False style=Normal | 规划功能：证书查看；证书链验证（含双重验签，支持可选中间证书；仅信任中间 CA 时可按部分链验证）；CSR 生成与自验签。证书文件格式支持 .crt / .cer / .pem。界面示意见图 4-1～图 4-5。
+[113] draw=False style=Heading 2 | 3.2 运行环境
+[114] draw=False style=Normal | 表 3-1 运行环境要求
+[116] draw=False style=Heading 2 | 3.3 基本设计概念以及处理流程
+[117] draw=False style=Normal | 设计思想：密码学能力下沉到统一引擎（Tongsuo + Provider），图形界面负责选文件、组参数与展示结果，保证界面与命令行语义一致。
+[118] draw=False style=Normal | 逻辑分层：表现层（GUI）→ 验证执行层 → Provider 算法层 → 核心密码库。
+[119] draw=False style=Normal | 证书验证流程：选择信任锚/中间证/叶子证 → 加载 Provider 配置 → 验链 → 按类型走纯 PQC 或双重验签 → 输出。
+[120] draw=False style=Normal | CSR 流程：选择算法 → 生成密钥 → 构造 PKCS#10 并签名 → 自验签 → 输出。
+[121] draw=True style=Normal | 
+[122] draw=False style=Normal | 图 3-1 系统总体架构
+[123] draw=False style=Heading 2 | 3.4 总体结构及模块划分
+[124] draw=False style=Normal | 按职责划分为界面、密码运行时、PQC Provider、复合 SPKI、混合验签、配置与样例等模块。
+[125] draw=False style=Heading 2 | 3.5 模块划分列表
+[126] draw=False style=Normal | 表 3-2 模块划分列表
+[128] draw=False style=Heading 2 | 3.6 可配置设计
+[129] draw=False style=Normal | 通过 openssl-all-providers.cnf 与环境变量控制 Provider 加载。主路径 Provider 为 default、pqmagic、ml_dsa_sm2、cert_verify；配置中还可加载 aigis_enc（本工具验链/CSR 主路径非必须）。示意配置如下：
+[130] draw=False style=Normal | openssl_conf = openssl_init
+[131] draw=False style=Normal | [provider_sect]
+[132] draw=False style=Normal | default = default_sect
+[133] draw=False style=Normal | pqmagic = pqmagic_sect
+[134] draw=False style=Normal | ml_dsa_sm2 = ml_dsa_sm2_sect
+[135] draw=False style=Normal | cert_verify = cert_verify_sect
+[136] draw=False style=Normal | aigis_enc = aigis_enc_sect
+[137] draw=False style=Normal | 表 3-3 主要配置项
+[139] draw=False style=Normal | 发行包路径应可相对化或启动时重写，避免写死开发机绝对路径；图形界面启动时可按部署目录生成/刷新本机可用的 providers 配置。
+[140] draw=False style=Heading 2 | 3.7 可测试性、维护/升级设计
+[141] draw=False style=Normal | （1）三类样例证书链作为回归基线。
+[142] draw=False style=Normal | （2）验签诊断开关便于定位，不影响正常模式。
+[143] draw=False style=Normal | （3）引擎产物与界面资源分离，升级以同步布局方式替换。
+[144] draw=False style=Normal | （4）Provider 可独立替换，便于算法档位扩展。
+[145] draw=False style=Heading 2 | 3.8 前期工作计划
+[146] draw=False style=Normal | 表 3-4 前期工作计划
+[148] draw=False style=Heading 2 | 3.9 尚未解决的问题
+[149] draw=False style=Normal | （1）CRL/OCSP 撤销检查纳入时机。
+[150] draw=False style=Normal | （2）更高强度算法档位互通与性能评估。
+[151] draw=False style=Normal | （3）自定义扩展 OID 标准化推进。
+[152] draw=False style=Normal | （4）桌面容器安全加固排期。
+[153] draw=False style=Normal | （5）TLS/NTLS 是否纳入后续版本，需立项确认。
+[154] draw=False style=Heading 1 | 4 模块说明
+[155] draw=False style=Heading 2 | 4.1 PD-001 图形界面与交互模块
+[156] draw=False style=Normal | 输入：证书路径、可选中间证、信任锚、CSR 参数；输出：解析/验链/CSR 结果。不实现密码算法。界面含「证书验证」「CSR 生成与验证」两个功能页；右上角提供运行时就绪指示。内置样例目录对应三类方案：Pure PQC Certificate、Hybrid Concatenated Certificate、Hybrid Using Extensions Certificate。
+[157] draw=False style=Normal | 处理流程：运行时自检 → 选择文件/参数 → 调用验证执行层 → 展示结果。验链支持信任锚 + 可选中间证 + 待验证证；若仅选择中间 CA 作为信任锚且不提供上级链，可按部分链（partial chain）方式验证。复合 CSR 选择对应算法后由界面自动关联双密钥文件，无需用户上传第二把私钥。
+[158] draw=True style=Normal | 
+[159] draw=False style=Normal | 图 4-1 证书验证主界面
+[160] draw=True style=Normal | 
+[161] draw=False style=Normal | 图 4-2 证书查看结果示例
+[162] draw=True style=Normal | 
+[163] draw=False style=Normal | 图 4-3 证书链验证成功示例
+[164] draw=True style=Normal | 
+[165] draw=False style=Normal | 图 4-4 CSR 生成与验证界面
+[166] draw=True style=Normal | 
+[167] draw=False style=Normal | 图 4-5 CSR 生成或验签结果示例
+[168] draw=False style=Normal | 表 4-1 PD-001 子模块划分
+[170] draw=False style=Heading 2 | 4.2 PD-002 密码运行时与命令接口模块
+[171] draw=False style=Normal | 提供统一命令/API 契约（查看、验链、密钥生成、CSR），并承载复合请求附加 SM2 密钥扩展点。
+[172] draw=False style=Normal | 表 4-2 PD-002 子模块划分
+[174] draw=False style=Heading 2 | 4.3 PD-003 PQC算法Provider模块

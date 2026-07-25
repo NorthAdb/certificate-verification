@@ -1,0 +1,3 @@
+[submodule "tlcp-pqc"]
+	path = tlcp-pqc
+	url = https://github.com/NorthAdb/tlcp-pqc.git

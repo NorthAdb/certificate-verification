@@ -1,4 +1,8 @@
 node_modules/
+resources/app/node_modules/
 *.pdb
 .DS_Store
 Thumbs.db
+
+# 主程序超过 GitHub 100MB，由仓库根目录 Release 提供
+/证书验证.exe

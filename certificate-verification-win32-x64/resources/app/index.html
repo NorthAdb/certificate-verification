@@ -1,437 +1,1254 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>抗量子数字证书验证工具</title>
+  <style>
+    :root {
+      --bg: #eef1f6;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --border: #e2e8f0;
+      --border-focus: #6366f1;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-soft: #eef2ff;
+      --sidebar: #1e1b4b;
+      --sidebar-hover: rgba(255, 255, 255, 0.08);
+      --sidebar-active: rgba(99, 102, 241, 0.35);
+      --shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --mono: Consolas, "Cascadia Mono", "Courier New", monospace;
+    }
 
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.12), transparent),
+        var(--bg);
+    }
+
+    .shell {
+      display: flex;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, #312e81 0%, var(--sidebar) 40%, #1e1b4b 100%);
+      color: #e0e7ff;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 12px;
+      gap: 8px;
+      box-shadow: 4px 0 24px rgba(30, 27, 75, 0.15);
+    }
+
+    .sidebar-brand {
+      padding: 4px 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 8px;
+    }
+
+    .sidebar-brand strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      line-height: 1.35;
+    }
+
+    .sidebar-brand span {
+      font-size: 11px;
+      opacity: 0.65;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 14px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: #c7d2fe;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-item:hover {
+      background: var(--sidebar-hover);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: var(--sidebar-active);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: inset 0 0 0 1px rgba(165, 180, 252, 0.25);
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .nav-icon svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px 18px;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .main-workspace {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .status-pill::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .status-pill.ok {
+      color: #047857;
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .status-pill.ok::before { background: #10b981; }
+
+    .status-pill.err {
+      color: #b91c1c;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    .status-pill.err::before { background: #ef4444; }
+
+    .view {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .view.active {
+      display: flex;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 20px;
+      flex-shrink: 0;
+    }
+
+    .card-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      font-size: 12px;
+      font-weight: 650;
+      color: var(--text);
+    }
+
+    .card-label .step {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .path-wrap {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+    }
+
+    .path {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px 0 36px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      font-size: 12px;
+      color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    .path.filled {
+      background: #fff;
+      border-color: #c7d2fe;
+    }
+
+    .path-wrap::before {
+      content: "📄";
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .path-wrap.csr-icon::before {
+      content: "📋";
+    }
+
+    .path-wrap.plain::before {
+      display: none;
+    }
+
+    .path.plain {
+      padding-left: 12px;
+    }
+
+    .field-block {
+      margin-bottom: 12px;
+    }
+
+    .field-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      margin: 0 0 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .field-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .field-label-row .field-label {
+      margin: 0;
+    }
+
+    .field-select {
+      width: 100%;
+      height: 38px;
+      padding: 0 32px 0 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M2.5 4.5 6 8l3.5-3.5'/%3E%3C/svg%3E") no-repeat right 12px center;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+      appearance: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .field-select:hover {
+      border-color: #cbd5e1;
+    }
+
+    .field-select:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .algo-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+
+    .algo-badge.ok {
+      color: #047857;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+
+    .algo-badge.soon {
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+    }
+
+    .csr-gen-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .csr-row-split {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .csr-row-split .field-col-algo {
+      flex: 0 0 272px;
+      min-width: 200px;
+    }
+
+    .csr-row-split .field-col-subj {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .csr-algo-hint {
+      margin-top: 8px;
+    }
+
+    .path::placeholder { color: var(--text-subtle); }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.05s;
+    }
+
+    button:active { transform: translateY(1px); }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+
+    .btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-accent {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: #c7d2fe;
+    }
+
+    .btn-accent:hover {
+      background: #e0e7ff;
+      border-color: #a5b4fc;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 4px 2px 0;
+      flex-shrink: 0;
+    }
+
+    .hint {
+      margin: 0;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .btn-primary {
+      height: 40px;
+      padding: 0 28px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4f46e5 0%, var(--accent-hover) 100%);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+    }
+
+    .output-card {
+      flex: 1 1 auto;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .output-header {
+      padding: 12px 18px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .output-header .card-label { margin: 0; }
+
+    #resultOutput {
+      flex: 1 1 auto;
+      min-height: 0;
+      margin: 0;
+      padding: 16px 18px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      overflow-y: auto;
+      background: var(--surface);
+      color: var(--text);
+      border: none;
+    }
+
+    #resultOutput.empty { color: var(--text-muted); }
+
+    #resultOutput.busy {
+      color: var(--accent);
+    }
+
+    @media (max-width: 800px) {
+      .sidebar { width: 56px; padding: 16px 8px; }
+      .sidebar-brand span, .nav-label { display: none; }
+      .nav-item { justify-content: center; padding: 12px; }
+      .field-row { flex-direction: column; }
+      .btn-group { width: 100%; }
+      .btn-group .btn { flex: 1; }
+    }
+  </style>
+</head>
 <body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <strong>抗量子数字证书验证工具</strong>
+    </div>
+    <button type="button" class="nav-item active" data-view="cert" onclick="switchView('cert')">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="8" y1="13" x2="16" y2="13"/>
+          <line x1="8" y1="16" x2="12" y2="16"/>
+          <circle cx="17" cy="17" r="2.25"/>
+          <path d="M17 19.25v2"/>
+          <path d="M15.5 20.75h3"/>
+        </svg>
+      </span>
+      <span class="nav-label">证书验证</span>
+    </button>
+    <button type="button" class="nav-item" data-view="csr" onclick="switchView('csr')">
+      <span class="nav-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V9z"/>
+          <polyline points="13 2 13 9 20 9"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+          <line x1="8" y1="15" x2="13" y2="15"/>
+          <path d="M8 18.5c.75-.75 1.4-.75 2.05 0 .65.75 1.3.75 1.95 0"/>
+          <path d="M18.5 15.5l2.5 2.5"/>
+          <path d="M17.6 16.4l1-3.2 2.4 1.6-3.1 1"/>
+        </svg>
+      </span>
+      <span class="nav-label">CSR 生成与验证</span>
+    </button>
+  </aside>
+
+  <div class="main">
+    <div class="main-workspace">
+    <header class="header">
+      <div class="brand-text">
+        <h1 id="pageTitle">证书验证</h1>
+        <p id="pageSubtitle">PQC / 混合证书查看与验链</p>
+      </div>
+      <span id="runtimeStatus" class="status-pill">检查运行时…</span>
+    </header>
+
+    <div id="viewCert" class="view active">
+      <section class="card">
+        <p class="card-label"><span class="step">1</span>信任锚点证书 <span style="font-weight:500;color:var(--text-muted)">（-CAfile）</span></p>
+        <div class="field-row">
+          <div class="path-wrap">
+            <input type="text" class="path" disabled id="inputFileAgent" placeholder="选择信任锚点（通常为根 CA；仅信中间 CA 时选中间证）" />
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn" onclick="pickRootCert()">选择文件</button>
+            <input type="file" id="inputFile" accept=".crt,.cer,.pem" style="display:none" onchange="onRootFilePicked()" />
+            <button type="button" class="btn btn-accent" onclick="viewRootCert()">查看证书</button>
+            <button type="button" class="btn" onclick="clearRootCert()">清空</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="card-label"><span class="step">2</span>中间证书 <span style="font-weight:500;color:var(--text-muted)">（-untrusted，可选）</span></p>
+        <div class="field-row">
+          <div class="path-wrap">
+            <input type="text" class="path" disabled id="inputIntermediateAgent" placeholder="无中间 CA 时留空" />
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn" onclick="pickIntermediateCert()">选择文件</button>
+            <input type="file" id="inputIntermediate" accept=".crt,.cer,.pem" style="display:none" onchange="onIntermediateFilePicked()" />
+            <button type="button" class="btn btn-accent" onclick="viewIntermediateCert()">查看证书</button>
+            <button type="button" class="btn" onclick="clearIntermediateCert()">清空</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="card-label"><span class="step">3</span>待验证证书</p>
+        <div class="field-row">
+          <div class="path-wrap">
+            <input type="text" class="path" disabled id="inputFileAgent1" placeholder="选择待验证的证书（通常为叶子证）" />
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn" onclick="pickVerifyCert()">选择文件</button>
+            <input type="file" id="inputFile1" accept=".crt,.cer,.pem" style="display:none" onchange="onVerifyFilePicked()" />
+            <button type="button" class="btn btn-accent" onclick="viewCert()">查看证书</button>
+            <button type="button" class="btn" onclick="clearVerifyCert()">清空</button>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:12px">
+          两段链（根直接签叶子）：填 1、3，第 2 步留空。
+          三段链（根 → 中间 → 叶子）：填 1、2、3。
+          只信任中间 CA：第 1 步选中间证，第 2 步留空，第 3 步选叶子证（程序自动加 <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">-partial_chain</code>）。
+          缺中间证时由 OpenSSL 报错，不会自动查找同目录证书。
+        </p>
+      </section>
+
+      <div class="toolbar">
+        <p class="hint">选择文件后点击「验证证书」执行 openssl verify</p>
+        <button type="button" class="btn-primary" id="btnVerify" onclick="verifyCert()">验证证书</button>
+      </div>
+    </div>
+
+    <div id="viewCsr" class="view">
+      <section class="card csr-gen-card">
+        <p class="card-label"><span class="step">1</span>生成 CSR</p>
+        <div class="csr-gen-form">
+          <div class="field-block">
+            <div class="csr-row-split">
+              <div class="field-col field-col-algo">
+                <div class="field-label-row">
+                  <p class="field-label">签名算法</p>
+                  <span id="csrAlgoBadge" class="algo-badge ok">可用</span>
+                </div>
+                <select id="selectCsrAlgorithm" class="field-select" onchange="onCsrAlgorithmChange()">
+                  <option value="id-ML-DSA-44-SPKI">ML-DSA-44-SPKI — 纯 PQC</option>
+                  <option value="id-ML-DSA-44-SM2">ML-DSA-44-SM2 — PQC + SM2</option>
+                </select>
+              </div>
+              <div class="field-col field-col-subj">
+                <p class="field-label">主题 DN（-subj）</p>
+                <div class="path-wrap plain">
+                  <input type="text" class="path plain" id="inputCsrSubj" value="/C=CN/ST=Beijing/O=TLCP-PQC/OU=Demo/CN=ProviderGenDemo" spellcheck="false" />
+                </div>
+              </div>
+            </div>
+            <p class="hint csr-algo-hint" id="csrAlgoHint">纯 PQC 单密钥；同目录自动生成同名 .key 并签发 CSR。</p>
+          </div>
+          <div class="field-block">
+            <p class="field-label">CSR 保存位置</p>
+            <div class="field-row">
+              <div class="path-wrap csr-icon">
+                <input type="text" class="path" disabled id="inputCsrOutAgent" placeholder="指定 .csr 保存路径" />
+              </div>
+              <div class="btn-group">
+                <button type="button" class="btn" onclick="pickCsrSavePath()">指定保存位置</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <p class="hint" id="csrGenerateHint">选择算法、填写主题并指定保存位置后点击「生成 CSR」</p>
+        <button type="button" class="btn-primary" id="btnGenerateCsr" onclick="generateCsr()">生成 CSR</button>
+      </div>
+
+      <section class="card">
+        <p class="card-label"><span class="step">2</span>查看与验签 CSR</p>
+        <div class="field-row">
+          <div class="path-wrap csr-icon">
+            <input type="text" class="path" disabled id="inputCsrAgent" placeholder="选择 CSR 文件（.csr / .pem / .req）" />
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn" onclick="pickCsr()">选择 CSR</button>
+            <input type="file" id="inputCsr" accept=".csr,.pem,.req" style="display:none" onchange="onCsrFilePicked()" />
+            <button type="button" class="btn btn-accent" onclick="viewCsr()">查看 CSR</button>
+            <button type="button" class="btn" onclick="clearCsr()">清空</button>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:12px">支持 ML-DSA-44-SPKI、ML-DSA-44-SM2 等 PQC / 混合 CSR；查看与验签通过 Tongsuo <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">openssl req</code> 完成。</p>
+      </section>
+
+      <div class="toolbar">
+        <p class="hint">选择 CSR 后点击「验签 CSR」验证申请自签名（openssl req -verify）</p>
+        <button type="button" class="btn-primary" id="btnVerifyCsr" onclick="verifyCsr()">验签 CSR</button>
+      </div>
+      </div>
+    </div>
+
+    <section class="output-card">
+      <div class="output-header">
+        <p class="card-label"><span class="step">⌘</span>命令输出</p>
+      </div>
+      <pre id="resultOutput" class="empty">（命令输出将显示在此处）</pre>
+    </section>
+  </div>
+</div>
+
 <script>
-	var gmssl = './gmssl.exe '
-</script>
+  const path = require('path')
+  const fs = require('fs')
+  const { execFile, execFileSync } = require('child_process')
 
+  const appRoot = __dirname
+  const opensslExe = path.join(appRoot, 'tongsuo', 'bin', 'openssl.exe')
 
-<p><font size="2">根证书&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">———————————————————————</font></p>
+  let rootCertPath = ''
+  let intermediateCertPath = ''
+  let verifyCertPath = ''
+  let csrPath = ''
+  let csrOutPath = ''
+  let busy = false
+  let activeView = 'cert'
 
-&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="text" value="" disabled style="width:240px;" id="inputFileAgent" />&nbsp;&nbsp;
-<!--<div align="center">-->
-<input type="button" onclick="inputRootCert()" value="选择文件" />
-<input type="file" id="inputFile" name="inputFile" style="display:none" onchange="changeAgentContent()" />
-
-<script>
-	function inputRootCert() {
-		document.getElementById('inputFile').click();
-		//m=2;
-		//alert(m);
-
-	}
-</script>
-
-<script type="text/javascript">
-    function changeAgentContent(){
-        document.getElementById("inputFileAgent").value = document.getElementById("inputFile").value;
+  const CSR_ALGORITHMS = [
+    {
+      id: 'id-ML-DSA-44-SPKI',
+      label: 'ML-DSA-44-SPKI',
+      hint: '纯 PQC 单密钥；同目录自动生成同名 .key 并签发 CSR。',
+      implemented: true
+    },
+    {
+      id: 'id-ML-DSA-44-SM2',
+      label: 'ML-DSA-44-SM2',
+      hint: 'PQC + SM2 复合 SPKI；同目录自动生成 <stem>.mldsa.key、<stem>.sm2.key 与 CSR。',
+      implemented: true
     }
-</script>&nbsp;&nbsp;
-<!--<button onclick="viewRootCert()">证书信息</button>-->
-<input type="button" onclick="viewRootCert()" value="查看证书">
+  ]
 
-
-<script>
-	function viewRootCert(){
-		//var   c=document.getElementById("inputFile").files[0].path;
-		var   str= document.getElementById("inputFileAgent").value;
-		if (str=='') {
-			alert("请选择根证书");
-		}
-		//else {
-		//alert("jj");
-		//}
-		//alert(str);
-		
-        var   c=document.getElementById("inputFile").files[0].path;
-		const exec = require('child_process').exec
-		//var   c= c || "1";
-		//var   c=document.getElementById("inputFile").files[0].path;
-		
-		let cmdStr =  'gmssl x509 -in ' + c +' -noout -text'
-		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
-
-		let workerProcess
-
-		workerProcess = exec(cmdStr, {})
-		// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
-
-
-		workerProcess.stdout.on('data', function (data) {
-		//console.log(data);
-        //document.write(data);
-        alert(data);
-        });
- 
-  // 打印错误的后台可执行程序输出
-         workerProcess.stderr.on('data', function (data) {
-//console.log(data);
-         //document.write(data);
-         alert(data);
-         //confirm(data);
-         });
-         //m=1;
-	}
-
-</script>
-<!--</div>-->
-<p><font size="2">CRL&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">————————————————————————</font></p>
-
-
-&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="file" id="inputFile2" name="inputFile2" style="display:none" onchange="changeAgentContent2()" />
-<input type="text" value="" disabled style="width:240px;" id="inputFileAgent2" />&nbsp;&nbsp;
-<input type="button" onclick="document.getElementById('inputFile2').click()" value="选择文件" />
-
-
-<script type="text/javascript">
-    function changeAgentContent2(){
-        document.getElementById("inputFileAgent2").value = document.getElementById("inputFile2").value;
+  const VIEW_META = {
+    cert: {
+      title: '证书验证',
+      subtitle: 'PQC / 混合证书查看与验链'
+    },
+    csr: {
+      title: 'CSR 生成与验证',
+      subtitle: 'ML-DSA-44 证书签名请求（SPKI / 复合）'
     }
-</script>&nbsp;&nbsp;
+  }
 
-<!--<button onclick="viewRootCert()">证书信息</button>-->
-<input type="button" onclick="viewCrl()" value="查看CRL">
+  function switchView (view) {
+    activeView = view
+    document.querySelectorAll('.nav-item').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-view') === view)
+    })
+    document.getElementById('viewCert').classList.toggle('active', view === 'cert')
+    document.getElementById('viewCsr').classList.toggle('active', view === 'csr')
+    const meta = VIEW_META[view]
+    document.getElementById('pageTitle').textContent = meta.title
+    document.getElementById('pageSubtitle').textContent = meta.subtitle
+  }
 
-<br /><br />    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-<input type="button" onclick="verifyCrl()" value="验证CRL">
-<!--    查看Crl在此处    -->
-
-<script>
-	function viewCrl(){
-		var   str= document.getElementById("inputFileAgent2").value;
-		if (str=='') {
-			alert("请选择CRL");
-		}
-
-		const exec = require('child_process').exec
-		var   q = document.getElementById("inputFile2").files[0].path;
-		let cmdStr =  'gmssl crl -in ' + q + ' -noout -text'
-		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
-
-		let workerProcess
-
-		workerProcess = exec(cmdStr, {})
-
-		workerProcess.stdout.on('data', function (data) {
-//console.log(data);
-        //document.write(data);
-        alert(data);
-        });
- 
-  // 打印错误的后台可执行程序输出
-         workerProcess.stderr.on('data', function (data) {
-//console.log(data);
-         //document.write(data);
-         alert(data);
-         //confirm(data);
-         });
-	}
-
-
-	function verifyCrl() {
-		var   str=  document.getElementById("inputFileAgent").value;
-		var   str1= document.getElementById("inputFileAgent2").value;
-		if (str=='' && str1=='') {
-				alert("请选择根证书和要验证的CRL");
-			} 
-		else if (str==''){
-			alert("请选择根证书");
-		}
-		else if (str1==''){
-			alert("请选择要验证的CRL");
-		}
-		else{
-
-		}
-
-		const exec = require('child_process').exec
-		var   a=document.getElementById("inputFile").files[0].path;
-		var   b=document.getElementById("inputFile2").files[0].path;
-		//var   q=document.getElementById("inputFile2").files[0].path;
-
-
-		var nn =  'gmssl crl -in ' + b + ' -CAfile ' + a +' -noout ';
-
-		//const exec = require('child_process').exec
-		//var   a=document.getElementById("inputFile").files[0].path;
-		//var   b=document.getElementById("inputFile1").files[0].path;
-		//var   q=document.getElementById("inputFile2").files[0].path;
-
-	
-	
-		// 任何你期望执行的cmd命令，ls都可以
-		let cmdStr = nn
-		//let cmdStr = 'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b
-		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
-		
-		// 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
-		//let cmdPath = '/users/xiaojin/Desktop/demoCA' 
-		// 子进程名称
-		let workerProcess
-		
-
-		// 执行命令行，如果命令不需要路径，或就是项目根目录，则不需要cwd参数：
-		workerProcess = exec(cmdStr, {})//{cwd: cmdPath}
-		// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
-		
-		// 打印正常的后台可执行程序输出
-		workerProcess.stdout.on('data', function (data) {
-		//console.log(data);
-		//document.write(data);
-		alert(data);
-		});
-		
-		// 打印错误的后台可执行程序输出
-		workerProcess.stderr.on('data', function (data) {
-		//console.log(data);
-		//document.write(data);
-		alert(data);
-		});
-		
-		// 退出之后的输出
-		//workerProcess.on('close', function (code) {
-		//console.log(code);
-		//document.write(code);
-		//})
-	}
-</script>
-
-<p><font size="2">要验证的证书&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">—————————————————————</font></p>
-
-&nbsp;&nbsp;&nbsp;&nbsp;<input type="file" id="inputFile1" name="inputFile1" style="display:none" onchange="changeAgentContent1()" />
-<input type="text" value="" disabled style="width:240px;" id="inputFileAgent1" />&nbsp;&nbsp;
-<input type="button" onclick="document.getElementById('inputFile1').click()" value="选择文件" />
-<script type="text/javascript">
-    function changeAgentContent1(){
-        document.getElementById("inputFileAgent1").value = document.getElementById("inputFile1").value;
+  function ensureOpensslConf () {
+    const providersDir = path.join(appRoot, 'providers')
+    const mod = function (name) {
+      return path.join(providersDir, name).replace(/\\/g, '/')
     }
-</script>&nbsp;&nbsp;
-<!--<button onclick="viewCert()">证书信息</button>-->
-<input type="button" onclick="viewCert()" value="查看证书">
+    const cnf = [
+      'config_diagnostics = 0',
+      'openssl_conf = openssl_init',
+      '',
+      '[openssl_init]',
+      'providers = provider_sect',
+      '',
+      '[provider_sect]',
+      'default = default_sect',
+      'pqmagic = pqmagic_sect',
+      'ml_dsa_sm2 = ml_dsa_sm2_sect',
+      'cert_verify = cert_verify_sect',
+      'aigis_enc = aigis_enc_sect',
+      '',
+      '[default_sect]',
+      'activate = 1',
+      '',
+      '[pqmagic_sect]',
+      'module = ' + mod('pqmagic.dll'),
+      'activate = 1',
+      '',
+      '[ml_dsa_sm2_sect]',
+      'module = ' + mod('libml_dsa_sm2_provider.dll'),
+      'activate = 1',
+      '',
+      '[cert_verify_sect]',
+      'module = ' + mod('cert_verify.dll'),
+      'activate = 1',
+      '',
+      '[aigis_enc_sect]',
+      'module = ' + mod('aigis_enc.dll'),
+      'activate = 1',
+      ''
+    ].join('\n')
+    const outDir = path.join(appRoot, 'config')
+    fs.mkdirSync(outDir, { recursive: true })
+    fs.writeFileSync(path.join(outDir, 'openssl-all-providers.cnf'), cnf, 'utf8')
+  }
 
-<script>
-	function viewCert(){
+  function buildOpensslEnv () {
+    const sep = path.delimiter
+    const tongsuoBin = path.join(appRoot, 'tongsuo', 'bin')
+    const providers = path.join(appRoot, 'providers')
+    return Object.assign({}, process.env, {
+      PATH: [tongsuoBin, process.env.PATH].join(sep),
+      OPENSSL_CONF: path.join(appRoot, 'config', 'openssl-all-providers.cnf'),
+      OPENSSL_MODULES: providers,
+      PQMAGIC_STD_LIB: path.join(providers, 'pqmagic.dll'),
+      CERT_VERIFY_SO: path.join(providers, 'cert_verify.dll'),
+      CERT_VERIFY_VERIFY_INFO: '1'
+    })
+  }
 
-        var   str1= document.getElementById("inputFileAgent1").value;
-		if (str1=='') {
-			alert("请选择要验证的证书");
-		}
+  function formatExitCode (code) {
+    if (code === undefined || code === null) return ''
+    const u = (code >>> 0)
+    if (u === 0xC0000135) {
+      return '退出码: ' + code + ' (0xC0000135 — 找不到 DLL)\n' +
+        '请确认 resources\\app\\tongsuo\\bin 下存在 libcrypto-3-x64.dll（与 openssl.exe 同目录）。'
+    }
+    if (u === 0xC000001D) {
+      return '退出码: ' + code + ' (0xC000001D — 非法指令，PQMagic 需可移植编译)'
+    }
+    return '退出码: ' + code
+  }
 
-		const exec = require('child_process').exec
-		var   d = document.getElementById("inputFile1").files[0].path;
-		let cmdStr =  'gmssl x509 -in ' + d +' -noout -text'
+  function setPathField (id, value) {
+    const el = document.getElementById(id)
+    el.value = value
+    el.title = value || ''
+    el.classList.toggle('filled', !!value)
+    if (value) {
+      setTimeout(function () {
+        el.scrollLeft = el.scrollWidth
+      }, 0)
+    } else {
+      el.scrollLeft = 0
+    }
+  }
 
+  function setBusyState (on) {
+    busy = on
+    document.getElementById('btnVerify').disabled = on
+    document.getElementById('btnVerifyCsr').disabled = on
+    document.getElementById('btnGenerateCsr').disabled = on
+    const out = document.getElementById('resultOutput')
+    out.classList.toggle('busy', on)
+  }
 
-        //let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
+  function assertFile (filePath, label, exts) {
+    if (!filePath || !String(filePath).trim()) {
+      setResult('请选择' + label)
+      return false
+    }
+    if (!fs.existsSync(filePath)) {
+      setResult('文件不存在: ' + filePath)
+      return false
+    }
+    const st = fs.statSync(filePath)
+    if (!st.isFile()) {
+      setResult(label + '必须是文件，不能是目录：\n' + filePath)
+      return false
+    }
+    if (exts && exts.length) {
+      const ext = path.extname(filePath).toLowerCase()
+      if (exts.indexOf(ext) < 0) {
+        setResult(label + '扩展名应为 ' + exts.join(' / ') + '，当前: ' + (ext || '(无)'))
+        return false
+      }
+    }
+    return true
+  }
 
-		let workerProcess
+  function assertCertFile (certPath, label) {
+    return assertFile(certPath, label, ['.crt', '.cer', '.pem'])
+  }
 
-		workerProcess = exec(cmdStr, {})
+  function assertCsrFile (filePath, label) {
+    return assertFile(filePath, label, ['.csr', '.pem', '.req'])
+  }
 
-		workerProcess.stdout.on('data', function (data) {
-//console.log(data);
-        //document.write(data);
-        alert(data);
-        });
- 
-  // 打印错误的后台可执行程序输出
-         workerProcess.stderr.on('data', function (data) {
-//console.log(data);
-         //document.write(data);
-         alert(data);
-         });
-	}
+  function updateRuntimeStatus (ok) {
+    const el = document.getElementById('runtimeStatus')
+    el.textContent = ok ? '运行时就绪' : '运行时不完整'
+    el.className = 'status-pill ' + (ok ? 'ok' : 'err')
+  }
+
+  function checkRuntime (silent) {
+    const cryptoDll = path.join(appRoot, 'tongsuo', 'bin', 'libcrypto-3-x64.dll')
+    const ok = fs.existsSync(opensslExe) && fs.existsSync(cryptoDll)
+    updateRuntimeStatus(ok)
+    if (!ok && !silent) {
+      setResult('Tongsuo 运行时不完整。\n请确认本目录下 resources\\app\\tongsuo\\bin\\openssl.exe 存在。')
+    }
+    return ok
+  }
+
+  function setResult (text) {
+    const out = document.getElementById('resultOutput')
+    const empty = !text || text === '（命令输出将显示在此处）'
+    out.textContent = text || '（无输出）'
+    out.classList.toggle('empty', empty)
+    out.classList.remove('busy')
+  }
+
+  function readCertSubjectIssuer (certPath) {
+    const out = execFileSync(opensslExe, ['x509', '-in', certPath, '-noout', '-subject', '-issuer'], {
+      cwd: path.join(appRoot, 'tongsuo', 'bin'),
+      env: buildOpensslEnv(),
+      encoding: 'utf8'
+    })
+    const subject = (out.match(/^subject\s*=\s*(.+)$/m) || [])[1]
+    const issuer = (out.match(/^issuer\s*=\s*(.+)$/m) || [])[1]
+    return {
+      subject: (subject || '').trim(),
+      issuer: (issuer || '').trim()
+    }
+  }
+
+  function isSelfSignedCert (certPath) {
+    try {
+      const info = readCertSubjectIssuer(certPath)
+      return !!(info.subject && info.issuer && info.subject === info.issuer)
+    } catch (e) {
+      return false
+    }
+  }
+
+  /**
+   * 构造 openssl verify 参数（方案 A：用户显式选证，不自动推断同目录中间证）。
+   * - 有中间证：-CAfile trust -untrusted intermediate leaf
+   * - 无中间证且信任锚非自签根：-CAfile trust -partial_chain leaf
+   * - 无中间证且信任锚为自签根：-CAfile trust leaf
+   */
+  function buildCertVerifyArgs (trustAnchor, intermediate, certToVerify) {
+    const args = ['verify', '-CAfile', trustAnchor]
+    if (intermediate) {
+      args.push('-untrusted', intermediate)
+    } else if (!isSelfSignedCert(trustAnchor)) {
+      args.push('-partial_chain')
+    }
+    args.push(certToVerify)
+    return args
+  }
+
+  function runOpenssl (args, successHint) {
+    if (!checkRuntime()) return
+    setBusyState(true)
+    setResult('执行中: openssl ' + args.join(' ') + '\n')
+    execFile(opensslExe, args, {
+      cwd: path.join(appRoot, 'tongsuo', 'bin'),
+      env: buildOpensslEnv(),
+      maxBuffer: 16 * 1024 * 1024
+    }, function (err, stdout, stderr) {
+      setBusyState(false)
+      let text = (stdout || '') + (stderr || '')
+      const okMarker = successHint || ': OK'
+      const verifyOk = /verify OK/i.test(text) || text.indexOf(okMarker) >= 0
+      if (err && !verifyOk) {
+        text += (text ? '\n\n' : '') + formatExitCode(err.code)
+      }
+      setResult(text || '(无输出)')
+    })
+  }
+
+  function pickRootCert () {
+    document.getElementById('inputFile').click()
+  }
+
+  function pickIntermediateCert () {
+    document.getElementById('inputIntermediate').click()
+  }
+
+  function pickVerifyCert () {
+    document.getElementById('inputFile1').click()
+  }
+
+  function pickCsr () {
+    document.getElementById('inputCsr').click()
+  }
+
+  function getSelectedCsrAlgorithm () {
+    const sel = document.getElementById('selectCsrAlgorithm')
+    const id = sel ? sel.value : CSR_ALGORITHMS[0].id
+    return CSR_ALGORITHMS.find(function (a) { return a.id === id }) || CSR_ALGORITHMS[0]
+  }
+
+  function onCsrAlgorithmChange () {
+    const algo = getSelectedCsrAlgorithm()
+    const hintEl = document.getElementById('csrAlgoHint')
+    const badgeEl = document.getElementById('csrAlgoBadge')
+    const toolbarHint = document.getElementById('csrGenerateHint')
+    if (hintEl) hintEl.textContent = algo.hint
+    if (badgeEl) {
+      badgeEl.textContent = algo.implemented ? '可用' : '即将支持'
+      badgeEl.className = 'algo-badge ' + (algo.implemented ? 'ok' : 'soon')
+    }
+    if (toolbarHint) {
+      toolbarHint.textContent = algo.implemented
+        ? '选择算法、填写主题并指定保存位置后点击「生成 CSR」'
+        : '「' + algo.label + '」生成尚未接入，请切换为 ML-DSA-44-SPKI 或仅使用下方查看/验签'
+    }
+  }
+
+  function pickCsrSavePath () {
+    try {
+      const { dialog } = require('electron').remote
+      const chosen = dialog.showSaveDialogSync({
+        title: '保存 CSR 文件',
+        defaultPath: 'request.csr',
+        filters: [
+          { name: '证书签名请求', extensions: ['csr'] },
+          { name: 'PEM', extensions: ['pem', 'req'] }
+        ]
+      })
+      if (chosen) {
+        csrOutPath = chosen
+        setPathField('inputCsrOutAgent', chosen)
+      }
+    } catch (e) {
+      setResult('无法打开保存对话框：' + (e.message || e))
+    }
+  }
+
+  function execOpensslSync (args) {
+    return execFileSync(opensslExe, args, {
+      cwd: path.join(appRoot, 'tongsuo', 'bin'),
+      env: buildOpensslEnv(),
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024
+    })
+  }
+
+  function deriveKeyPathFromCsr (csrFile) {
+    const ext = path.extname(csrFile)
+    if (ext) return csrFile.slice(0, -ext.length) + '.key'
+    return csrFile + '.key'
+  }
+
+  function deriveCompositeKeyPathsFromCsr (csrFile) {
+    const ext = path.extname(csrFile)
+    const stem = ext ? csrFile.slice(0, -ext.length) : csrFile
+    return {
+      mldsa: stem + '.mldsa.key',
+      sm2: stem + '.sm2.key'
+    }
+  }
+
+  function generateCsr () {
+    if (!checkRuntime()) return
+    const algo = getSelectedCsrAlgorithm()
+    if (!algo.implemented) {
+      setResult('算法「' + algo.label + '」的 CSR 生成尚未接入。\n请切换为 ML-DSA-44-SPKI，或使用下方「查看与验签 CSR」处理已有文件。')
+      return
+    }
+    const subj = (document.getElementById('inputCsrSubj').value || '').trim()
+    if (!subj) {
+      setResult('请填写 -subj 主题 DN（格式如 /C=CN/O=示例/CN=名称）')
+      return
+    }
+    if (!subj.startsWith('/')) {
+      setResult('-subj 须以 / 开头，例如 /C=CN/O=TLCP-PQC/CN=Demo')
+      return
+    }
+    if (!csrOutPath || !String(csrOutPath).trim()) {
+      setResult('请先点击「指定保存位置」选择 CSR 文件的保存路径')
+      return
+    }
+    const outDir = path.dirname(csrOutPath)
+    try {
+      fs.mkdirSync(outDir, { recursive: true })
+    } catch (e) {
+      setResult('无法创建保存目录：' + outDir + '\n' + (e.message || e))
+      return
+    }
+
+    const lines = []
+    const isComposite = algo.id === 'id-ML-DSA-44-SM2'
+
+    setBusyState(true)
+    try {
+      lines.push('算法: ' + algo.label + ' (' + algo.id + ')')
+
+      if (isComposite) {
+        const keys = deriveCompositeKeyPathsFromCsr(csrOutPath)
+        lines.push('$ openssl genpkey -algorithm id-ML-DSA-44-SPKI -out ' + keys.mldsa)
+        execOpensslSync(['genpkey', '-algorithm', 'id-ML-DSA-44-SPKI', '-out', keys.mldsa])
+        lines.push('ML-DSA 私钥: ' + keys.mldsa)
+        lines.push('$ openssl genpkey -algorithm SM2 -out ' + keys.sm2)
+        execOpensslSync(['genpkey', '-algorithm', 'SM2', '-out', keys.sm2])
+        lines.push('SM2 私钥: ' + keys.sm2)
+        lines.push('$ openssl req -new -key ' + keys.mldsa + ' -sm2key ' + keys.sm2 + ' -subj ' + subj + ' -out ' + csrOutPath)
+        execOpensslSync(['req', '-new', '-key', keys.mldsa, '-sm2key', keys.sm2, '-subj', subj, '-out', csrOutPath])
+      } else {
+        const keyPath = deriveKeyPathFromCsr(csrOutPath)
+        lines.push('$ openssl genpkey -algorithm ' + algo.id + ' -out ' + keyPath)
+        execOpensslSync(['genpkey', '-algorithm', algo.id, '-out', keyPath])
+        lines.push('私钥已生成: ' + keyPath)
+        lines.push('$ openssl req -new -key ' + keyPath + ' -subj ' + subj + ' -out ' + csrOutPath)
+        execOpensslSync(['req', '-new', '-key', keyPath, '-subj', subj, '-out', csrOutPath])
+      }
+
+      lines.push('CSR 已保存: ' + csrOutPath)
+      const verifyOut = execOpensslSync(['req', '-in', csrOutPath, '-verify', '-noout'])
+      if (verifyOut) lines.push(verifyOut.trim())
+      lines.push('自签验签: OK')
+      csrPath = csrOutPath
+      setPathField('inputCsrAgent', csrOutPath)
+      setResult(lines.join('\n'))
+    } catch (e) {
+      let text = lines.join('\n')
+      if (e.stdout) text += (text ? '\n' : '') + e.stdout
+      if (e.stderr) text += (text ? '\n' : '') + e.stderr
+      text += (text ? '\n\n' : '') + formatExitCode(e.status)
+      if (e.message) text += '\n' + e.message
+      setResult(text || '生成 CSR 失败')
+    } finally {
+      setBusyState(false)
+    }
+  }
+
+  function onRootFilePicked () {
+    const input = document.getElementById('inputFile')
+    if (input.files && input.files[0]) {
+      rootCertPath = input.files[0].path
+      setPathField('inputFileAgent', rootCertPath)
+    }
+  }
+
+  function clearRootCert () {
+    rootCertPath = ''
+    document.getElementById('inputFile').value = ''
+    setPathField('inputFileAgent', '')
+  }
+
+  function onIntermediateFilePicked () {
+    const input = document.getElementById('inputIntermediate')
+    if (input.files && input.files[0]) {
+      intermediateCertPath = input.files[0].path
+      setPathField('inputIntermediateAgent', intermediateCertPath)
+    }
+  }
+
+  function clearIntermediateCert () {
+    intermediateCertPath = ''
+    document.getElementById('inputIntermediate').value = ''
+    setPathField('inputIntermediateAgent', '')
+  }
+
+  function onVerifyFilePicked () {
+    const input = document.getElementById('inputFile1')
+    if (input.files && input.files[0]) {
+      verifyCertPath = input.files[0].path
+      setPathField('inputFileAgent1', verifyCertPath)
+    }
+  }
+
+  function clearVerifyCert () {
+    verifyCertPath = ''
+    document.getElementById('inputFile1').value = ''
+    setPathField('inputFileAgent1', '')
+  }
+
+  function onCsrFilePicked () {
+    const input = document.getElementById('inputCsr')
+    if (input.files && input.files[0]) {
+      csrPath = input.files[0].path
+      setPathField('inputCsrAgent', csrPath)
+    }
+  }
+
+  function clearCsr () {
+    csrPath = ''
+    document.getElementById('inputCsr').value = ''
+    setPathField('inputCsrAgent', '')
+  }
+
+  function viewX509 (certPath, label) {
+    if (!assertCertFile(certPath, label)) return
+    runOpenssl(['x509', '-in', certPath, '-text', '-noout'])
+  }
+
+  function viewRootCert () {
+    viewX509(rootCertPath, '信任锚点证书')
+  }
+
+  function viewIntermediateCert () {
+    viewX509(intermediateCertPath, '中间证书')
+  }
+
+  function viewCert () {
+    viewX509(verifyCertPath, '待验证证书')
+  }
+
+  function viewCsr () {
+    if (!assertCsrFile(csrPath, 'CSR 文件')) return
+    runOpenssl(['req', '-in', csrPath, '-text', '-noout'])
+  }
+
+  function verifyCert () {
+    const trust = rootCertPath
+    const intermediate = intermediateCertPath
+    const cert = verifyCertPath
+    if (!assertCertFile(trust, '信任锚点证书')) return
+    if (intermediate && !assertCertFile(intermediate, '中间证书')) return
+    if (!assertCertFile(cert, '待验证证书')) return
+    if (intermediate) {
+      const ti = path.resolve(intermediate)
+      if (ti === path.resolve(trust) || ti === path.resolve(cert)) {
+        setResult('中间证书不能与信任锚点或待验证证书为同一文件')
+        return
+      }
+    }
+    runOpenssl(buildCertVerifyArgs(trust, intermediate, cert))
+  }
+
+  function verifyCsr () {
+    if (!assertCsrFile(csrPath, 'CSR 文件')) return
+    runOpenssl(['req', '-in', csrPath, '-verify', '-noout'], 'self-signature verify OK')
+  }
+
+  ensureOpensslConf()
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      checkRuntime(true)
+      onCsrAlgorithmChange()
+    })
+  } else {
+    checkRuntime(true)
+    onCsrAlgorithmChange()
+  }
 </script>
-
-
-<!--<br />-->
-
-<br />
-<br />   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        
-<!--<button onclick="myFunction()">确定</button>-->
-<input type="button" onclick="verifyCert()" value="验证证书">
-
-<script>
-	function verifyCert() {
-		var   str=  document.getElementById("inputFileAgent").value;
-		var   str1= document.getElementById("inputFileAgent1").value;
-		if (str=='' && str1=='') {
-				alert("请选择根证书和要验证的证书");
-			} 
-		else if (str==''){
-			alert("请选择根证书");
-		}
-		else if (str1==''){
-			alert("请选择要验证的证书");
-		}
-		else{
-
-		}
-
-		const exec = require('child_process').exec
-		var   a=document.getElementById("inputFile").files[0].path;
-		var   b=document.getElementById("inputFile1").files[0].path;
-		//var   q=document.getElementById("inputFile2").files[0].path;
-
-
-		var   str2= document.getElementById("inputFileAgent2").value;
-			if (str2=='') {
-				var nn =  'gmssl verify -CAfile ' + a + ' '+ b;
-				//alert(nn);
-			}
-			else {
-				var   q=document.getElementById("inputFile2").files[0].path;
-
-				var nn =  'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b;
-				//alert(nn);
-			}
-
-	//const exec = require('child_process').exec
-	//var   a=document.getElementById("inputFile").files[0].path;
-	//var   b=document.getElementById("inputFile1").files[0].path;
-	//var   q=document.getElementById("inputFile2").files[0].path;
-
-	
-	
-	// 任何你期望执行的cmd命令，ls都可以
-	let cmdStr = nn
-	//let cmdStr = 'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b
-	//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
-	
-	// 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
-	//let cmdPath = '/users/xiaojin/Desktop/demoCA' 
-	// 子进程名称
-	let workerProcess
-	
-
-	// 执行命令行，如果命令不需要路径，或就是项目根目录，则不需要cwd参数：
-	workerProcess = exec(cmdStr, {})//{cwd: cmdPath}
-	// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
-	
-	// 打印正常的后台可执行程序输出
-	workerProcess.stdout.on('data', function (data) {
-	//console.log(data);
-	//document.write(data);
-	alert(data);
-	});
-	
-	// 打印错误的后台可执行程序输出
-	workerProcess.stderr.on('data', function (data) {
-	//console.log(data);
-	//document.write(data);
-	alert(data);
-	});
-	
-	// 退出之后的输出
-	//workerProcess.on('close', function (code) {
-	//console.log(code);
-	//document.write(code);
-	//})
-	}
-
-</script>
-
-<p><font size="2">OCSP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#DCDCDC">———————————————————————</font></p>
-
-<!-- <form>
-&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="sex" value="是"><font size="2">是
-<input type="radio" name="sex" value="否" checked>否
-</form> -->
-<!--       OCSP在这里      -->
-
-<font size="2">OCSP URL</font>
-&nbsp;&nbsp;
-<!-- <input type="url" id="ocspUrl" name="ocspUrl" style="display:none" onchange="changeOcspUrl()" /> -->
-<input type="text" value="" style="width:240px;" id="inputOcspUrl" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="button" onclick="queryOcsp()" value="查询OCSP" />
-&nbsp;&nbsp;
-
-<script>
-    //function changeOcspUrl() {
-    //    document.getElementById("inputOcspUrl").value = document.getElementById("ocspUrl").value;
-    //}
-
-	function queryOcsp() {
-		//alert("url为" + document.getElementById("inputOcspUrl").value);
-
-		var str =  document.getElementById("inputFileAgent").value;
-		var str1 = document.getElementById("inputFileAgent1").value;
-		var str2 = document.getElementById("inputOcspUrl").value;
-
-		if (str=='' && str1=='' && str2=='') {
-			alert("请选择根证书和要验证的证书, 并输入OCSP的URL");
-		} else if (str=='' && str1==''){
-			alert("请选择根证书和要验证的证书");
-		} else if (str1=='' && str2==''){
-			alert("请选择要验证的证书, 并输入OCSP的URL");
-		} else if (str=='' && str2==''){
-			alert("请选择根证书, 并输入OCSP的URL");
-		} else if (str==''){
-			alert("请选择根证书");
-		} else if (str1==''){
-			alert("请选择要验证的证书");
-		} else if (str2==''){
-			alert("请输入OCSP的URL");
-		}
-		// 重新聚焦到输入框
-		document.getElementById("inputOcspUrl").focus();
-
-		const exec = require('child_process').exec
-		var a = document.getElementById("inputFile").files[0].path;
-		var b = document.getElementById("inputFile1").files[0].path;
-		var c = str2;
-
-		var nn =  ' gmssl ocsp -issuer ' + a + ' -cert ' + b + ' -text -url ' + c;
-		// 任何你期望执行的cmd命令，ls都可以
-		let cmdStr = nn
-		//let cmdStr = 'gmssl verify -CAfile ' + a +' -verbose -crl_check -CRLfile ' + q +' '+ b
-		//let cmdPath = 'C:\\Users\\86159\\Desktop\\gmssl\\GmSSL-installed\\bin' 
-		
-		// 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
-		//let cmdPath = '/users/xiaojin/Desktop/demoCA' 
-		// 子进程名称
-		let workerProcess
-		
-
-		// 执行命令行，如果命令不需要路径，或就是项目根目录，则不需要cwd参数：
-		workerProcess = exec(cmdStr, {})//{cwd: cmdPath}
-		// 不受child_process默认的缓冲区大小的使用方法，没参数也要写上{}：workerProcess = exec(cmdStr, {})
-		
-		// 打印正常的后台可执行程序输出
-		workerProcess.stdout.on('data', function (data) {
-		//console.log(data);
-		//document.write(data);
-		alert(data);
-		});
-		
-		// 打印错误的后台可执行程序输出
-		workerProcess.stderr.on('data', function (data) {
-		//console.log(data);
-		//document.write(data);
-		alert(data);
-		});
-
-	}
-
-</script>
-&nbsp;&nbsp;
-
-
-
 </body>
 </html>
