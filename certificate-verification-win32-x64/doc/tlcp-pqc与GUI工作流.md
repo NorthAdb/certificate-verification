@@ -1,7 +1,7 @@
 # tlcp-pqc 与 certificate-verification-win32-x64 工作流
 
 > **文档性质：** 跨目录开发与发布流程说明  
-> **更新日期：** 2026-06-18  
+> **更新日期：** 2026-08-21  
 > **命令环境：** 以下可复制块均为 **PowerShell**（`.bat` 需加 `.\` 前缀）  
 > **适用仓库：** `20240429certificate-verification/`
 
@@ -23,8 +23,10 @@ tlcp-pqc/
 ├── pqmagic-algorithms-provider/      # pqmagic provider
 ├── x509-hybrid-spki-provider/        # ML-DSA+SM2 复合 SPKI provider
 ├── x509-hybrid-verify-provider/      # 混合证验签 provider
-├── ntls-aigis-provider/              # aigis_enc provider（可选）
-├── certs/                            # 示例证（CLI 侧：1、2、3 及扩展目录）
+├── aigis-provider/               # Aigis X.509 provider（SIG1/ENC1）
+├── x509-hybrid-spki-provider/
+├── x509-hybrid-verify-provider/
+├── certs/                            # 示例证（mlkemdsa / aigis 等）
 ├── build-*.bat / rebuild-*.bat       # 编译 Tongsuo、providers
 ├── layout-tlcp-pqc.bat               # 汇总构建产物到 tlcp-pqc/bin、providers、config
 ├── bin/                              # openssl.exe + libcrypto/libssl DLL（与 GUI tongsuo/bin 同布局）
@@ -103,7 +105,7 @@ certificate-verification-win32-x64/
 | `pqmagic-algorithms-provider/build/Release/pqmagic.dll` | `providers/pqmagic.dll` |
 | `x509-hybrid-spki-provider/build/Release/libml_dsa_sm2_provider.dll` | `providers/libml_dsa_sm2_provider.dll` |
 | `x509-hybrid-verify-provider/build/Release/cert_verify.dll` | `providers/cert_verify.dll` |
-| `ntls-aigis-provider/build/Release/aigis_enc.dll`（若存在） | `providers/aigis_enc.dll` |
+| `aigis-provider/build/Release/aigis.dll` | `providers/aigis.dll` |
 | `x509-hybrid-verify-provider/build/Release/verify_certs.exe`（若存在） | `bin/verify_certs.exe` |
 | （若不存在）脚本内生成 | `config/openssl-all-providers.cnf` |
 
@@ -116,8 +118,8 @@ certificate-verification-win32-x64/
 | `bin/openssl.exe` | `tongsuo/bin/openssl.exe` | `layout-app-resources.bat` |
 | `bin/libcrypto-3-x64.dll` | `tongsuo/bin/` | 同上 |
 | `bin/libssl-3-x64.dll` | `tongsuo/bin/` | 同上 |
-| `providers/*.dll` | `providers/` | 同上 |
-| `certs/{N}/*.crt` | `certs/…` | 同上（脚本需与 app 目录命名一致，见 §6） |
+| `providers/*.dll` | `providers/` | 同上（含 **`aigis.dll`**） |
+| `certs/.../mlkemdsa|aigis|aigissm2|sm2extaigis/*.crt` | `certs/...` | 同上 |
 | — | `config/openssl-all-providers.cnf` | **app 启动时** `index.html` 按 `__dirname` 自动生成 |
 
 **两层 layout：**

@@ -13,7 +13,7 @@
 | 目录 | 内容 |
 |------|------|
 | `tongsuo/bin/` | Tongsuo `openssl.exe` + `libcrypto-3-x64.dll`、`libssl-3-x64.dll` |
-| `providers/` | pqmagic、cert_verify、ml_dsa_sm2、aigis_enc 四个 provider |
+| `providers/` | pqmagic、cert_verify、ml_dsa_sm2、aigis |
 | `config/` | `openssl-all-providers.cnf`（启动时按实际路径自动生成） |
 | `certs/1,2,3/` | 三套 PQC/混合示例证书 |
 

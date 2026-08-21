@@ -790,7 +790,7 @@
       'pqmagic = pqmagic_sect',
       'ml_dsa_sm2 = ml_dsa_sm2_sect',
       'cert_verify = cert_verify_sect',
-      'aigis_enc = aigis_enc_sect',
+      'aigis = aigis_sect',
       '',
       '[default_sect]',
       'activate = 1',
@@ -807,8 +807,8 @@
       'module = ' + mod('cert_verify.dll'),
       'activate = 1',
       '',
-      '[aigis_enc_sect]',
-      'module = ' + mod('aigis_enc.dll'),
+      '[aigis_sect]',
+      'module = ' + mod('aigis.dll'),
       'activate = 1',
       ''
     ].join('\n')
@@ -827,6 +827,7 @@
       OPENSSL_MODULES: providers,
       PQMAGIC_STD_LIB: path.join(providers, 'pqmagic.dll'),
       CERT_VERIFY_SO: path.join(providers, 'cert_verify.dll'),
+      AIGIS_PROVIDER: path.join(providers, 'aigis.dll'),
       CERT_VERIFY_VERIFY_INFO: '1'
     })
   }

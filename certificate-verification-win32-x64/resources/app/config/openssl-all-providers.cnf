@@ -9,7 +9,7 @@ default = default_sect
 pqmagic = pqmagic_sect
 ml_dsa_sm2 = ml_dsa_sm2_sect
 cert_verify = cert_verify_sect
-aigis_enc = aigis_enc_sect
+aigis = aigis_sect
 
 [default_sect]
 activate = 1
@@ -26,6 +26,6 @@ activate = 1
 module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/cert_verify.dll
 activate = 1
 
-[aigis_enc_sect]
-module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/aigis_enc.dll
+[aigis_sect]
+module = D:/20240429certificate-verification/certificate-verification-win32-x64/resources/app/providers/aigis.dll
 activate = 1
