@@ -138,10 +138,13 @@
     }
 
     .main-workspace {
-      flex: 0 0 auto;
+      flex: 1 1 auto;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .header {
@@ -485,8 +488,8 @@
     }
 
     .output-card {
-      flex: 1 1 auto;
-      min-height: 200px;
+      flex: 1 1 220px;
+      min-height: 180px;
       display: flex;
       flex-direction: column;
       padding: 0;
@@ -580,7 +583,7 @@
     <header class="header">
       <div class="brand-text">
         <h1 id="pageTitle">证书验证</h1>
-        <p id="pageSubtitle">PQC / 混合证书查看与验链</p>
+        <p id="pageSubtitle">PQC / 混合证书查看、验链与吊销检查</p>
       </div>
       <span id="runtimeStatus" class="status-pill">检查运行时…</span>
     </header>
@@ -637,8 +640,28 @@
         </p>
       </section>
 
+      <section class="card">
+        <p class="card-label"><span class="step">4</span>吊销列表 <span style="font-weight:500;color:var(--text-muted)">（-CRLfile，可选）</span></p>
+        <div class="field-row">
+          <div class="path-wrap">
+            <input type="text" class="path" disabled id="inputCrlAgent" placeholder="不检查吊销时留空" />
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn" onclick="pickCrl()">选择文件</button>
+            <input type="file" id="inputCrl" accept=".crl,.pem" style="display:none" onchange="onCrlFilePicked()" />
+            <button type="button" class="btn btn-accent" onclick="viewCrl()">查看吊销列表</button>
+            <button type="button" class="btn" onclick="clearCrl()">清空</button>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:12px">
+          选择后「验证证书」会追加 <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">-CRLfile</code> 与 <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">-crl_check</code>，只检查第 3 步这张证书是否在这份列表中。
+          留空则验链与原来相同。程序不会自动查找同目录 CRL，也不会下载 CDP。
+          叶子证请选其颁发者签发的列表（运营 CA 的 ca.crl）。用这份列表去验证根证书或运营 CA 时，OpenSSL 会报 unable to get certificate CRL。
+        </p>
+      </section>
+
       <div class="toolbar">
-        <p class="hint">选择文件后点击「验证证书」执行 openssl verify</p>
+        <p class="hint">选择文件后点击「验证证书」。已选吊销列表时会同时检查该证书是否被吊销</p>
         <button type="button" class="btn-primary" id="btnVerify" onclick="verifyCert()">验证证书</button>
       </div>
     </div>
@@ -730,6 +753,7 @@
   let rootCertPath = ''
   let intermediateCertPath = ''
   let verifyCertPath = ''
+  let crlPath = ''
   let csrPath = ''
   let csrOutPath = ''
   let busy = false
@@ -753,7 +777,7 @@
   const VIEW_META = {
     cert: {
       title: '证书验证',
-      subtitle: 'PQC / 混合证书查看与验链'
+      subtitle: 'PQC / 混合证书查看、验链与吊销检查'
     },
     csr: {
       title: 'CSR 生成与验证',
@@ -900,6 +924,10 @@
     return assertFile(filePath, label, ['.csr', '.pem', '.req'])
   }
 
+  function assertCrlFile (filePath, label) {
+    return assertFile(filePath, label, ['.crl', '.pem'])
+  }
+
   function updateRuntimeStatus (ok) {
     const el = document.getElementById('runtimeStatus')
     el.textContent = ok ? '运行时就绪' : '运行时不完整'
@@ -948,17 +976,21 @@
   }
 
   /**
-   * 构造 openssl verify 参数（方案 A：用户显式选证，不自动推断同目录中间证）。
+   * 构造 openssl verify 参数（方案 A：用户显式选证，不自动推断同目录中间证或 CRL）。
    * - 有中间证：-CAfile trust -untrusted intermediate leaf
    * - 无中间证且信任锚非自签根：-CAfile trust -partial_chain leaf
    * - 无中间证且信任锚为自签根：-CAfile trust leaf
+   * - 已选 CRL：在待验证证书之前追加 -CRLfile 与 -crl_check（只查这张证书）
    */
-  function buildCertVerifyArgs (trustAnchor, intermediate, certToVerify) {
+  function buildCertVerifyArgs (trustAnchor, intermediate, certToVerify, crlFile) {
     const args = ['verify', '-CAfile', trustAnchor]
     if (intermediate) {
       args.push('-untrusted', intermediate)
     } else if (!isSelfSignedCert(trustAnchor)) {
       args.push('-partial_chain')
+    }
+    if (crlFile) {
+      args.push('-CRLfile', crlFile, '-crl_check')
     }
     args.push(certToVerify)
     return args
@@ -1182,6 +1214,24 @@
     setPathField('inputFileAgent1', '')
   }
 
+  function pickCrl () {
+    document.getElementById('inputCrl').click()
+  }
+
+  function onCrlFilePicked () {
+    const input = document.getElementById('inputCrl')
+    if (input.files && input.files[0]) {
+      crlPath = input.files[0].path
+      setPathField('inputCrlAgent', crlPath)
+    }
+  }
+
+  function clearCrl () {
+    crlPath = ''
+    document.getElementById('inputCrl').value = ''
+    setPathField('inputCrlAgent', '')
+  }
+
   function onCsrFilePicked () {
     const input = document.getElementById('inputCsr')
     if (input.files && input.files[0]) {
@@ -1213,6 +1263,11 @@
     viewX509(verifyCertPath, '待验证证书')
   }
 
+  function viewCrl () {
+    if (!assertCrlFile(crlPath, '吊销列表')) return
+    runOpenssl(['crl', '-in', crlPath, '-text', '-noout'])
+  }
+
   function viewCsr () {
     if (!assertCsrFile(csrPath, 'CSR 文件')) return
     runOpenssl(['req', '-in', csrPath, '-text', '-noout'])
@@ -1232,7 +1287,8 @@
         return
       }
     }
-    runOpenssl(buildCertVerifyArgs(trust, intermediate, cert))
+    if (crlPath && !assertCrlFile(crlPath, '吊销列表')) return
+    runOpenssl(buildCertVerifyArgs(trust, intermediate, cert, crlPath))
   }
 
   function verifyCsr () {

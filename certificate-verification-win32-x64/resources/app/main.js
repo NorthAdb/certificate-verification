@@ -5,7 +5,7 @@ Menu.setApplicationMenu(null)
 function createWindow () {
   const win = new BrowserWindow({
     width: 1020,
-    height: 900,
+    height: 980,
     minWidth: 880,
     minHeight: 700,
     title: '抗量子数字证书验证工具',
