@@ -138,7 +138,7 @@
     }
 
     .main-workspace {
-      flex: 1 1 auto;
+      flex: 0 0 auto;
       min-height: 0;
       display: flex;
       flex-direction: column;
@@ -487,9 +487,10 @@
       box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
     }
 
+    /* 两页共用：输出紧挨操作按钮下方，并向下撑满到窗口底部 */
     .output-card {
-      flex: 1 1 220px;
-      min-height: 180px;
+      flex: 1 1 auto;
+      min-height: 200px;
       display: flex;
       flex-direction: column;
       padding: 0;
@@ -680,6 +681,8 @@
                 <select id="selectCsrAlgorithm" class="field-select" onchange="onCsrAlgorithmChange()">
                   <option value="id-ML-DSA-44-SPKI">ML-DSA-44-SPKI — 纯 PQC</option>
                   <option value="id-ML-DSA-44-SM2">ML-DSA-44-SM2 — PQC + SM2</option>
+                  <option value="id-Aigis-SIG1-SPKI">Aigis-SIG1-SPKI — 纯 Aigis</option>
+                  <option value="id-Aigis-SIG1-SM2">Aigis-SIG1-SM2 — Aigis + SM2</option>
                 </select>
               </div>
               <div class="field-col field-col-subj">
@@ -723,7 +726,7 @@
             <button type="button" class="btn" onclick="clearCsr()">清空</button>
           </div>
         </div>
-        <p class="hint" style="margin-top:12px">支持 ML-DSA-44-SPKI、ML-DSA-44-SM2 等 PQC / 混合 CSR；查看与验签通过 Tongsuo <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">openssl req</code> 完成。</p>
+        <p class="hint" style="margin-top:12px">支持 ML-DSA-44-SPKI、ML-DSA-44-SM2、Aigis-SIG1-SPKI、Aigis-SIG1-SM2；查看与验签通过 Tongsuo <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">openssl req</code> 完成。</p>
       </section>
 
       <div class="toolbar">
@@ -771,6 +774,18 @@
       label: 'ML-DSA-44-SM2',
       hint: 'PQC + SM2 复合 SPKI；同目录自动生成 <stem>.mldsa.key、<stem>.sm2.key 与 CSR。',
       implemented: true
+    },
+    {
+      id: 'id-Aigis-SIG1-SPKI',
+      label: 'Aigis-SIG1-SPKI',
+      hint: '纯 Aigis 单密钥；同目录自动生成同名 .key 并签发 CSR。',
+      implemented: true
+    },
+    {
+      id: 'id-Aigis-SIG1-SM2',
+      label: 'Aigis-SIG1-SM2',
+      hint: 'Aigis + SM2 复合 SPKI；同目录自动生成 <stem>.aigis.key、<stem>.sm2.key 与 CSR。',
+      implemented: true
     }
   ]
 
@@ -781,7 +796,7 @@
     },
     csr: {
       title: 'CSR 生成与验证',
-      subtitle: 'ML-DSA-44 证书签名请求（SPKI / 复合）'
+      subtitle: 'ML-DSA-44 / Aigis-SIG1 证书签名请求（纯 PQC / 复合）'
     }
   }
 
@@ -1099,6 +1114,15 @@
     }
   }
 
+  function deriveAigisCompositeKeyPathsFromCsr (csrFile) {
+    const ext = path.extname(csrFile)
+    const stem = ext ? csrFile.slice(0, -ext.length) : csrFile
+    return {
+      aigis: stem + '.aigis.key',
+      sm2: stem + '.sm2.key'
+    }
+  }
+
   function generateCsr () {
     if (!checkRuntime()) return
     const algo = getSelectedCsrAlgorithm()
@@ -1128,22 +1152,28 @@
     }
 
     const lines = []
-    const isComposite = algo.id === 'id-ML-DSA-44-SM2'
+    const isMldsaComposite = algo.id === 'id-ML-DSA-44-SM2'
+    const isAigisComposite = algo.id === 'id-Aigis-SIG1-SM2'
 
     setBusyState(true)
     try {
       lines.push('算法: ' + algo.label + ' (' + algo.id + ')')
 
-      if (isComposite) {
-        const keys = deriveCompositeKeyPathsFromCsr(csrOutPath)
-        lines.push('$ openssl genpkey -algorithm id-ML-DSA-44-SPKI -out ' + keys.mldsa)
-        execOpensslSync(['genpkey', '-algorithm', 'id-ML-DSA-44-SPKI', '-out', keys.mldsa])
-        lines.push('ML-DSA 私钥: ' + keys.mldsa)
+      if (isMldsaComposite || isAigisComposite) {
+        const keys = isAigisComposite
+          ? deriveAigisCompositeKeyPathsFromCsr(csrOutPath)
+          : deriveCompositeKeyPathsFromCsr(csrOutPath)
+        const pqcAlg = isAigisComposite ? 'id-Aigis-SIG1-SPKI' : 'id-ML-DSA-44-SPKI'
+        const pqcKey = isAigisComposite ? keys.aigis : keys.mldsa
+        const pqcName = isAigisComposite ? 'Aigis' : 'ML-DSA'
+        lines.push('$ openssl genpkey -algorithm ' + pqcAlg + ' -out ' + pqcKey)
+        execOpensslSync(['genpkey', '-algorithm', pqcAlg, '-out', pqcKey])
+        lines.push(pqcName + ' 私钥: ' + pqcKey)
         lines.push('$ openssl genpkey -algorithm SM2 -out ' + keys.sm2)
         execOpensslSync(['genpkey', '-algorithm', 'SM2', '-out', keys.sm2])
         lines.push('SM2 私钥: ' + keys.sm2)
-        lines.push('$ openssl req -new -key ' + keys.mldsa + ' -sm2key ' + keys.sm2 + ' -subj ' + subj + ' -out ' + csrOutPath)
-        execOpensslSync(['req', '-new', '-key', keys.mldsa, '-sm2key', keys.sm2, '-subj', subj, '-out', csrOutPath])
+        lines.push('$ openssl req -new -key ' + pqcKey + ' -sm2key ' + keys.sm2 + ' -subj ' + subj + ' -out ' + csrOutPath)
+        execOpensslSync(['req', '-new', '-key', pqcKey, '-sm2key', keys.sm2, '-subj', subj, '-out', csrOutPath])
       } else {
         const keyPath = deriveKeyPathFromCsr(csrOutPath)
         lines.push('$ openssl genpkey -algorithm ' + algo.id + ' -out ' + keyPath)
